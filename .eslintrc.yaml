@@ -1,0 +1,37 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "es6": true,
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "15.0"
+    }
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "no-console": "off",
+    "no-window": "off",
+    "no-alert": "off",
+    "no-use-before-define": "off",
+    "react/forbid-prop-types": "off", # pour le proptype.object impose la déclaration des proprités de l'objet
+    "no-bitwise": "off", # hash << 5
+    "no-plusplus": "off", # ex i++
+    "jsx-a11y/no-static-element-interactions": "off", #https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-static-element-interactions.md trop chiant cette regle :( :(
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/href-no-hash": "off",
+    "no-useless-espace": "off",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.spec.js"]}] #disable for file of unit testing, for example import of chai
+  },
+  "globals": {
+    "devToolsExtension": false,
+    "window": false,
+  }
+}

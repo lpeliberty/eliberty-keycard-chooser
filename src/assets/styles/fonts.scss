@@ -1,0 +1,25 @@
+// =============================================================================
+// Font Face
+// =============================================================================
+
+@font-face {
+    font-family: 'Regular-Regular';
+    src:
+        url('../fonts/Regular-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Regular-Regular.otf')  format('opentype'),
+        url('../fonts/Regular-Regular.woff') format('woff'),
+        url('../fonts/Regular-Regular.ttf')  format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Regular-Bold';
+    src:
+        url('../fonts/Regular-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Regular-Bold.otf')  format('opentype'),
+        url('../fonts/Regular-Bold.woff') format('woff'),
+        url('../fonts/Regular-Bold.ttf')  format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
