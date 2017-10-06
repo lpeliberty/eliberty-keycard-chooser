@@ -4,7 +4,7 @@ import { Map } from 'immutable';
 import SVGInline from 'react-svg-inline';
 import CardNumberField from '../CardNumberField/CardNumberField';
 import questionSvg from '../images/questionImg';
-import './KeyCardArea.scss';
+// import './KeyCardArea.scss';
 
 /**
  * Keycard area

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MaskedInput from 'react-text-mask';
 import Autosuggest from 'react-autosuggest';
 import * as AutoSuggestionHelper from '../../helpers/AutoSuggest/MaskedInputAutoSuggestHelper';
-import './CardNumberField.scss';
+// import './CardNumberField.scss';
 
 const configs = {
   SKIDATA: {
