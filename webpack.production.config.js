@@ -3,7 +3,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
-  filename: 'dist/main.css',
+  filename: 'main.css',
 });
 
 module.exports = {
@@ -12,6 +12,10 @@ module.exports = {
   ],
   module: {
     loaders: [
+      {
+        test: /\.(jpg|svg|png)$/,
+        use: 'file-loader',
+      },
       {
         test: /bootstrap.+\.(jsx|js)$/,
         loader: 'imports-loader?jQuery=jquery,$=jquery,this=>window',
@@ -45,9 +49,10 @@ module.exports = {
     modules: [__dirname, 'app', 'node_modules'],
   },
   output: {
-    path: path.join(__dirname, '/dist'),
-    publicPath: '/',
-    filename: 'bundle.js'
+    path: path.join(__dirname, 'dist'),
+    filename: 'keycardChooser.js',
+    library: "keycardChooser",
+    libraryTarget: "var"
   },
   devtool: 'cheap-eval-source-map',
   devServer: {

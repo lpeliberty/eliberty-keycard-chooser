@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Map } from 'immutable';
 import SVGInline from 'react-svg-inline';
 import CardNumberField from '../CardNumberField/CardNumberField';
-import questionSvg from '../../assets/images/question.svg';
+import questionSvg from '../../assets/images/questionImg';
 import './KeyCardArea.scss';
 
 /**
@@ -197,7 +197,7 @@ class KeyCardArea extends React.Component {
         <div>
         <p>J'ai une carte mains libres*</p>
         <button type="button" className="contentQuestion" data-toggle="modal" data-target="#myModal">
-          <SVGInline svg={questionSvg} className="questionSvg" />
+          {questionSvg}
         </button>
         <form>
           <div className="form-group keyCardAreaForm">
