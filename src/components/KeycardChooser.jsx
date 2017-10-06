@@ -15,7 +15,10 @@ const KeycardChooser = (props) => (
 );
 
 KeycardChooser.propTypes = {
-  name: PropTypes.string,
+  orderitem: PropTypes.object.isRequired,
+  keycardTypes: PropTypes.object.isRequired,
+  keycards: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
 };
 
 export default KeycardChooser;

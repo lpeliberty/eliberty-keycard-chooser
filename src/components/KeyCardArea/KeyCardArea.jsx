@@ -197,7 +197,7 @@ class KeyCardArea extends React.Component {
         <div>
         <p>J'ai une carte mains libres*</p>
         <button type="button" className="contentQuestion" data-toggle="modal" data-target="#myModal">
-          {questionSvg}
+          <questionSvg />
         </button>
         <form>
           <div className="form-group keyCardAreaForm">
