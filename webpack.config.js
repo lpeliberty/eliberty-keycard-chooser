@@ -16,7 +16,6 @@ module.exports = {
         test: /bootstrap.+\.(jsx|js)$/,
         loader: 'imports-loader?jQuery=jquery,$=jquery,this=>window',
       },
-      { test: /\.js?$/, loader: 'babel-loader', exclude: /node_modules/ },
       {
         test: /\.s[ca]ss$/,
         use: extractSass.extract({
@@ -29,6 +28,11 @@ module.exports = {
         }),
       },
       {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components|legacyjs)/,
+        loaders: ['babel-loader'],
+      },
+      {
         test: /\.*.svg$/,
         loader: 'svg-inline-loader',
       },
@@ -37,7 +41,8 @@ module.exports = {
 
   },
   resolve: {
-    extensions: ['.js','.scss']
+    extensions: ['.js', '.jsx'],
+    modules: [__dirname, 'app', 'node_modules'],
   },
   output: {
     path: path.join(__dirname, '/dist'),
