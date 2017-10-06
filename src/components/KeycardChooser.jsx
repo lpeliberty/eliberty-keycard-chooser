@@ -5,7 +5,12 @@ import KeyCardArea from './KeyCardArea/KeyCardArea';
 const KeycardChooser = (props) => (
   <div>
     <h1>{props.name}</h1>
-    <KeyCardArea />
+    <KeyCardArea
+      keycardTypes={props.keycardTypes}
+      cardNumberList={props.cardNumberList}
+      keycards={props.keycards}
+      params={props.params}
+    />
   </div>
 );
 
