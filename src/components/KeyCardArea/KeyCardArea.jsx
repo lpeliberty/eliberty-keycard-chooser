@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Map } from 'immutable';
 import SVGInline from 'react-svg-inline';
 import CardNumberField from '../CardNumberField/CardNumberField';
-import questionSvg from '../../assets/images/questionImg';
+import questionSvg from '../images/questionImg';
 import './KeyCardArea.scss';
 
 /**
