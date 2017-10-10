@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import KeyCardArea from './KeyCardArea/KeyCardArea';
+import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+import '../../node_modules/bootstrap-sass/assets/javascripts/bootstrap';
 
 const KeycardChooser = (props) => {
   return (

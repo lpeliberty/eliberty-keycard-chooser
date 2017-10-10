@@ -1,7 +1,9 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Map } from 'immutable';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import CardNumberField from '../CardNumberField/CardNumberField';
+import './keyCardArea.scss';
 
 /**
  * Keycard area
@@ -221,16 +223,16 @@ class KeyCardArea extends React.Component {
     return (
       <div>
         <div>
-          <p>J'ai une carte mains libres*</p>
+          <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
           <button type="button" className="contentQuestion" data-toggle="modal" data-target="#myModal">
             {this.questionImageSvg()}
           </button>
           <form>
             <div className="form-group keyCardAreaForm">
               <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
-              <label htmlFor="inputCheckOui" className="keycardChoice">oui</label>
+              <label htmlFor="inputCheckOui" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
               <input type="radio" id="inputCheckNo" name="card" value="non" onClick={() => { this.handleClickCheckNo(); }} />
-              <label htmlFor="inputCheckNo" className="keycardChoice">non</label>
+              <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
               { this.renderedContentCheckNo() }
               { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) }
             </div>
@@ -241,13 +243,13 @@ class KeyCardArea extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 className="modal-title" id="myModalLabel">Modal title</h4>
+                <h4 className="modal-title" id="myModalLabel"><FormattedMessage id="rp.checkout.keycard.area.modal.title" defaultMessage="modal title" /></h4>
               </div>
               <div className="modal-body">
-                TEST
+                <FormattedMessage id="rp.checkout.keycard.area.modal.content" defaultMessage="modal content" />
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" className="btn btn-default" data-dismiss="modal"><FormattedMessage id="rp.checkout.keycard.area.modal.close" defaultMessage="close" /></button>
               </div>
             </div>
           </div>
@@ -264,6 +266,7 @@ KeyCardArea.propTypes = {
   params: PropTypes.object.isRequired,
   orderitem: PropTypes.object.isRequired,
   changeCardNumber: PropTypes.func.isRequired,
+  intl: intlShape.isRequired, // for the internationalization
 };
 
-export default KeyCardArea;
+export default injectIntl(KeyCardArea);
