@@ -1,80 +1,133 @@
-@import '../../assets/styles/colors.scss';
+@import '../../assets/stylesheets/colors.scss';
 
-
-
-            .keyCardAreaForm {
-
-                .react-autosuggest__container--open {
-                    .keycard_wrapper {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                }
-
-                label.keycardChoice {
-                    margin-right: 20px;
-                    padding-left: 12px;
-                    cursor: pointer;
-                }
-                input[type="radio"] {
-                    cursor: pointer;
-                    margin-bottom: 8px;
-                }
-                .msgCheckNo {
-                    box-sizing: content-box;
-                    background-color: $grayColor4;
-                    border-radius: 2px;
-                    padding: 12px 15px;
-                    p {
-                        padding: 0;
-                        margin: 0;
-                        color: $whiteColor;
-                        text-align: justify;
-                        font-size: 13px;
-                        span {
-                            padding: 0;
-                        }
-                    }
-                }
-                .msgCheckYes {
-                    input[type="text"] {
-                        width: 100%;
-                    }
-                    .infoKeyCard {
-                        float: right;
-                        span {
-                            padding: 0;
-                            color: $grayColor4;
-                            font-size: 10px;
-                        }
-                        &:hover {
-                            text-decoration-color: $grayColor4;
-                        }
-                    }
-                    .btnCard1, .btnCard2 {
-
-                    }
-                }
+.keyCardAreaContainer {
+    opacity: 1;
+    margin-bottom: 12px;
+    legend {
+        margin-bottom: 12px;
+        border: 0;
+        font-size: 17px;
+    }
+    .keyCardContent {
+        padding: 0;
+        .cardSvg {
+            svg {
+                fill: $grayColor4;
+                width: 100%;
+                height: 100%;
             }
-            .contentQuestion {
-                position: absolute;
-                right: 0;
-                top: 0;
-                background: none;
-                border: none;
-                width: 15px;
-                height: 15px;
+        }
+        .keyCardAreaImage {
+            height: 80px;
+            padding: 0;
+            img {
+                max-height: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+.keyCardAreaText {
+    padding: 0 0 0 15px;
+    position: relative;
+}
+
+.keyCardAreaForm {
+
+    label.keycardChoice {
+        margin-right: 20px;
+        padding-left: 12px;
+        cursor: pointer;
+    }
+    input[type="radio"] {
+        cursor: pointer;
+        margin-bottom: 8px;
+    }
+    .msgCheckNo {
+        box-sizing: content-box;
+        background-color: $grayColor4;
+        border-radius: 2px;
+        padding: 12px 15px;
+        p {
+            padding: 0;
+            margin: 0;
+            color: $whiteColor;
+            text-align: justify;
+            font-size: 13px;
+            span {
                 padding: 0;
-                outline: 0;
-                .questionSvg {
-                    svg {
-                        fill: $grayColor4;
-                    }
-                }
             }
-
-
-
+        }
+    }
+    .msgCheckYes {
+        .infoKeyCard {
+            float: right;
+            span {
+                padding: 0;
+                color: $grayColor4;
+                font-size: 10px;
+            }
+            &:hover {
+                text-decoration-color: $grayColor4;
+            }
+        }
+        .tab-pane input, .react-autosuggest__container input {
+            appearance: none;
+            width: 100%;
+            margin: 0 0;
+            height: 35px;
+            padding: 5px 4px;
+            border-radius: 3px;
+            outline: none;
+            border: 1px solid;
+            border-color: #868686;
+            background: white;
+            font-weight: bold;
+            color: #424242;
+            font-size: 11.5px;
+        }
+        .tab-pane input:focus, .react-autosuggest__container input:focus{
+            border-color: #1e52a0;
+            box-shadow: none;
+        }
+        .tab-pane input.on, .react-autosuggest__container input.on {
+            color: #b0b0b0;
+        }
+        .tab-pane input::placeholder, .react-autosuggest__container input::placeholder {
+            color: #424242;
+        }
+        .tab-pane body {
+            padding: 20px;
+            /* the following line fixes a blink in chrome https://code.google.com/p/chromium/issues/detail?id=108025 */
+            -webkit-backface-visibility: hidden;
+        }
+        .tab-pane input:-webkit-autofill, .react-autosuggest__container input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px $whiteColor inset;
+        }
+        .tab-pane input:not(:placeholder-shown) + label, .react-autosuggest__container input:not(:placeholder-shown) + .tab-pane label {
+            right: 15px;
+            opacity: 1;
+            top: 10px;
+        }
+    }
+}
+.contentQuestion {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: none;
+    border: none;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    outline: 0;
+    .questionSvg {
+        svg {
+            fill: $grayColor4;
+        }
+    }
+}
 
 .nav-tabs > li.active > a, .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {
     border: none !important;
@@ -93,7 +146,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media all and (max-width: 768px) {
     .keyCardAreaContainer {
         margin-bottom: 12px;
         legend {
@@ -115,7 +168,7 @@
     }
 }
 
-@media (max-width: 992px) {
+@media screen and (max-width: 992px) {
     .keyCardAreaForm span {
         padding-right: 10px !important;
         padding-left: 6px !important;

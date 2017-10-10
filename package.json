@@ -1,6 +1,6 @@
 {
   "name": "keycard-chooser",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "input mask keycard",
   "main": "index.js",
   "repository": "",
@@ -24,6 +24,8 @@
     "prop-types": "^15.6.0",
     "react": "^15.6.1",
     "react-autosuggest": "^9.3.2",
+    "react-intl": "^2.3.0",
+    "react-intl-redux": "^0.4.1",
     "react-dom": "^15.6.1",
     "react-svg-inline": "^2.0.0",
     "react-text-mask": "^5.0.2",

@@ -18,13 +18,6 @@ _This assumes you have eslint installed. If you don't, run the following:_
 $ npm install eslint --save-dev
 ```
 
-### Testing
-
-To run the tests:
-```
-$ npm test
-```
-
 ### Production Build
 
 To build your production assets and run the server:
