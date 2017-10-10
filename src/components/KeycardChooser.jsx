@@ -1,19 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import { IntlProvider } from 'react-intl-redux';
-import { addLocaleData } from 'react-intl';
-import fr from 'react-intl/locale-data/fr';
-import en from 'react-intl/locale-data/en';
-import store from '../redux/stores/store';
 import KeyCardArea from './KeyCardArea/KeyCardArea';
-
-addLocaleData([...en, ...fr]);
 
 const KeycardChooser = (props) => {
   return (
-    <Provider store={store}>
-      <IntlProvider>
+    <div>
         <h1>{props.name}</h1>
         <KeyCardArea
           keycardTypes={props.keycardTypes}
@@ -23,8 +14,7 @@ const KeycardChooser = (props) => {
           orderitem={props.orderitem}
           changeCardNumber={props.changeCardNumber}
         />
-      </IntlProvider>
-    </Provider>
+    </div>
   );
 }
 
