@@ -62,8 +62,7 @@ class KeyCardArea extends React.Component {
         (
           <div className="msgCheckNo">
             <p>
-              Vous ne disposez pas de carte pour ce skieur,
-              elle vous sera livrée ou mise à disposition.
+              <FormattedMessage id="rp.checkout.keycard.area.message.no.card" defaultMessage="no card" />
             </p>
           </div>
         )
@@ -180,7 +179,7 @@ class KeyCardArea extends React.Component {
           <div className="msgCheckYes">
             { this.renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) }
             <a href="#" className="infoKeyCard">
-              <span>Où trouver mon numéro de carte ?</span>
+              <span><FormattedMessage id="rp.checkout.keycard.area.link.number.card" defaultMessage="number card" /></span>
             </a>
           </div>
         ) : ''
