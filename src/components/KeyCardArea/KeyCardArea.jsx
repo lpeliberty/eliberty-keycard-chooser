@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Map } from 'immutable';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import CardNumberField from '../CardNumberField/CardNumberField';
-import './keyCardArea.scss';
+// import './keyCardArea.scss';
 
 /**
  * Keycard area
