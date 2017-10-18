@@ -2,6 +2,8 @@
 _for [e-liberty](https://www.eliberty.fr.com/) deployment_
 
 ### OVERIVEW
+* Keycards input mask that handles card types (Alfi, TA, SD, Open)
+* Display of the list of saved keycards
 
 ### UP & RUNNING
 * Install dependencies
@@ -23,4 +25,13 @@ $ npm install eslint --save-dev
 To build your production assets and run the server:
 ```
 $ npm start
+```
+
+```
+$ npm run build:all
+```
+
+to use all the css files, you must add the link tag in the file index.html
+```
+<link rel="stylesheet" type="text/css" href="main.css">
 ```
