@@ -223,7 +223,7 @@ class KeyCardArea extends React.Component {
       <div>
         <div>
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
-          <button type="button" className="contentQuestion" data-toggle="modal" data-target="#myModal">
+          <button type="button" className="contentQuestion" data-toggle="modal" data-target="">
             {this.questionImageSvg()}
           </button>
           <form>
@@ -237,34 +237,18 @@ class KeyCardArea extends React.Component {
             </div>
           </form>
         </div>
-        <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 className="modal-title" id="myModalLabel"><FormattedMessage id="rp.checkout.keycard.area.modal.title" defaultMessage="modal title" /></h4>
-              </div>
-              <div className="modal-body">
-                <FormattedMessage id="rp.checkout.keycard.area.modal.content" defaultMessage="modal content" />
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal"><FormattedMessage id="rp.checkout.keycard.area.modal.close" defaultMessage="close" /></button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     );
   }
 }
 
 KeyCardArea.propTypes = {
-  keycardTypes: PropTypes.object.isRequired,
+  keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
   cardNumberList: PropTypes.object.isRequired,
   keycards: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired, // generic params
   orderitem: PropTypes.object.isRequired,
-  changeCardNumber: PropTypes.func.isRequired,
+  changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
   intl: intlShape.isRequired, // for the internationalization
 };
 

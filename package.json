@@ -11,7 +11,8 @@
     "start": "webpack-dev-server --hot",
     "deploy": "npm run dev",
     "build": "webpack --progress -p --config webpack.production.config.js",
-    "build:watch": "babel lib -w -d build"
+    "build:watch": "babel lib -w -d build",
+    "build:all": "npm run build && npm run build:lib"
   },
   "author": "eliberty",
   "license": "ISC",
