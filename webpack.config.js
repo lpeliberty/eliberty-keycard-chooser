@@ -8,7 +8,10 @@ const extractSass = new ExtractTextPlugin({
 
 module.exports = {
   entry: [
-    './src/index'
+    './src/index',
+    './assets/styles/colors.scss',
+    './components/keyCardArea/keyCardArea.scss',
+    './node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss',
   ],
   module: {
     loaders: [
