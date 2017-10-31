@@ -15,6 +15,7 @@ const KeycardChooser = (props) => {
           params={props.params}
           orderitem={props.orderitem}
           changeCardNumber={props.changeCardNumber}
+          onChangeCheck={props.onChangeCheck}
         />
     </div>
   );
@@ -27,6 +28,7 @@ KeycardChooser.propTypes = {
   params: PropTypes.object.isRequired,
   orderitem: PropTypes.object.isRequired,
   changeCardNumber: PropTypes.func.isRequired,
+  onChangeCheck: PropTypes.func.isRequired,
 };
 
 export default KeycardChooser;

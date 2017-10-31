@@ -25,6 +25,7 @@ class KeyCardArea extends React.Component {
   }
 
   handleClickCheckYes() {
+    this.props.onChangeCheck('yes');
     this.setState({
       checkYes: true,
       checkNo: false,
@@ -32,6 +33,7 @@ class KeyCardArea extends React.Component {
   }
 
   handleClickCheckNo() {
+    this.props.onChangeCheck('no');
     this.setState({
       checkYes: false,
       checkNo: true,
@@ -250,6 +252,7 @@ KeyCardArea.propTypes = {
   orderitem: PropTypes.object.isRequired,
   changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
   intl: intlShape.isRequired, // for the internationalization
+  onChangeCheck: PropTypes.func.isRequired,
 };
 
 export default injectIntl(KeyCardArea);
