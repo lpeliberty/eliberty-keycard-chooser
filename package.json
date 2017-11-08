@@ -32,6 +32,7 @@
     "react-router-redux": "^4.0.8",
     "react-svg-inline": "^2.0.0",
     "react-text-mask": "^5.0.2",
+    "reactstrap": "^5.0.0-alpha.3",
     "redux": "^3.7.2",
     "svg-inline-loader": "^0.8.0"
   },

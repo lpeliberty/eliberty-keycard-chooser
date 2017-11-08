@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Map } from 'immutable';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import CardNumberField from '../CardNumberField/CardNumberField';
 // import './keyCardArea.scss';
 
@@ -17,11 +18,13 @@ class KeyCardArea extends React.Component {
       checkNo: false,
       idCard: 0,
       cardNumberList: new Map(),
+      popoverOpen: false,
     };
     this.handleClickCheckYes = this.handleClickCheckYes.bind(this);
     this.handleClickCheckNo = this.handleClickCheckNo.bind(this);
     this.handleChangeCardNumber = this.handleChangeCardNumber.bind(this);
     this.handleChangeAutoSuggestCardNumber = this.handleChangeAutoSuggestCardNumber.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   handleClickCheckYes() {
@@ -56,6 +59,12 @@ class KeyCardArea extends React.Component {
       this.setState({ cardNumberList });
       this.props.changeCardNumber(this.props.orderitem.get('id'), cardnumber);
     }
+  }
+
+  toggle() {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
+    });
   }
 
   renderedContentCheckNo() {
@@ -225,9 +234,18 @@ class KeyCardArea extends React.Component {
       <div>
         <div>
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
-          <button type="button" className="contentQuestion" data-toggle="modal" data-target="">
+          <button type="button" className="contentQuestion info" data-html="true" data-toggle="popover" data-target="" data-placement="bottom" >
             {this.questionImageSvg()}
           </button>
+          <div>
+            <Button id="button Popover1" className="contentQuestion info" data-html="true" data-toggle="popover" data-target="" data-placement="bottom" onClick={this.toggle}>
+              {this.questionImageSvg()}
+            </Button>
+            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+              <PopoverHeader>Popover Title</PopoverHeader>
+              <PopoverBody>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
+            </Popover>
+          </div>
           <form>
             <div className="form-group keyCardAreaForm">
               <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
