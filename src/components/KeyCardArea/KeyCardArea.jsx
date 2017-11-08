@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Map } from 'immutable';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Button, Popover, PopoverTitle, PopoverContent } from 'reactstrap';
 import CardNumberField from '../CardNumberField/CardNumberField';
 // import './keyCardArea.scss';
 
@@ -234,12 +234,12 @@ class KeyCardArea extends React.Component {
       <div>
         <div>
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
-          <Button id="Popover1" className="contentQuestion " onClick={this.toggle}>
+          <Button type="button" id="Popover1" className="contentQuestion info" onClick={this.toggle}>
             {this.questionImageSvg()}
           </Button>
           <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-            <PopoverHeader>Popover Title</PopoverHeader>
-            <PopoverBody>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
+            <PopoverTitle>Popover Title</PopoverTitle>
+            <PopoverContent>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverContent>
           </Popover>
           <form>
             <div className="form-group keyCardAreaForm">
