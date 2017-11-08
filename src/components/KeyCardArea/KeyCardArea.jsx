@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Map } from 'immutable';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Button, Popover, PopoverTitle, PopoverContent } from 'reactstrap';
+import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import CardNumberField from '../CardNumberField/CardNumberField';
 // import './keyCardArea.scss';
 
@@ -238,8 +238,8 @@ class KeyCardArea extends React.Component {
             {this.questionImageSvg()}
           </Button>
           <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-            <PopoverTitle>Popover Title</PopoverTitle>
-            <PopoverContent>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverContent>
+            <PopoverHeader>INFOS CARTES RECHARGEABLES</PopoverHeader>
+            <PopoverBody>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
           </Popover>
           <form>
             <div className="form-group keyCardAreaForm">
