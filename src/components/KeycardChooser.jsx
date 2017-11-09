@@ -16,7 +16,7 @@ const KeycardChooser = (props) => {
           orderitem={props.orderitem}
           changeCardNumber={props.changeCardNumber}
           onChangeCheck={props.onChangeCheck}
-          itemFieldsDefinition={itemFieldsDefinition}
+          itemFieldsDefinition={props.itemFieldsDefinition}
         />
     </div>
   );
