@@ -245,7 +245,7 @@ class KeyCardArea extends React.Component {
           </div>
           <form>
             <div className="form-group keyCardAreaForm">
-              {itemFieldsDefinition.get('keycard').get('forceReloading') === true ?
+              {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
                 (
                   <div>
                   <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
