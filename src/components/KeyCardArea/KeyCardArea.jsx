@@ -229,7 +229,7 @@ class KeyCardArea extends React.Component {
   render() {
     const { keycardTypes, keycards, params, itemFieldsDefinition } = this.props;
     const { cardNumberList } = this.state;
-console.log('HIII',itemFieldsDefinition.toJS())
+
     return (
       <div>
         <div>
@@ -254,7 +254,15 @@ console.log('HIII',itemFieldsDefinition.toJS())
                   <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                   </div>
                 )
-                : ''}
+                : (
+                  <div className="msgCheckYes">
+                    { this.renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) }
+                    <a href="#" className="infoKeyCard">
+                      <span><FormattedMessage id="rp.checkout.keycard.area.link.number.card" defaultMessage="number card" /></span>
+                    </a>
+                  </div>
+                )
+              }
 
               { this.renderedContentCheckNo() }
               { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) }
