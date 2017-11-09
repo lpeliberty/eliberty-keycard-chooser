@@ -245,10 +245,17 @@ console.log('HIII',itemFieldsDefinition.toJS())
           </div>
           <form>
             <div className="form-group keyCardAreaForm">
-              <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
-              <label htmlFor="inputCheckOui" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
-              <input type="radio" id="inputCheckNo" name="card" value="non" onClick={() => { this.handleClickCheckNo(); }} />
-              <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
+              {itemFieldsDefinition.get('keycard').get('forceReloading') === true ?
+                (
+                  <div>
+                  <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
+                  <label htmlFor="inputCheckOui" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
+                  <input type="radio" id="inputCheckNo" name="card" value="non" onClick={() => { this.handleClickCheckNo(); }} />
+                  <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
+                  </div>
+                )
+                : ''}
+
               { this.renderedContentCheckNo() }
               { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) }
             </div>
