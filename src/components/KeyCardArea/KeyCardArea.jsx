@@ -227,15 +227,15 @@ class KeyCardArea extends React.Component {
   }
 
   render() {
-    const { keycardTypes, keycards, params } = this.props;
+    const { keycardTypes, keycards, params, itemFieldsDefinition } = this.props;
     const { cardNumberList } = this.state;
-
+console.log('HIII',itemFieldsDefinition.toJS())
     return (
       <div>
         <div>
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
           <div className="contentPopover">
-            <Button type="button" id="Popover1" className="contentQuestion info" onClick={this.toggle}>
+            <Button type="button" id="Popover1" className="contentQuestion" onClick={this.toggle}>
               {this.questionImageSvg()}
             </Button>
             <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
@@ -265,6 +265,7 @@ KeyCardArea.propTypes = {
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired, // generic params
   orderitem: PropTypes.object.isRequired,
+  itemFieldsDefinition: PropTypes.object.isRequired,
   changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
   intl: intlShape.isRequired, // for the internationalization
   onChangeCheck: PropTypes.func.isRequired,
