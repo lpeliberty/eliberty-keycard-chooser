@@ -227,7 +227,7 @@ class KeyCardArea extends React.Component {
   }
 
   render() {
-    const { keycardTypes, keycards, params, itemFieldsDefinition } = this.props;
+    const { keycardTypes, keycards, params, itemFieldsDefinition, popover } = this.props;
     const { cardNumberList } = this.state;
 
     return (
@@ -239,8 +239,13 @@ class KeyCardArea extends React.Component {
               {this.questionImageSvg()}
             </Button>
             <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-              <PopoverHeader className="popover-title">INFOS CARTES RECHARGEABLES</PopoverHeader>
-              <PopoverBody className="popover-content">Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
+              <PopoverHeader className="popover-title">
+                {popover.get('title')}
+              </PopoverHeader>
+              <PopoverBody className="popover-content">
+                {popover.get('image')}
+                {popover.get('content')}
+              </PopoverBody>
             </Popover>
           </div>
           <form>
@@ -284,6 +289,7 @@ KeyCardArea.propTypes = {
   changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
   intl: intlShape.isRequired, // for the internationalization
   onChangeCheck: PropTypes.func.isRequired,
+  popover: PropTypes.object.isRequired,
 };
 
 export default injectIntl(KeyCardArea);

@@ -17,6 +17,7 @@ const KeycardChooser = (props) => {
           changeCardNumber={props.changeCardNumber}
           onChangeCheck={props.onChangeCheck}
           itemFieldsDefinition={props.itemFieldsDefinition}
+          popover={props.popover}
         />
     </div>
   );
@@ -31,6 +32,7 @@ KeycardChooser.propTypes = {
   itemFieldsDefinition: PropTypes.object.isRequired,
   changeCardNumber: PropTypes.func.isRequired,
   onChangeCheck: PropTypes.func.isRequired,
+  popover: PropTypes.object.isRequired,
 };
 
 export default KeycardChooser;
