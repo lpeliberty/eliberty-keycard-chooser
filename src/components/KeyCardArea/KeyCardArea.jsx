@@ -234,13 +234,15 @@ class KeyCardArea extends React.Component {
       <div>
         <div>
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
-          <Button type="button" id="Popover1" className="contentQuestion info" onClick={this.toggle}>
-            {this.questionImageSvg()}
-          </Button>
-          <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-            <PopoverHeader>INFOS CARTES RECHARGEABLES</PopoverHeader>
-            <PopoverBody>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
-          </Popover>
+          <div className="contentPopover">
+            <Button type="button" id="Popover1" className="contentQuestion info" onClick={this.toggle}>
+              {this.questionImageSvg()}
+            </Button>
+            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+              <PopoverHeader className="popover-title">INFOS CARTES RECHARGEABLES</PopoverHeader>
+              <PopoverBody className="popover-content">Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
+            </Popover>
+          </div>
           <form>
             <div className="form-group keyCardAreaForm">
               <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
