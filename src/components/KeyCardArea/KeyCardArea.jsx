@@ -21,8 +21,8 @@ class KeyCardArea extends React.Component {
       cardNumberList: new Map(),
       popoverOpen: false,
     };
-    this.handleClickCheckYes = this.handleClickCheckYes.bind(this);
-    this.handleClickCheckNo = this.handleClickCheckNo.bind(this);
+    //this.handleClickCheckYes = this.handleClickCheckYes.bind(this);
+    //this.handleClickCheckNo = this.handleClickCheckNo.bind(this);
     this.handleChangeCardNumber = this.handleChangeCardNumber.bind(this);
     this.handleChangeAutoSuggestCardNumber = this.handleChangeAutoSuggestCardNumber.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -262,10 +262,10 @@ class KeyCardArea extends React.Component {
               {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
                 (
                   <div>
-                    <input type="radio" id="inputCheckOui" name="card" value="oui" onChange={() => { this.handleClickCheckYes(); }} />
-                    <label htmlFor="inputCheckOui" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
-                    <input type="radio" id="inputCheckNo" name="card" value="non" onChange={() => {  this.handleClickCheckNo(); }} />
-                    <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
+                    <input type="radio" id={`inputCheckYes${this.props.orderitem.get('id')}`} name="card" value="yes" onChange={() => { this.handleClickCheckYes(); }} />
+                    <label htmlFor={`inputCheckYes${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
+                    <input type="radio" id={`inputCheckNo${this.props.orderitem.get('id')}`} name="card" value="non" onChange={() => {  this.handleClickCheckNo(); }} />
+                    <label htmlFor={`inputCheckNo${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                   </div>
                 )
                 : (
