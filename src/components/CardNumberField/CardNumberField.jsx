@@ -81,19 +81,19 @@ class CardNumberField extends React.Component {
 
   renderedCardNumberField(mode, params, suggestions, inputProps) {
     return (mode !== 'OPEN' && params.get('displayKeycardAutoComplete', false) === true
-      ? <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        onSuggestionSelected={this.onSuggestionSelected}
-        shouldRenderSuggestions={() => true}
-        getSuggestionValue={AutoSuggestionHelper.getSuggestionValue}
-        renderSuggestion={AutoSuggestionHelper.renderSuggestion}
-        inputProps={inputProps}
-        renderInputComponent={AutoSuggestionHelper.renderInputComponent}
-        focusInputOnSuggestionClick={false}
-      />
-      : <MaskedInput {...inputProps} />
+        ? <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          onSuggestionSelected={this.onSuggestionSelected}
+          shouldRenderSuggestions={() => true}
+          getSuggestionValue={AutoSuggestionHelper.getSuggestionValue}
+          renderSuggestion={AutoSuggestionHelper.renderSuggestion}
+          inputProps={inputProps}
+          renderInputComponent={AutoSuggestionHelper.renderInputComponent}
+          focusInputOnSuggestionClick={false}
+        />
+        : <MaskedInput {...inputProps} />
     );
   }
 

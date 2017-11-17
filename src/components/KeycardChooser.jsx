@@ -7,25 +7,23 @@ import KeyCardArea from './KeyCardArea/KeyCardArea';
 const KeycardChooser = (props) => {
   return (
     <div>
-        <h1>{props.name}</h1>
-        <KeyCardArea
-          keycardTypes={props.keycardTypes}
-          cardNumberList={props.cardNumberList}
-          keycards={props.keycards}
-          params={props.params}
-          orderitem={props.orderitem}
-          changeCardNumber={props.changeCardNumber}
-          onChangeCheck={props.onChangeCheck}
-          itemFieldsDefinition={props.itemFieldsDefinition}
-          popover={props.popover}
-        />
+      <h1>{props.name}</h1>
+      <KeyCardArea
+        keycardTypes={props.keycardTypes}
+        keycards={props.keycards}
+        params={props.params}
+        orderitem={props.orderitem}
+        changeCardNumber={props.changeCardNumber}
+        onChangeCheck={props.onChangeCheck}
+        itemFieldsDefinition={props.itemFieldsDefinition}
+        popover={props.popover}
+      />
     </div>
   );
 }
 
 KeycardChooser.propTypes = {
   keycardTypes: PropTypes.object.isRequired,
-  cardNumberList: PropTypes.object.isRequired,
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
   orderitem: PropTypes.object.isRequired,

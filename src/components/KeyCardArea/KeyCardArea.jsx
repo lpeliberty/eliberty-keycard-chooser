@@ -4,6 +4,7 @@ import { Map } from 'immutable';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import CardNumberField from '../CardNumberField/CardNumberField';
+import * as tabKeycardType from '../../constants/keycardsType';
 // import './keyCardArea.scss';
 
 /**
@@ -51,9 +52,9 @@ class KeyCardArea extends React.Component {
     if (typeof cardnumber !== 'undefined') {
       let cardNumberList = this.state.cardNumberList;
 
-      if (cardnumber.substr(0, 1) !== '_') {
+      /*if (cardnumber.substr(0, 1) !== '_') {
         cardNumberList = new Map();
-      }
+      }*/
 
       cardNumberList = cardNumberList.set(cardId, cardnumber);
       this.setState({ cardNumberList });
@@ -81,16 +82,16 @@ class KeyCardArea extends React.Component {
     );
   }
 
-  renderedLabelTab(card) {
-    const aux = `card${card.get('id')}`;
+  renderedLabelTab(card,index) {
+    const aux = `card${index}`;
     let className = 'nav-item';
 
-    if (card.get('id') === this.state.idCard) {
+    if (index === this.state.idCard) {
       className = `${className} active`;
     }
 
     return (
-      <li className={className} key={card.get('id')}>
+      <li className={className} key={index}>
         <a
           className="nav-link text-center"
           data-toggle="tab"
@@ -98,35 +99,35 @@ class KeyCardArea extends React.Component {
           href={aux}
           onClick={() => {
             this.setState({
-              idCard: card.get('id'),
+              idCard: index,
             });
           }}
-        >{card.get('label')}</a>
+        >{card}</a>
       </li>
     );
   }
 
-  renderedKeyCardsTypesSome(card, cardNumberList, keycards, params) {
-    const aux = `card${card.get('id')}`;
+  renderedSomeInputKeyCards(card, index, cardNumberList, keycards, params) {
+    const aux = `card${index}`;
     let className = 'tab-pane fade in';
-    if (card.get('id') === this.state.idCard) {
+    if (index === this.state.idCard) {
       className = `${className} active`;
     }
-    const cardNumber = cardNumberList.get(card.get('id'), '');
+    const cardNumber = cardNumberList.get(index, '');
     return (
-      <div className={className} id={aux} role="tabpanel" key={card.get('id')}>
+      <div className={className} id={aux} role="tabpanel" key={index}>
         <CardNumberField
-          id={card.get('id')}
-          mode={card.get('type').toUpperCase()}
+          id={index}
+          mode={card}
           keycards={keycards}
           handleChangeCardNumber={(event) => {
-            this.handleChangeCardNumber(event, card.get('id'));
+            this.handleChangeCardNumber(event, index);
           }}
           onChange={(event) => {
-            this.handleChangeCardNumber(event, card.get('id'));
+            this.handleChangeCardNumber(event, index);
           }}
           onAutoSuggestSelected={(cardnumber) => {
-            this.handleChangeAutoSuggestCardNumber(cardnumber, card.get('id'));
+            this.handleChangeAutoSuggestCardNumber(cardnumber, index);
           }}
           cardNumber={cardNumber.toUpperCase()}
           value={cardNumber}
@@ -136,20 +137,21 @@ class KeyCardArea extends React.Component {
     );
   }
 
-  renderedKeyCardsTypesOne(card, cardNumberList, params) {
-    const cardNumber = cardNumberList.get(card.get('id'), '');
+  renderedOneInputKeyCard(card, index, cardNumberList, keycards, params) {
+    const cardNumber = cardNumberList.get(index, '');
     return (
       <CardNumberField
-        id={card.get('id')}
-        mode={card.get('type').toUpperCase()}
+        id={index}
+        mode={card}
+        keycards={keycards}
         handleChangeCardNumber={(event) => {
-          this.handleChangeCardNumber(event, card.get('id'));
+          this.handleChangeCardNumber(event, index);
         }}
         onChange={(event) => {
-          this.handleChangeCardNumber(event, card.get('id'));
+          this.handleChangeCardNumber(event, index);
         }}
         onAutoSuggestSelected={(cardnumber) => {
-          this.handleChangeAutoSuggestCardNumber(cardnumber, card.get('id'));
+          this.handleChangeAutoSuggestCardNumber(cardnumber, index);
         }}
         cardNumber={cardNumber.toUpperCase()}
         value={cardNumber}
@@ -159,27 +161,28 @@ class KeyCardArea extends React.Component {
   }
 
   renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) {
+
     return (keycardTypes.size > 1
         ?
         (
           <div>
             <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
               {
-                keycardTypes.map(card => (this.renderedLabelTab(card)))
+                keycardTypes.map((card,index) => (this.renderedLabelTab(tabKeycardType[card],index)))
               }
             </ul>
             <div className="tab-content">
               {
-                keycardTypes.map(card => (
-                  this.renderedKeyCardsTypesSome(card, cardNumberList, keycards, params)))
+                keycardTypes.map((card,index) => (
+                  this.renderedSomeInputKeyCards(tabKeycardType[card], index, cardNumberList, keycards, params)))
               }
             </div>
           </div>
         )
         :
         (
-          keycardTypes.map(card => (
-            this.renderedKeyCardsTypesOne(card, cardNumberList, params)))
+          keycardTypes.map((card,index) => (
+            this.renderedOneInputKeyCard(tabKeycardType[card], index, cardNumberList, keycards, params)))
         )
     );
   }
@@ -259,10 +262,10 @@ class KeyCardArea extends React.Component {
               {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
                 (
                   <div>
-                  <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
-                  <label htmlFor="inputCheckOui" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
-                  <input type="radio" id="inputCheckNo" name="card" value="non" onClick={() => { this.handleClickCheckNo(); }} />
-                  <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
+                    <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
+                    <label htmlFor="inputCheckOui" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
+                    <input type="radio" id="inputCheckNo" name="card" value="non" onClick={() => { this.handleClickCheckNo(); }} />
+                    <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                   </div>
                 )
                 : (
@@ -287,7 +290,6 @@ class KeyCardArea extends React.Component {
 
 KeyCardArea.propTypes = {
   keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
-  cardNumberList: PropTypes.object.isRequired,
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired, // generic params
   orderitem: PropTypes.object.isRequired,
