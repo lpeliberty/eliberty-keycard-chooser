@@ -243,16 +243,14 @@ class KeyCardArea extends React.Component {
             </Button>
             <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
               <PopoverHeader className="popover-title">
-                {popover.get('title')}
+                {popover.get('keycardTitle')}
               </PopoverHeader>
               <PopoverBody className="popover-content">
                 <div className="row">
                   <div className="col-xs-4">
-                    <img className="img-responsive" src={popover.get('image')} alt="keycardinfo" />
+                    <img className="img-responsive" src={popover.get('keycardPicture')} alt="keycardinfo" />
                   </div>
-                  <div className="col-xs-8">
-                    {popover.get('content')}
-                  </div>
+                  <div className="col-xs-8" dangerouslySetInnerHTML={{ __html: popover.get('keycardContent') }} />
                 </div>
               </PopoverBody>
             </Popover>
