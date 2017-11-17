@@ -262,9 +262,9 @@ class KeyCardArea extends React.Component {
               {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
                 (
                   <div>
-                    <input type="radio" id="inputCheckOui" name="card" value="oui" onClick={() => { this.handleClickCheckYes(); }} />
+                    <input type="radio" id="inputCheckOui" name="card" value="oui" onChange={() => { this.handleClickCheckYes(); }} />
                     <label htmlFor="inputCheckOui" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
-                    <input type="radio" id="inputCheckNo" name="card" value="non" onClick={() => { this.handleClickCheckNo(); }} />
+                    <input type="radio" id="inputCheckNo" name="card" value="non" onChange={() => {  this.handleClickCheckNo(); }} />
                     <label htmlFor="inputCheckNo" className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                   </div>
                 )
