@@ -15,12 +15,13 @@ class KeyCardArea extends React.Component {
     super(props);
 
     this.state = {
-      checkYes: false,
-      checkNo: false,
+      checkYes: !props.hasSupport,
+      checkNo : props.hasSupport,
       idCard: 0,
       cardNumberList: new Map(),
       popoverOpen: false,
     };
+
     //this.handleClickCheckYes = this.handleClickCheckYes.bind(this);
     //this.handleClickCheckNo = this.handleClickCheckNo.bind(this);
     this.handleChangeCardNumber = this.handleChangeCardNumber.bind(this);
@@ -230,8 +231,16 @@ class KeyCardArea extends React.Component {
   }
 
   render() {
-    const { keycardTypes, keycards, params, itemFieldsDefinition, popover } = this.props;
+    const { keycardTypes, keycards, params, itemFieldsDefinition, popover, hasSupport } = this.props;
     const { cardNumberList } = this.state;
+
+    let checkSupportYes = '';
+    let checkSupportNo = '';
+    if (hasSupport) {
+      checkSupportNo = 'checked';
+    } else {
+      checkSupportYes = 'checked';
+    }
 
     return (
       <div>
@@ -260,9 +269,9 @@ class KeyCardArea extends React.Component {
               {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
                 (
                   <div>
-                    <input type="radio" id={`inputCheckYes${this.props.orderitem.get('id')}`} name="card" value="yes" onChange={() => { this.handleClickCheckYes(); }} />
+                    <input type="radio" id={`inputCheckYes${this.props.orderitem.get('id')}`} name="card" checked={checkSupportYes} value="yes" onChange={() => { this.handleClickCheckYes(); }} />
                     <label htmlFor={`inputCheckYes${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
-                    <input type="radio" id={`inputCheckNo${this.props.orderitem.get('id')}`} name="card" value="non" onChange={() => {  this.handleClickCheckNo(); }} />
+                    <input type="radio" id={`inputCheckNo${this.props.orderitem.get('id')}`} name="card" value="non" checked={checkSupportNo} onChange={() => {  this.handleClickCheckNo(); }} />
                     <label htmlFor={`inputCheckNo${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                   </div>
                 )
@@ -296,6 +305,7 @@ KeyCardArea.propTypes = {
   intl: intlShape.isRequired, // for the internationalization
   onChangeCheck: PropTypes.func.isRequired,
   popover: PropTypes.object.isRequired,
+  hasSupport: PropTypes.bool.isRequired,
 };
 
 export default injectIntl(KeyCardArea);
