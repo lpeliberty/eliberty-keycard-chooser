@@ -18,6 +18,7 @@ const KeycardChooser = (props) => {
         itemFieldsDefinition={props.itemFieldsDefinition}
         popover={props.popover}
         hasSupport={props.hasSupport}
+        localItemInfo={props.localItemInfo}
       />
     </div>
   );
@@ -33,6 +34,7 @@ KeycardChooser.propTypes = {
   onChangeCheck: PropTypes.func.isRequired,
   popover: PropTypes.object.isRequired,
   hasSupport: PropTypes.bool.isRequired,
+  localItemInfo: PropTypes.object.isRequired,
 };
 
 export default KeycardChooser;

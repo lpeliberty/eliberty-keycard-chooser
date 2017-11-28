@@ -11,6 +11,21 @@ import * as tabKeycardType from '../../constants/keycardsType';
  * Keycard area
  */
 class KeyCardArea extends React.Component {
+  /**
+   *
+   * @param errorKey
+   * @param localItemInfo
+   * @returns {*}
+   */
+  static renderedErrorInputMessage(errorKey, localItemInfo) {
+    const error = localItemInfo.get('errors', new Map()).get(errorKey, '');
+    return error === undefined ? null : <span className="errorInput">{error}</span>;
+  }
+
+  /**
+   *
+   * @param props
+   */
   constructor(props) {
     super(props);
 
@@ -75,7 +90,7 @@ class KeyCardArea extends React.Component {
         (
           <div className="msgCheckNo">
             <p>
-              <FormattedMessage id="rp.checkout.keycard.area.message.no.card" defaultMessage="no card" />
+              <FormattedMessage id="rp.checkout.ordercustom.nokeycard" defaultMessage="no card" />
             </p>
           </div>
         )
@@ -188,14 +203,15 @@ class KeyCardArea extends React.Component {
     );
   }
 
-  renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) {
+  renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params, localItemInfo) {
     return (this.state.checkYes
         ? (
           <div className="msgCheckYes">
             { this.renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) }
             <a href="#" className="infoKeyCard">
-              <span><FormattedMessage id="rp.checkout.keycard.area.link.number.card" defaultMessage="number card" /></span>
+              <span><FormattedMessage id="rp.checkout.ordercustom.findkeycard.label" defaultMessage="number card" /></span>
             </a>
+            { KeyCardArea.renderedErrorInputMessage('data.cardNumber', localItemInfo) }
           </div>
         ) : ''
     );
@@ -231,7 +247,7 @@ class KeyCardArea extends React.Component {
   }
 
   render() {
-    const { keycardTypes, keycards, params, itemFieldsDefinition, popover, hasSupport } = this.props;
+    const { keycardTypes, keycards, params, itemFieldsDefinition, popover, hasSupport, localItemInfo } = this.props;
     const { cardNumberList } = this.state;
 
     let checkSupportYes = '';
@@ -286,7 +302,7 @@ class KeyCardArea extends React.Component {
               }
 
               { this.renderedContentCheckNo() }
-              { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) }
+              { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params, localItemInfo) }
             </div>
           </form>
         </div>
@@ -306,6 +322,7 @@ KeyCardArea.propTypes = {
   onChangeCheck: PropTypes.func.isRequired,
   popover: PropTypes.object.isRequired,
   hasSupport: PropTypes.bool.isRequired,
+  localItemInfo: PropTypes.object.isRequired,
 };
 
 export default injectIntl(KeyCardArea);
