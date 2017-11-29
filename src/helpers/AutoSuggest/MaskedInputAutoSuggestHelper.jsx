@@ -8,12 +8,16 @@ export function escapeRegexCharacters(str) {
 export function getSuggestions(value, keycards, params) {
   const escapedValue = escapeRegexCharacters(value.trim());
 
-  if (escapedValue.length < params.get('minKeycardLengthAutoComplete', 0)) {
-    return [];
+  const minLength = params.get('minKeycardLengthAutoComplete', 0);
+
+  // if no min length and search text is empty => display all
+  if (minLength === 0 && escapedValue === '') {
+    return keycards;
   }
 
-  if (escapedValue === '') {
-    return keycards;
+  // While length search text is inferior as min length configured, no return results
+  if (escapedValue.length < minLength) {
+    return [];
   }
 
   const regex = new RegExp(escapedValue, 'i');

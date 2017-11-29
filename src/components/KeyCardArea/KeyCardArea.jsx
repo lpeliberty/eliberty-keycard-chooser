@@ -19,7 +19,7 @@ class KeyCardArea extends React.Component {
    */
   static renderedErrorInputMessage(errorKey, localItemInfo) {
     const error = localItemInfo.get('errors', new Map()).get(errorKey, '');
-    return error === undefined ? null : <span className="errorInput">{error}</span>;
+    return error === undefined ? null : <span className="errorInputKeyCard">{error}</span>;
   }
 
   /**
@@ -133,6 +133,7 @@ class KeyCardArea extends React.Component {
     return (
       <div className={className} id={aux} role="tabpanel" key={index}>
         <CardNumberField
+          key={index}
           id={index}
           mode={card}
           keycards={keycards}
@@ -157,6 +158,7 @@ class KeyCardArea extends React.Component {
     const cardNumber = cardNumberList.get(index, '');
     return (
       <CardNumberField
+        key={index}
         id={index}
         mode={card}
         keycards={keycards}
@@ -203,7 +205,7 @@ class KeyCardArea extends React.Component {
     );
   }
 
-  renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params, localItemInfo) {
+  renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) {
     return (this.state.checkYes
         ? (
           <div className="msgCheckYes">
@@ -211,7 +213,6 @@ class KeyCardArea extends React.Component {
             <a href="#" className="infoKeyCard">
               <span><FormattedMessage id="rp.checkout.ordercustom.findkeycard.label" defaultMessage="number card" /></span>
             </a>
-            { KeyCardArea.renderedErrorInputMessage('data.cardNumber', localItemInfo) }
           </div>
         ) : ''
     );
@@ -302,7 +303,8 @@ class KeyCardArea extends React.Component {
               }
 
               { this.renderedContentCheckNo() }
-              { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params, localItemInfo) }
+              { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) }
+              { hasSupport === true ? '' : KeyCardArea.renderedErrorInputMessage('data.cardNumber', localItemInfo) }
             </div>
           </form>
         </div>
