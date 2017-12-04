@@ -18,8 +18,12 @@ class KeyCardArea extends React.Component {
    * @returns {*}
    */
   static renderedErrorInputMessage(errorKey, localItemInfo) {
+
     const error = localItemInfo.get('errors', new Map()).get(errorKey, '');
-    return error === undefined ? null : <span className="errorInputKeyCard">{error}</span>;
+
+    return error.length === 0
+      ? null
+      : <span className="errorInputKeyCard">{error}</span>;
   }
 
   /**
@@ -35,6 +39,8 @@ class KeyCardArea extends React.Component {
       idCard: 0,
       cardNumberList: new Map(),
       popoverOpen: false,
+      hasSupport: props.hasSupport,
+      typeKeyCard: '',
     };
 
     //this.handleClickCheckYes = this.handleClickCheckYes.bind(this);
@@ -45,33 +51,45 @@ class KeyCardArea extends React.Component {
   }
 
   handleClickCheckYes() {
-    this.props.onChangeCheck('yes');
     this.setState({
       checkYes: true,
       checkNo: false,
+      hasSupport: false,
     });
+    this.props.onChangeCheck('yes');
   }
 
   handleClickCheckNo() {
-    this.props.onChangeCheck('no');
     this.setState({
       checkYes: false,
       checkNo: true,
+      hasSupport: true,
     });
+    this.props.onChangeCheck('no');
   }
 
+  /**
+   *
+   * @param event
+   * @param cardId
+   */
   handleChangeCardNumber(event, cardId) {
     this.handleChangeAutoSuggestCardNumber(event.target.value, cardId);
   }
 
+  /**
+   *
+   * @param cardnumber
+   * @param cardId
+   */
   handleChangeAutoSuggestCardNumber(cardnumber, cardId) {
     if (typeof cardnumber !== 'undefined') {
       let cardNumberList = this.state.cardNumberList;
-
-      /*if (cardnumber.substr(0, 1) !== '_') {
-        cardNumberList = new Map();
-      }*/
-
+      /*
+            if (cardnumber.substr(0, 1) !== '_') {
+              cardNumberList = new Map();
+            }
+      */
       cardNumberList = cardNumberList.set(cardId, cardnumber);
       this.setState({ cardNumberList });
       this.props.changeCardNumber(this.props.orderitem.get('id'), cardnumber);
@@ -84,6 +102,10 @@ class KeyCardArea extends React.Component {
     });
   }
 
+  /**
+   *
+   * @returns {*}
+   */
   renderedContentCheckNo() {
     return (this.state.checkNo
         ?
@@ -98,6 +120,12 @@ class KeyCardArea extends React.Component {
     );
   }
 
+  /**
+   *
+   * @param card
+   * @param index
+   * @returns {XML}
+   */
   renderedLabelTab(card,index) {
     const aux = `card${index}`;
     let className = 'nav-item';
@@ -123,15 +151,125 @@ class KeyCardArea extends React.Component {
     );
   }
 
+  /**
+   *
+   * @param cardNumberList
+   * @param index
+   * @param card
+   * @returns {boolean}
+   */
+  verifyLengthKeycard(cardNumberList, index, card) {
+    const reg = new RegExp(/( )|(_)/g);
+    const cardNumber = cardNumberList.get(index).replace(reg, '');
+
+    switch (card) {
+      case 'SKIDATA': {
+        if (cardNumber.length < 25 ){
+          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ doit être complet');
+          return false;
+        }
+        return true;
+        break;
+      };
+      case 'TEAMAXESS':
+      case 'ALFI': {
+        if (cardNumber.length < 16){
+          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ doit être complet');
+          return false;
+        }
+        return true;
+        break;
+      };
+      case 'GO-SKI': {
+        if (cardNumber.length < 12){
+          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ doit être complet');
+          return false;
+        }
+        return true;
+        break;
+      };
+      default: { break; };
+    }
+  }
+
+  /**
+   *
+   * @param card
+   * @param index
+   * @param cardNumberList
+   * @param keycards
+   * @param params
+   * @returns {XML}
+   */
   renderedSomeInputKeyCards(card, index, cardNumberList, keycards, params) {
     const aux = `card${index}`;
     let className = 'tab-pane fade in';
+    const cardNumber = cardNumberList.get(index, '');
+    const valueCardNumber = this.props.localItemInfo.get('cardnumber','');
+    let lengthKeycard = false;
+
     if (index === this.state.idCard) {
       className = `${className} active`;
+
+      if (cardNumber !== '') {
+        lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, card);
+        if ( lengthKeycard === true ) {
+          this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber');
+        }
+      } else {
+        this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ ne doit être vide');
+      }
     }
-    const cardNumber = cardNumberList.get(index, '');
+
     return (
       <div className={className} id={aux} role="tabpanel" key={index}>
+        <CardNumberField
+          key={index}
+          id={index}
+          mode={card}
+          keycards={keycards}
+          handleChangeCardNumber={(event) => {
+            this.handleChangeCardNumber(event, index);
+          }}
+          onChange={(event) => {
+            this.handleChangeCardNumber(event, index);
+          }}
+          onAutoSuggestSelected={(cardnumber) => {
+            this.handleChangeAutoSuggestCardNumber(cardnumber, index);
+          }}
+          cardNumber={cardNumber}
+          value={cardNumber}
+          params={params}
+        />
+        { cardNumber === '' || lengthKeycard === false ? KeyCardArea.renderedErrorInputMessage('data.cardNumber', this.props.localItemInfo) : '' }
+      </div>
+    );
+  }
+
+  /**
+   *
+   * @param card
+   * @param index
+   * @param cardNumberList
+   * @param keycards
+   * @param params
+   * @returns {XML}
+   */
+  renderedOneInputKeyCard(card, index, cardNumberList, keycards, params) {
+    const cardNumber = cardNumberList.get(index, '');
+    let lengthKeycard = false;
+
+    if (cardNumber !== '') {
+      lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, card);
+
+      if ( lengthKeycard === true ) {
+        this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber');
+      }
+    } else {
+      this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ ne doit être vide');
+    }
+    return (
+      <div>
         <CardNumberField
           key={index}
           id={index}
@@ -150,34 +288,19 @@ class KeyCardArea extends React.Component {
           value={cardNumber}
           params={params}
         />
+        { cardNumber === '' || lengthKeycard === false ? KeyCardArea.renderedErrorInputMessage('data.cardNumber', this.props.localItemInfo) : '' }
       </div>
     );
   }
 
-  renderedOneInputKeyCard(card, index, cardNumberList, keycards, params) {
-    const cardNumber = cardNumberList.get(index, '');
-    return (
-      <CardNumberField
-        key={index}
-        id={index}
-        mode={card}
-        keycards={keycards}
-        handleChangeCardNumber={(event) => {
-          this.handleChangeCardNumber(event, index);
-        }}
-        onChange={(event) => {
-          this.handleChangeCardNumber(event, index);
-        }}
-        onAutoSuggestSelected={(cardnumber) => {
-          this.handleChangeAutoSuggestCardNumber(cardnumber, index);
-        }}
-        cardNumber={cardNumber.toUpperCase()}
-        value={cardNumber}
-        params={params}
-      />
-    );
-  }
-
+  /**
+   *
+   * @param keycardTypes
+   * @param cardNumberList
+   * @param keycards
+   * @param params
+   * @returns {XML}
+   */
   renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) {
 
     return (keycardTypes.size > 1
@@ -205,6 +328,14 @@ class KeyCardArea extends React.Component {
     );
   }
 
+  /**
+   *
+   * @param keycardTypes
+   * @param cardNumberList
+   * @param keycards
+   * @param params
+   * @returns {*}
+   */
   renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) {
     return (this.state.checkYes
         ? (
@@ -218,6 +349,10 @@ class KeyCardArea extends React.Component {
     );
   }
 
+  /**
+   *
+   * @returns {XML}
+   */
   questionImageSvg() {
     return (
       <svg x="0px"
@@ -248,8 +383,8 @@ class KeyCardArea extends React.Component {
   }
 
   render() {
-    const { keycardTypes, keycards, params, itemFieldsDefinition, popover, hasSupport, localItemInfo } = this.props;
-    const { cardNumberList } = this.state;
+    const { keycardTypes, keycards, params, itemFieldsDefinition, popover, localItemInfo } = this.props;
+    const { cardNumberList, hasSupport } = this.state;
 
     let checkSupportYes = '';
     let checkSupportNo = '';
@@ -304,7 +439,6 @@ class KeyCardArea extends React.Component {
 
               { this.renderedContentCheckNo() }
               { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) }
-              { hasSupport === true ? '' : KeyCardArea.renderedErrorInputMessage('data.cardNumber', localItemInfo) }
             </div>
           </form>
         </div>
@@ -325,6 +459,8 @@ KeyCardArea.propTypes = {
   popover: PropTypes.object.isRequired,
   hasSupport: PropTypes.bool.isRequired,
   localItemInfo: PropTypes.object.isRequired,
+  updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
+  deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
 };
 
 export default injectIntl(KeyCardArea);

@@ -1,28 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import KeyCardArea from './KeyCardArea/KeyCardArea';
+import {updateFieldsErrors} from "../../../../app/redux/actions/actions";
 // import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
 // import '../../node_modules/bootstrap-sass/assets/javascripts/bootstrap';
 
-const KeycardChooser = (props) => {
-  return (
-    <div>
-      <h1>{props.name}</h1>
-      <KeyCardArea
-        keycardTypes={props.keycardTypes}
-        keycards={props.keycards}
-        params={props.params}
-        orderitem={props.orderitem}
-        changeCardNumber={props.changeCardNumber}
-        onChangeCheck={props.onChangeCheck}
-        itemFieldsDefinition={props.itemFieldsDefinition}
-        popover={props.popover}
-        hasSupport={props.hasSupport}
-        localItemInfo={props.localItemInfo}
-      />
-    </div>
-  );
-}
+const KeycardChooser = (props) => (
+  <div>
+    <h1>{props.name}</h1>
+    <KeyCardArea
+      key={props.localItemInfo.get('index')}
+      keycardTypes={props.keycardTypes}
+      keycards={props.keycards}
+      params={props.params}
+      orderitem={props.orderitem}
+      changeCardNumber={props.changeCardNumber}
+      onChangeCheck={props.onChangeCheck}
+      itemFieldsDefinition={props.itemFieldsDefinition}
+      popover={props.popover}
+      hasSupport={props.hasSupport}
+      localItemInfo={props.localItemInfo}
+      updateFieldsErrors={props.updateFieldsErrors}
+      deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
+    />
+  </div>
+);
 
 KeycardChooser.propTypes = {
   keycardTypes: PropTypes.object.isRequired,
@@ -35,6 +37,8 @@ KeycardChooser.propTypes = {
   popover: PropTypes.object.isRequired,
   hasSupport: PropTypes.bool.isRequired,
   localItemInfo: PropTypes.object.isRequired,
+  updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
+  deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
 };
 
 export default KeycardChooser;
