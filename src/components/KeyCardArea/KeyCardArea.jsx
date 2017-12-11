@@ -161,28 +161,31 @@ class KeyCardArea extends React.Component {
   verifyLengthKeycard(cardNumberList, index, card) {
     const reg = new RegExp(/( )|(_)/g);
     const cardNumber = cardNumberList.get(index).replace(reg, '');
+    const errorKey = 'data.cardNumber';
+    const { formatMessage } = this.props.intl;
+    const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.length', defaultMessage: 'no lenght' });
 
     switch (card) {
-      case 'SKIDATA': {
+      case tabKeycardType.sd: {
         if (cardNumber.length < 25 ){
-          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ doit être complet');
+          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
           return false;
         }
         return true;
         break;
       };
-      case 'TEAMAXESS':
-      case 'ALFI': {
+      case tabKeycardType.ta:
+      case tabKeycardType.alfi: {
         if (cardNumber.length < 16){
-          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ doit être complet');
+          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
           return false;
         }
         return true;
         break;
       };
-      case 'GO-SKI': {
+      case tabKeycardType.open: {
         if (cardNumber.length < 12){
-          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ doit être complet');
+          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
           return false;
         }
         return true;
@@ -205,8 +208,10 @@ class KeyCardArea extends React.Component {
     const aux = `card${index}`;
     let className = 'tab-pane fade in';
     const cardNumber = cardNumberList.get(index, '');
-    const valueCardNumber = this.props.localItemInfo.get('cardnumber','');
     let lengthKeycard = false;
+    const errorKey = 'data.cardNumber';
+    const { formatMessage } = this.props.intl;
+    const errorLabel = formatMessage({ id: 'rp.checkout.message.error.input.empty', defaultMessage: 'empty' });
 
     if (index === this.state.idCard) {
       className = `${className} active`;
@@ -214,11 +219,13 @@ class KeyCardArea extends React.Component {
       if (cardNumber !== '') {
         lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, card);
         if ( lengthKeycard === true ) {
-          this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber');
+          this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), errorKey);
         }
       } else {
-        this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ ne doit être vide');
+        this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
       }
+      this.props.changeCardNumber(this.props.localItemInfo.get('id'), cardNumber);
+      this.props.setTypeCard(this.props.localItemInfo.get('id'), card);
     }
 
     return (
@@ -241,7 +248,7 @@ class KeyCardArea extends React.Component {
           value={cardNumber}
           params={params}
         />
-        { cardNumber === '' || lengthKeycard === false ? KeyCardArea.renderedErrorInputMessage('data.cardNumber', this.props.localItemInfo) : '' }
+        { cardNumber === '' || lengthKeycard === false ? KeyCardArea.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
       </div>
     );
   }
@@ -256,18 +263,24 @@ class KeyCardArea extends React.Component {
    * @returns {XML}
    */
   renderedOneInputKeyCard(card, index, cardNumberList, keycards, params) {
-    const cardNumber = cardNumberList.get(index, '');
+    let cardNumber = cardNumberList.get(index, '');
+    this.props.setTypeCard(this.props.localItemInfo.get('id'), card);
+
     let lengthKeycard = false;
+    const errorKey = 'data.cardNumber';
+    const { formatMessage } = this.props.intl;
+    const errorLabel = formatMessage({ id: 'rp.checkout.message.error.input.empty', defaultMessage: 'empty' });
 
     if (cardNumber !== '') {
       lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, card);
 
       if ( lengthKeycard === true ) {
-        this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber');
+        this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), errorKey);
       }
     } else {
-      this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), 'data.cardNumber', 'Le champ ne doit être vide');
+      this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
     }
+
     return (
       <div>
         <CardNumberField
@@ -288,7 +301,7 @@ class KeyCardArea extends React.Component {
           value={cardNumber}
           params={params}
         />
-        { cardNumber === '' || lengthKeycard === false ? KeyCardArea.renderedErrorInputMessage('data.cardNumber', this.props.localItemInfo) : '' }
+        { cardNumber === '' || lengthKeycard === false ? KeyCardArea.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
       </div>
     );
   }
@@ -396,17 +409,17 @@ class KeyCardArea extends React.Component {
 
     return (
       <div>
-        <div>
+        <div className="blockPopover">
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
           <div className="contentPopover">
             <Button type="button" id="Popover1" className="contentQuestion" onClick={this.toggle}>
               {this.questionImageSvg()}
             </Button>
-            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-              <PopoverHeader className="popover-title">
+            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle} className="ppPopover">
+              <PopoverHeader className="popover-title ppHeader">
                 {popover.get('keycardTitle')}
               </PopoverHeader>
-              <PopoverBody className="popover-content">
+              <PopoverBody className="popover-content ppBody">
                 <div className="row">
                   <div className="col-xs-4">
                     <img className="img-responsive" src={popover.get('keycardPicture')} alt="keycardinfo" />
@@ -461,6 +474,7 @@ KeyCardArea.propTypes = {
   localItemInfo: PropTypes.object.isRequired,
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
+  setTypeCard: PropTypes.func.isRequired, // function to set type card on a item (orderitem)
 };
 
 export default injectIntl(KeyCardArea);

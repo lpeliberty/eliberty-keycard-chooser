@@ -22,6 +22,7 @@ const KeycardChooser = (props) => (
       localItemInfo={props.localItemInfo}
       updateFieldsErrors={props.updateFieldsErrors}
       deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
+      setTypeCard={props.setTypeCard}
     />
   </div>
 );
@@ -39,6 +40,7 @@ KeycardChooser.propTypes = {
   localItemInfo: PropTypes.object.isRequired,
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
+  setTypeCard: PropTypes.func.isRequired, // function to set type card on a item (orderitem)
 };
 
 export default KeycardChooser;
