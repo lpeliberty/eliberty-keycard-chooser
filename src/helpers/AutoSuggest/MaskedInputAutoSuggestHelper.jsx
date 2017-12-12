@@ -1,5 +1,6 @@
 import React from 'react';
 import MaskedInput from 'react-text-mask';
+import * as tabKeycardType from '../../constants/keycardsType';
 
 export function escapeRegexCharacters(str) {
   return str.replace(/_-_|_| /g, '').trim();
@@ -67,10 +68,11 @@ function getHightlightNameDisplay(text, query) {
  * @returns {XML}
  */
 export function renderSuggestion(keycard, { query }) {
+  const keycardNumber = keycard.mode === tabKeycardType['open'] ? keycard.shortnumber : keycard.cardnumber ;
   return (
     <span key="keycard_suggestion" className="keycard_wrapper">
       <span className="keycard_suggestion">
-        {getHightlightNameDisplay(keycard.cardnumber, query)}
+        {getHightlightNameDisplay(keycardNumber, query)}
       </span>
       <span className="contact_suggestion">
         {

@@ -39,6 +39,7 @@ class KeyCardArea extends React.Component {
       idCard: 0,
       cardNumberList: new Map(),
       popoverOpen: false,
+      popover2Open: false,
       hasSupport: props.hasSupport,
       typeKeyCard: '',
     };
@@ -47,7 +48,8 @@ class KeyCardArea extends React.Component {
     //this.handleClickCheckNo = this.handleClickCheckNo.bind(this);
     this.handleChangeCardNumber = this.handleChangeCardNumber.bind(this);
     this.handleChangeAutoSuggestCardNumber = this.handleChangeAutoSuggestCardNumber.bind(this);
-    this.toggle = this.toggle.bind(this);
+    this.changeStatePopoverOpen = this.changeStatePopoverOpen.bind(this);
+    this.changeStatePopoverLinkOpen = this.changeStatePopoverLinkOpen.bind(this);
   }
 
   handleClickCheckYes() {
@@ -96,10 +98,12 @@ class KeyCardArea extends React.Component {
     }
   }
 
-  toggle() {
-    this.setState({
-      popoverOpen: !this.state.popoverOpen
-    });
+  changeStatePopoverOpen() {
+    this.setState({ popoverOpen: !this.state.popoverOpen });
+  }
+
+  changeStatePopoverLinkOpen() {
+    this.setState({ popover2Open: !this.state.popover2Open });
   }
 
   /**
@@ -184,7 +188,7 @@ class KeyCardArea extends React.Component {
         break;
       };
       case tabKeycardType.open: {
-        if (cardNumber.length < 12){
+        if (cardNumber.length < 11){
           this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
           return false;
         }
@@ -205,7 +209,7 @@ class KeyCardArea extends React.Component {
    * @returns {XML}
    */
   renderedSomeInputKeyCards(card, index, cardNumberList, keycards, params) {
-    const aux = `card${index}`;
+    const aux = `tabKeycardType[card]${index}`;
     let className = 'tab-pane fade in';
     const cardNumber = cardNumberList.get(index, '');
     let lengthKeycard = false;
@@ -217,7 +221,7 @@ class KeyCardArea extends React.Component {
       className = `${className} active`;
 
       if (cardNumber !== '') {
-        lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, card);
+        lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, tabKeycardType[card]);
         if ( lengthKeycard === true ) {
           this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), errorKey);
         }
@@ -233,7 +237,7 @@ class KeyCardArea extends React.Component {
         <CardNumberField
           key={index}
           id={index}
-          mode={card}
+          mode={tabKeycardType[card]}
           keycards={keycards}
           handleChangeCardNumber={(event) => {
             this.handleChangeCardNumber(event, index);
@@ -272,7 +276,7 @@ class KeyCardArea extends React.Component {
     const errorLabel = formatMessage({ id: 'rp.checkout.message.error.input.empty', defaultMessage: 'empty' });
 
     if (cardNumber !== '') {
-      lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, card);
+      lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, tabKeycardType[card]);
 
       if ( lengthKeycard === true ) {
         this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), errorKey);
@@ -286,7 +290,7 @@ class KeyCardArea extends React.Component {
         <CardNumberField
           key={index}
           id={index}
-          mode={card}
+          mode={tabKeycardType[card]}
           keycards={keycards}
           handleChangeCardNumber={(event) => {
             this.handleChangeCardNumber(event, index);
@@ -328,7 +332,7 @@ class KeyCardArea extends React.Component {
             <div className="tab-content">
               {
                 keycardTypes.map((card,index) => (
-                  this.renderedSomeInputKeyCards(tabKeycardType[card], index, cardNumberList, keycards, params)))
+                  this.renderedSomeInputKeyCards(card, index, cardNumberList, keycards, params)))
               }
             </div>
           </div>
@@ -336,7 +340,7 @@ class KeyCardArea extends React.Component {
         :
         (
           keycardTypes.map((card,index) => (
-            this.renderedOneInputKeyCard(tabKeycardType[card], index, cardNumberList, keycards, params)))
+            this.renderedOneInputKeyCard(card, index, cardNumberList, keycards, params)))
         )
     );
   }
@@ -354,13 +358,37 @@ class KeyCardArea extends React.Component {
         ? (
           <div className="msgCheckYes">
             { this.renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) }
-            <a href="#" className="infoKeyCard">
-              <span><FormattedMessage id="rp.checkout.ordercustom.findkeycard.label" defaultMessage="number card" /></span>
-            </a>
+            { this.renderedLabelLinkPopover() }
           </div>
         ) : ''
     );
   }
+
+  renderedLabelLinkPopover() {
+    return this.props.popoverLink.get('labelKeycardInfo') !== null
+      ?
+      <div>
+        <a href="#" className="infoKeyCard" id="PopoverLink" onClick={this.changeStatePopoverLinkOpen}>
+          <span>{this.props.popoverLink.get('labelKeycardInfo')}</span>
+        </a>
+        <Popover placement="bottom" isOpen={this.state.popover2Open} target="PopoverLink" toggle={this.changeStatePopoverLinkOpen} className="ppPopover">
+          <PopoverHeader className="popover-title ppHeader">
+            {this.props.popoverLink.get('popoverTitleKeycardInfo')}
+          </PopoverHeader>
+          <PopoverBody className="popover-content ppBody">
+            <div className="row">
+              <div className="col-xs-4">
+                <img className="img-responsive" src={this.props.popoverLink.get('picKeycardInfo')} alt="" />
+              </div>
+              <div className="col-xs-8" dangerouslySetInnerHTML={{ __html: this.props.popoverLink.get('descKeycardInfo') }} />
+            </div>
+          </PopoverBody>
+        </Popover>
+      </div>
+      : ''
+  }
+
+
 
   /**
    *
@@ -412,10 +440,10 @@ class KeyCardArea extends React.Component {
         <div className="blockPopover">
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
           <div className="contentPopover">
-            <Button type="button" id="Popover1" className="contentQuestion" onClick={this.toggle}>
+            <Button type="button" id="Popover1" className="contentQuestion" onClick={this.changeStatePopoverOpen}>
               {this.questionImageSvg()}
             </Button>
-            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle} className="ppPopover">
+            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.changeStatePopoverOpen} className="ppPopover">
               <PopoverHeader className="popover-title ppHeader">
                 {popover.get('keycardTitle')}
               </PopoverHeader>
@@ -440,14 +468,7 @@ class KeyCardArea extends React.Component {
                     <label htmlFor={`inputCheckNo${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                   </div>
                 )
-                : (
-                  <div className="msgCheckYes">
-                    { this.renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) }
-                    <a href="#" className="infoKeyCard">
-                      <span><FormattedMessage id="rp.checkout.keycard.area.link.number.card" defaultMessage="number card" /></span>
-                    </a>
-                  </div>
-                )
+                : this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params)
               }
 
               { this.renderedContentCheckNo() }
@@ -469,7 +490,8 @@ KeyCardArea.propTypes = {
   changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
   intl: intlShape.isRequired, // for the internationalization
   onChangeCheck: PropTypes.func.isRequired,
-  popover: PropTypes.object.isRequired,
+  popover: PropTypes.object.isRequired, // content for popover info keycard
+  popoverLink: PropTypes.object.isRequired, // content for popover link keycard
   hasSupport: PropTypes.bool.isRequired,
   localItemInfo: PropTypes.object.isRequired,
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors

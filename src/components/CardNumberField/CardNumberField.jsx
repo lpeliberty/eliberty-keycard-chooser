@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import MaskedInput from 'react-text-mask';
 import Autosuggest from 'react-autosuggest';
 import * as AutoSuggestionHelper from '../../helpers/AutoSuggest/MaskedInputAutoSuggestHelper';
+import * as tabKeycardType from '../../constants/keycardsType';
 // import './CardNumberField.scss';
 
 const configs = {
@@ -37,9 +38,9 @@ const configs = {
     ],
   },
   'GO-SKI': {
-    placeholder: '0000000000-0',
+    placeholder: '000000000-0',
     mask: [
-      /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, '-',
+      /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, '-',
       /[0-9]/,
     ],
   },
@@ -64,6 +65,11 @@ class CardNumberField extends React.Component {
       this.props.keycards.toJS(),
       this.props.params,
     );
+    // Add element type card for display suggestions
+    listKeycards.forEach((keycard) => {
+      keycard.mode = this.props.mode;
+    });
+
     this.setState({
       suggestions: listKeycards,
     });
@@ -76,7 +82,8 @@ class CardNumberField extends React.Component {
   }
 
   onSuggestionSelected(event, { suggestion }) {
-    this.props.onAutoSuggestSelected(suggestion.cardnumber);
+    const cardnumber = suggestion.mode === tabKeycardType['open'] ? suggestion.shortnumber : suggestion.cardnumber ;
+    this.props.onAutoSuggestSelected(cardnumber);
   }
 
   renderedCardNumberField(mode, params, suggestions, inputProps) {

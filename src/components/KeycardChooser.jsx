@@ -18,6 +18,7 @@ const KeycardChooser = (props) => (
       onChangeCheck={props.onChangeCheck}
       itemFieldsDefinition={props.itemFieldsDefinition}
       popover={props.popover}
+      popoverLink={props.popoverLink}
       hasSupport={props.hasSupport}
       localItemInfo={props.localItemInfo}
       updateFieldsErrors={props.updateFieldsErrors}
@@ -35,7 +36,8 @@ KeycardChooser.propTypes = {
   itemFieldsDefinition: PropTypes.object.isRequired,
   changeCardNumber: PropTypes.func.isRequired,
   onChangeCheck: PropTypes.func.isRequired,
-  popover: PropTypes.object.isRequired,
+  popover: PropTypes.object.isRequired, // content for popover info keycard
+  popoverLink: PropTypes.object.isRequired, // content for popover link keycard
   hasSupport: PropTypes.bool.isRequired,
   localItemInfo: PropTypes.object.isRequired,
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
