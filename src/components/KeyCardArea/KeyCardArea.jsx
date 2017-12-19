@@ -12,13 +12,12 @@ import * as tabKeycardType from '../../constants/keycardsType';
  */
 class KeyCardArea extends React.Component {
   /**
-   *
+   * Display Error Message
    * @param errorKey
    * @param localItemInfo
    * @returns {*}
    */
   static renderedErrorInputMessage(errorKey, localItemInfo) {
-
     const error = localItemInfo.get('errors', new Map()).get(errorKey, '');
 
     return error.length === 0
@@ -27,7 +26,7 @@ class KeyCardArea extends React.Component {
   }
 
   /**
-   *
+   * Constructor
    * @param props
    */
   constructor(props) {
@@ -36,22 +35,20 @@ class KeyCardArea extends React.Component {
     this.state = {
       checkYes: !props.hasSupport,
       checkNo : props.hasSupport,
-      idCard: 0,
-      cardNumberList: new Map(),
-      popoverOpen: false,
-      popover2Open: false,
+      popoverQuestionOpen: false,
+      popoverLinkOpen: false,
       hasSupport: props.hasSupport,
       typeKeyCard: '',
     };
-
-    //this.handleClickCheckYes = this.handleClickCheckYes.bind(this);
-    //this.handleClickCheckNo = this.handleClickCheckNo.bind(this);
     this.handleChangeCardNumber = this.handleChangeCardNumber.bind(this);
     this.handleChangeAutoSuggestCardNumber = this.handleChangeAutoSuggestCardNumber.bind(this);
     this.changeStatePopoverOpen = this.changeStatePopoverOpen.bind(this);
     this.changeStatePopoverLinkOpen = this.changeStatePopoverLinkOpen.bind(this);
   }
 
+  /**
+   * Change local state when click on yes
+   */
   handleClickCheckYes() {
     this.setState({
       checkYes: true,
@@ -61,6 +58,9 @@ class KeyCardArea extends React.Component {
     this.props.onChangeCheck('yes');
   }
 
+  /**
+   * Change local state when click on no
+   */
   handleClickCheckNo() {
     this.setState({
       checkYes: false,
@@ -71,12 +71,26 @@ class KeyCardArea extends React.Component {
   }
 
   /**
-   *
+   * Change local state for open popover question
+   */
+  changeStatePopoverOpen() {
+    this.setState({ popoverQuestionOpen: !this.state.popoverQuestionOpen });
+  }
+
+  /**
+   * Change local state for open popover link
+   */
+  changeStatePopoverLinkOpen() {
+    this.setState({ popoverLinkOpen: !this.state.popoverLinkOpen });
+  }
+
+  /**
+   * Change card number
    * @param event
    * @param cardId
    */
-  handleChangeCardNumber(event, cardId) {
-    this.handleChangeAutoSuggestCardNumber(event.target.value, cardId);
+  handleChangeCardNumber(event, cardId, card) {
+    this.handleChangeAutoSuggestCardNumber(event.target.value, cardId, card, false);
   }
 
   /**
@@ -84,48 +98,50 @@ class KeyCardArea extends React.Component {
    * @param cardnumber
    * @param cardId
    */
-  handleChangeAutoSuggestCardNumber(cardnumber, cardId) {
-    if (typeof cardnumber !== 'undefined') {
-      let cardNumberList = this.state.cardNumberList;
-      /*
-            if (cardnumber.substr(0, 1) !== '_') {
-              cardNumberList = new Map();
+  handleChangeAutoSuggestCardNumber(cardnumber, cardId, card, suggest = true) {
+    let newValue = '';
+    this.props.localItemInfo.get('keycardsMask').forEach((item,key) => {
+      if(key !== 'current' && key !== 'idCard' && key !== card) {
+        if (suggest) {
+          this.props.keycards.forEach((item,key) => {
+
+            if( item.get('shortnumber') === cardnumber || item.get('cardnumber') === cardnumber) {
+              newValue = card === 'sd' ? item.get('shortnumber') : item.get('cardnumber');
             }
-      */
-      cardNumberList = cardNumberList.set(cardId, cardnumber);
-      this.setState({ cardNumberList });
+          });
+          this.props.updateKeycardsMask(this.props.orderitem.get('id'), key, newValue);
+        } else {
+          this.props.updateKeycardsMask(this.props.orderitem.get('id'), key, newValue);
+        }
+      }
+
+    });
+
+    if (typeof cardnumber !== 'undefined') {
       this.props.changeCardNumber(this.props.orderitem.get('id'), cardnumber);
+      this.props.updateKeycardsMask(this.props.orderitem.get('id'), card, cardnumber);
     }
   }
 
-  changeStatePopoverOpen() {
-    this.setState({ popoverOpen: !this.state.popoverOpen });
-  }
-
-  changeStatePopoverLinkOpen() {
-    this.setState({ popover2Open: !this.state.popover2Open });
-  }
-
   /**
-   *
+   * Display content checked no
    * @returns {*}
    */
   renderedContentCheckNo() {
     return (this.state.checkNo
         ?
-        (
-          <div className="msgCheckNo">
-            <p>
-              <FormattedMessage id="rp.checkout.ordercustom.nokeycard" defaultMessage="no card" />
-            </p>
-          </div>
-        )
+        <div className="msgCheckNo">
+          <p>
+            <FormattedMessage id="rp.checkout.ordercustom.nokeycard" defaultMessage="no card" />
+          </p>
+        </div>
+
         : ''
     );
   }
 
   /**
-   *
+   * Display labels for inputs - select active input
    * @param card
    * @param index
    * @returns {XML}
@@ -134,7 +150,7 @@ class KeyCardArea extends React.Component {
     const aux = `card${index}`;
     let className = 'nav-item';
 
-    if (index === this.state.idCard) {
+    if (index === this.props.localItemInfo.get('keycardsMask').get('idCard')) {
       className = `${className} active`;
     }
 
@@ -146,9 +162,7 @@ class KeyCardArea extends React.Component {
           role="tab"
           href={aux}
           onClick={() => {
-            this.setState({
-              idCard: index,
-            });
+            this.props.updateKeycardsMask(this.props.localItemInfo.get('id'), 'idCard', index);
           }}
         >{card}</a>
       </li>
@@ -157,79 +171,78 @@ class KeyCardArea extends React.Component {
 
   /**
    *
-   * @param cardNumberList
+   * @param cardNumber
    * @param index
    * @param card
    * @returns {boolean}
    */
-  verifyLengthKeycard(cardNumberList, index, card) {
+  verifyLengthKeycard(cardnumber, index, card) {
     const reg = new RegExp(/( )|(_)/g);
-    const cardNumber = cardNumberList.get(index).replace(reg, '');
+    const cardNumber = cardnumber.replace(reg, '');
     const errorKey = 'data.cardNumber';
     const { formatMessage } = this.props.intl;
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.length', defaultMessage: 'no lenght' });
+    const currentId = this.props.localItemInfo.get('id');
 
     switch (card) {
       case tabKeycardType.sd: {
         if (cardNumber.length < 25 ){
-          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
+          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
           return false;
+          break;
         }
-        return true;
-        break;
       };
       case tabKeycardType.ta:
       case tabKeycardType.alfi: {
         if (cardNumber.length < 16){
-          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
+          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
           return false;
+          break;
         }
-        return true;
-        break;
       };
       case tabKeycardType.open: {
         if (cardNumber.length < 11){
-          this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
+          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
           return false;
+          break;
         }
-        return true;
-        break;
       };
       default: { break; };
     }
+    return true;
   }
 
   /**
    *
    * @param card
    * @param index
-   * @param cardNumberList
    * @param keycards
    * @param params
    * @returns {XML}
    */
-  renderedSomeInputKeyCards(card, index, cardNumberList, keycards, params) {
-    const aux = `tabKeycardType[card]${index}`;
+  renderedSomeInputKeyCards(card, index, keycards, params) {
     let className = 'tab-pane fade in';
-    const cardNumber = cardNumberList.get(index, '');
     let lengthKeycard = false;
+    const aux = `tabKeycardType[card]${index}`;
     const errorKey = 'data.cardNumber';
     const { formatMessage } = this.props.intl;
     const errorLabel = formatMessage({ id: 'rp.checkout.message.error.input.empty', defaultMessage: 'empty' });
+    const currentId = this.props.localItemInfo.get('id');
+    const cardNumber = this.props.localItemInfo.get('keycardsMask').get(card);
 
-    if (index === this.state.idCard) {
+    if (index === this.props.localItemInfo.get('keycardsMask').get('idCard')) {
       className = `${className} active`;
 
       if (cardNumber !== '') {
-        lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, tabKeycardType[card]);
-        if ( lengthKeycard === true ) {
-          this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), errorKey);
+        if (this.verifyLengthKeycard(cardNumber, index, tabKeycardType[card])) {
+          this.props.deleteKeyFieldsErrors(currentId, errorKey);
         }
       } else {
-        this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
+        this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
       }
-      this.props.changeCardNumber(this.props.localItemInfo.get('id'), cardNumber);
-      this.props.setTypeCard(this.props.localItemInfo.get('id'), card);
+
+      this.props.changeCardNumber(currentId, cardNumber);
+      this.props.updateKeycardsMask(currentId, 'current', card);
     }
 
     return (
@@ -240,13 +253,13 @@ class KeyCardArea extends React.Component {
           mode={tabKeycardType[card]}
           keycards={keycards}
           handleChangeCardNumber={(event) => {
-            this.handleChangeCardNumber(event, index);
+            this.handleChangeCardNumber(event, index, card);
           }}
           onChange={(event) => {
-            this.handleChangeCardNumber(event, index);
+            this.handleChangeCardNumber(event, index, card);
           }}
           onAutoSuggestSelected={(cardnumber) => {
-            this.handleChangeAutoSuggestCardNumber(cardnumber, index);
+            this.handleChangeAutoSuggestCardNumber(cardnumber, index, card);
           }}
           cardNumber={cardNumber}
           value={cardNumber}
@@ -261,28 +274,28 @@ class KeyCardArea extends React.Component {
    *
    * @param card
    * @param index
-   * @param cardNumberList
    * @param keycards
    * @param params
    * @returns {XML}
    */
-  renderedOneInputKeyCard(card, index, cardNumberList, keycards, params) {
-    let cardNumber = cardNumberList.get(index, '');
-    this.props.setTypeCard(this.props.localItemInfo.get('id'), card);
-
+  renderedOneInputKeyCard(card, index, keycards, params) {
     let lengthKeycard = false;
     const errorKey = 'data.cardNumber';
     const { formatMessage } = this.props.intl;
     const errorLabel = formatMessage({ id: 'rp.checkout.message.error.input.empty', defaultMessage: 'empty' });
+    const currentId = this.props.localItemInfo.get('id');
+    const cardNumber = this.props.localItemInfo.get('keycardsMask').get(card);
+
+    this.props.updateKeycardsMask(currentId, 'current', card);
 
     if (cardNumber !== '') {
-      lengthKeycard = this.verifyLengthKeycard(cardNumberList, index, tabKeycardType[card]);
+      lengthKeycard = this.verifyLengthKeycard(cardNumber, index, tabKeycardType[card]);
 
       if ( lengthKeycard === true ) {
-        this.props.deleteKeyFieldsErrors(this.props.localItemInfo.get('id'), errorKey);
+        this.props.deleteKeyFieldsErrors(currentId, errorKey);
       }
     } else {
-      this.props.updateFieldsErrors(this.props.localItemInfo.get('id'), errorKey, errorLabel);
+      this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
     }
 
     return (
@@ -293,13 +306,13 @@ class KeyCardArea extends React.Component {
           mode={tabKeycardType[card]}
           keycards={keycards}
           handleChangeCardNumber={(event) => {
-            this.handleChangeCardNumber(event, index);
+            this.handleChangeCardNumber(event, index, card);
           }}
           onChange={(event) => {
-            this.handleChangeCardNumber(event, index);
+            this.handleChangeCardNumber(event, index, card);
           }}
           onAutoSuggestSelected={(cardnumber) => {
-            this.handleChangeAutoSuggestCardNumber(cardnumber, index);
+            this.handleChangeAutoSuggestCardNumber(cardnumber, index, card);
           }}
           cardNumber={cardNumber.toUpperCase()}
           value={cardNumber}
@@ -313,57 +326,54 @@ class KeyCardArea extends React.Component {
   /**
    *
    * @param keycardTypes
-   * @param cardNumberList
    * @param keycards
    * @param params
    * @returns {XML}
    */
-  renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) {
+  renderedListKeyCard(keycardTypes, keycards, params) {
 
     return (keycardTypes.size > 1
         ?
         (
           <div>
             <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
-              {
-                keycardTypes.map((card,index) => (this.renderedLabelTab(tabKeycardType[card],index)))
-              }
+              { keycardTypes.map((card,index) => (this.renderedLabelTab(tabKeycardType[card],index))) }
             </ul>
             <div className="tab-content">
               {
-                keycardTypes.map((card,index) => (
-                  this.renderedSomeInputKeyCards(card, index, cardNumberList, keycards, params)))
+                keycardTypes.map((card,index) => {
+                  return this.renderedSomeInputKeyCards(card, index, keycards, params)})
               }
             </div>
           </div>
         )
         :
-        (
-          keycardTypes.map((card,index) => (
-            this.renderedOneInputKeyCard(card, index, cardNumberList, keycards, params)))
-        )
+        keycardTypes.map((card,index) => (this.renderedOneInputKeyCard(card, index, keycards, params)))
     );
   }
 
   /**
    *
    * @param keycardTypes
-   * @param cardNumberList
    * @param keycards
    * @param params
    * @returns {*}
    */
-  renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) {
+  renderedContentCheckYes(keycardTypes, keycards, params) {
     return (this.state.checkYes
-        ? (
-          <div className="msgCheckYes">
-            { this.renderedListKeyCard(keycardTypes, cardNumberList, keycards, params) }
-            { this.renderedLabelLinkPopover() }
-          </div>
-        ) : ''
+        ?
+        <div className="msgCheckYes">
+          { this.renderedListKeyCard(keycardTypes, keycards, params) }
+          { this.renderedLabelLinkPopover() }
+        </div>
+        : ''
     );
   }
 
+  /**
+   * Content for popover link
+   * @returns {*}
+   */
   renderedLabelLinkPopover() {
     return this.props.popoverLink.get('labelKeycardInfo') !== null
       ?
@@ -371,7 +381,7 @@ class KeyCardArea extends React.Component {
         <a href="#" className="infoKeyCard" id="PopoverLink" onClick={this.changeStatePopoverLinkOpen}>
           <span>{this.props.popoverLink.get('labelKeycardInfo')}</span>
         </a>
-        <Popover placement="bottom" isOpen={this.state.popover2Open} target="PopoverLink" toggle={this.changeStatePopoverLinkOpen} className="ppPopover">
+        <Popover placement="bottom" isOpen={this.state.popoverLinkOpen} target="PopoverLink" toggle={this.changeStatePopoverLinkOpen} className="ppPopover">
           <PopoverHeader className="popover-title ppHeader">
             {this.props.popoverLink.get('popoverTitleKeycardInfo')}
           </PopoverHeader>
@@ -391,7 +401,7 @@ class KeyCardArea extends React.Component {
 
 
   /**
-   *
+   * Display picture question
    * @returns {XML}
    */
   questionImageSvg() {
@@ -423,9 +433,13 @@ class KeyCardArea extends React.Component {
     );
   }
 
+  /**
+   *
+   * @returns {XML}
+   */
   render() {
     const { keycardTypes, keycards, params, itemFieldsDefinition, popover, localItemInfo } = this.props;
-    const { cardNumberList, hasSupport } = this.state;
+    const { hasSupport } = this.state;
 
     let checkSupportYes = '';
     let checkSupportNo = '';
@@ -443,7 +457,7 @@ class KeyCardArea extends React.Component {
             <Button type="button" id="Popover1" className="contentQuestion" onClick={this.changeStatePopoverOpen}>
               {this.questionImageSvg()}
             </Button>
-            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.changeStatePopoverOpen} className="ppPopover">
+            <Popover placement="bottom" isOpen={this.state.popoverQuestionOpen} target="Popover1" toggle={this.changeStatePopoverOpen} className="ppPopover">
               <PopoverHeader className="popover-title ppHeader">
                 {popover.get('keycardTitle')}
               </PopoverHeader>
@@ -468,11 +482,11 @@ class KeyCardArea extends React.Component {
                     <label htmlFor={`inputCheckNo${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                   </div>
                 )
-                : this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params)
+                : this.renderedContentCheckYes(keycardTypes, keycards, params)
               }
 
               { this.renderedContentCheckNo() }
-              { this.renderedContentCheckYes(keycardTypes, cardNumberList, keycards, params) }
+              { this.renderedContentCheckYes(keycardTypes, keycards, params) }
             </div>
           </form>
         </div>
@@ -492,11 +506,11 @@ KeyCardArea.propTypes = {
   onChangeCheck: PropTypes.func.isRequired,
   popover: PropTypes.object.isRequired, // content for popover info keycard
   popoverLink: PropTypes.object.isRequired, // content for popover link keycard
-  hasSupport: PropTypes.bool.isRequired,
-  localItemInfo: PropTypes.object.isRequired,
+  hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
+  localItemInfo: PropTypes.object.isRequired, // current local Item
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
-  setTypeCard: PropTypes.func.isRequired, // function to set type card on a item (orderitem)
+  updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
 };
 
 export default injectIntl(KeyCardArea);
