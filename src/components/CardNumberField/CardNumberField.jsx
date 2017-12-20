@@ -83,24 +83,25 @@ class CardNumberField extends React.Component {
   }
 
   onSuggestionSelected(event, { suggestion }) {
-    const cardnumber = suggestion.mode === tabKeycardType['open'] ? suggestion.shortnumber : suggestion.cardnumber ;
+    const cardnumber = suggestion.mode === tabKeycardType['open'] ? suggestion.shortnumber : suggestion.cardnumber;
     this.props.onAutoSuggestSelected(cardnumber);
   }
 
   renderedCardNumberField(mode, params, suggestions, inputProps) {
     return (mode !== 'OPEN' && params.get('displayKeycardAutoComplete', false) === true
-        ? <Autosuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          onSuggestionSelected={this.onSuggestionSelected}
-          shouldRenderSuggestions={() => true}
-          getSuggestionValue={AutoSuggestionHelper.getSuggestionValue}
-          renderSuggestion={AutoSuggestionHelper.renderSuggestion}
-          inputProps={inputProps}
-          renderInputComponent={AutoSuggestionHelper.renderInputComponent}
-          focusInputOnSuggestionClick={false}
-        />
+        ? (
+          <Autosuggest
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            onSuggestionSelected={this.onSuggestionSelected}
+            shouldRenderSuggestions={() => true}
+            getSuggestionValue={AutoSuggestionHelper.getSuggestionValue}
+            renderSuggestion={AutoSuggestionHelper.renderSuggestion}
+            inputProps={inputProps}
+            renderInputComponent={AutoSuggestionHelper.renderInputComponent}
+            focusInputOnSuggestionClick={false}
+          />)
         : <MaskedInput {...inputProps} />
     );
   }

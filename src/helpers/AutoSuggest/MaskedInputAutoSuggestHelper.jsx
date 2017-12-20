@@ -7,6 +7,9 @@ export function escapeRegexCharacters(str) {
 }
 
 export function getSuggestions(value, keycards, params, isShortnumberMode = false) {
+  // Filter according to mode
+  keycards = keycards.filter(keycard => isShortnumberMode ? keycard.shortnumber !== null : keycard.cardnumber !== null);
+
   const escapedValue = escapeRegexCharacters(value.trim());
 
   const minLength = params.get('minKeycardLengthAutoComplete', 0);
@@ -23,7 +26,9 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
 
   const regex = new RegExp(escapedValue, 'i');
 
-  const filtered = keycards.filter(keycard => regex.test(isShortnumberMode ? keycard.shortnumber : keycard.cardnumber));
+  const filtered = keycards.filter(
+    keycard => regex.test(isShortnumberMode ? keycard.shortnumber : keycard.cardnumber),
+  );
 
   return filtered;
 }
@@ -70,7 +75,7 @@ function getHightlightNameDisplay(text, query) {
  * @returns {XML}
  */
 export function renderSuggestion(keycard, { query }) {
-  const keycardNumber = keycard.mode === tabKeycardType['open'] ? keycard.shortnumber : keycard.cardnumber ;
+  const keycardNumber = keycard.mode === tabKeycardType['open'] ? keycard.shortnumber : keycard.cardnumber;
   return (
     <span key="keycard_suggestion" className="keycard_wrapper">
       <span className="keycard_suggestion">
@@ -79,7 +84,7 @@ export function renderSuggestion(keycard, { query }) {
       <span className="contact_suggestion">
         {
           keycard.contacts.map(
-            contact => <span key={contact.id}> - {contact.lastname} {contact.firstname}</span>
+            contact => <span key={contact.id}> - {contact.lastname} {contact.firstname}</span>,
           )
         }
       </span>
