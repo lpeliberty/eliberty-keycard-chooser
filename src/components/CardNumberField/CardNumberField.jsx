@@ -64,6 +64,7 @@ class CardNumberField extends React.Component {
       value,
       this.props.keycards.toJS(),
       this.props.params,
+      this.props.mode === tabKeycardType['open'], // Define if we are on shortnumber using mode
     );
     // Add element type card for display suggestions
     listKeycards.forEach((keycard) => {

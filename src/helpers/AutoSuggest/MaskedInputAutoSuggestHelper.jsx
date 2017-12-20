@@ -6,7 +6,7 @@ export function escapeRegexCharacters(str) {
   return str.replace(/_-_|_| /g, '').trim();
 }
 
-export function getSuggestions(value, keycards, params) {
+export function getSuggestions(value, keycards, params, isShortnumberMode = false) {
   const escapedValue = escapeRegexCharacters(value.trim());
 
   const minLength = params.get('minKeycardLengthAutoComplete', 0);
@@ -23,7 +23,9 @@ export function getSuggestions(value, keycards, params) {
 
   const regex = new RegExp(escapedValue, 'i');
 
-  return keycards.filter(keycard => regex.test(keycard.cardnumber));
+  const filtered = keycards.filter(keycard => regex.test(isShortnumberMode ? keycard.shortnumber : keycard.cardnumber));
+
+  return filtered;
 }
 
 export function getSuggestionValue(keycard) {
