@@ -2,16 +2,27 @@ import React from 'react';
 import MaskedInput from 'react-text-mask';
 import * as tabKeycardType from '../../constants/keycardsType';
 
+/**
+ * @param str
+ * @returns {string|*}
+ */
 export function escapeRegexCharacters(str) {
   return str.replace(/_-_|_| /g, '').trim();
 }
 
+/**
+ * Get Suggestions of keycards
+ * @param value
+ * @param keycards
+ * @param params
+ * @param isShortnumberMode
+ * @returns {*}
+ */
 export function getSuggestions(value, keycards, params, isShortnumberMode = false) {
   // Filter according to mode
   keycards = keycards.filter(keycard => isShortnumberMode ? keycard.shortnumber !== null : keycard.cardnumber !== null);
 
   const escapedValue = escapeRegexCharacters(value.trim());
-
   const minLength = params.get('minKeycardLengthAutoComplete', 0);
 
   // if no min length and search text is empty => display all
@@ -26,6 +37,7 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
 
   const regex = new RegExp(escapedValue, 'i');
 
+  // Filter the keycards in shortnumbers or cardnumbers
   const filtered = keycards.filter(
     keycard => regex.test(isShortnumberMode ? keycard.shortnumber : keycard.cardnumber),
   );
@@ -33,13 +45,17 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
   return filtered;
 }
 
+/**
+ *
+ * @param keycard
+ * @returns {*}
+ */
 export function getSuggestionValue(keycard) {
   return keycard.cardnumber;
 }
 
 /**
  * Render a suggestion display with highlight search string
- *
  * @param text
  * @param query
  * @returns {*}
@@ -69,13 +85,15 @@ function getHightlightNameDisplay(text, query) {
 
 /**
  * Render a suggestion display
- *
  * @param skier
  * @param query
  * @returns {XML}
  */
 export function renderSuggestion(keycard, { query }) {
-  const keycardNumber = keycard.mode === tabKeycardType['open'] ? keycard.shortnumber : keycard.cardnumber;
+  const cardType = 'open';
+  const keycardNumber = keycard.mode === tabKeycardType[cardType]
+    ? keycard.shortnumber
+    : keycard.cardnumber;
   return (
     <span key="keycard_suggestion" className="keycard_wrapper">
       <span className="keycard_suggestion">
@@ -92,6 +110,10 @@ export function renderSuggestion(keycard, { query }) {
   );
 }
 
+/**
+ * @param inputProps
+ * @returns {XML}
+ */
 export function renderInputComponent(inputProps) {
   return (
     <div className="inputContainer">

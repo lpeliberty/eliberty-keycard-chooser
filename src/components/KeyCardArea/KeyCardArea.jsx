@@ -122,7 +122,7 @@ class KeyCardArea extends React.Component {
   }
 
   /**
-   *
+   * Function to check the length of the card number entered according to the type of card
    * @param cardNumber
    * @param index
    * @param card
@@ -136,6 +136,7 @@ class KeyCardArea extends React.Component {
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.length', defaultMessage: 'no lenght' });
     const currentId = this.props.localItemInfo.get('id');
 
+    // verification the card type
     switch (card) {
       case tabKeycardType.sd: {
         if (cardNumber.length < 25) {
@@ -336,7 +337,7 @@ class KeyCardArea extends React.Component {
   }
 
   /**
-   *
+   * Display of the double input mask
    * @param card
    * @param index
    * @param keycards
@@ -445,10 +446,7 @@ class KeyCardArea extends React.Component {
     );
   }
 
-  /**
-   *
-   * @returns {XML}
-   */
+
   render() {
     const { keycardTypes, keycards, params, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
@@ -513,16 +511,16 @@ KeyCardArea.propTypes = {
   params: PropTypes.object.isRequired, // generic params
   orderitem: PropTypes.object.isRequired,
   itemFieldsDefinition: PropTypes.object.isRequired,
-  changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
-  intl: intlShape.isRequired, // for the internationalization
-  onChangeCheck: PropTypes.func.isRequired,
   popover: PropTypes.object.isRequired, // content for popover info keycard
   popoverLink: PropTypes.object.isRequired, // content for popover link keycard
-  hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
   localItemInfo: PropTypes.object.isRequired, // current local Item
+  changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
+  onChangeCheck: PropTypes.func.isRequired, // function to make changes when checking
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
   updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
+  hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
+  intl: intlShape.isRequired, // for the internationalization
 };
 
 export default injectIntl(KeyCardArea);

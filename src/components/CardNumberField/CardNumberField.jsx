@@ -46,6 +46,9 @@ const configs = {
   },
 };
 
+/**
+ * Card Number Field
+ */
 class CardNumberField extends React.Component {
   constructor(props) {
     super(props);
@@ -59,12 +62,17 @@ class CardNumberField extends React.Component {
     };
   }
 
+  /**
+   *
+   * @param value
+   */
   onSuggestionsFetchRequested({ value }) {
+    const cardType = 'open';
     const listKeycards = AutoSuggestionHelper.getSuggestions(
       value,
       this.props.keycards.toJS(),
       this.props.params,
-      this.props.mode === tabKeycardType['open'], // Define if we are on shortnumber using mode
+      this.props.mode === tabKeycardType[cardType], // Define if we are on shortnumber using mode
     );
     // Add element type card for display suggestions
     listKeycards.forEach((keycard) => {
@@ -82,11 +90,27 @@ class CardNumberField extends React.Component {
     });
   }
 
+  /**
+   *
+   * @param event
+   * @param suggestion
+   */
   onSuggestionSelected(event, { suggestion }) {
-    const cardnumber = suggestion.mode === tabKeycardType['open'] ? suggestion.shortnumber : suggestion.cardnumber;
+    const cardType = 'open';
+    const cardnumber = suggestion.mode === tabKeycardType[cardType]
+      ? suggestion.shortnumber
+      : suggestion.cardnumber;
     this.props.onAutoSuggestSelected(cardnumber);
   }
 
+  /**
+   *
+   * @param mode
+   * @param params
+   * @param suggestions
+   * @param inputProps
+   * @returns {XML}
+   */
   renderedCardNumberField(mode, params, suggestions, inputProps) {
     return (mode !== 'OPEN' && params.get('displayKeycardAutoComplete', false) === true
         ? (

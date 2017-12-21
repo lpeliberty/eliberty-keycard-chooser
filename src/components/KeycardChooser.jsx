@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import KeyCardArea from './KeyCardArea/KeyCardArea';
-import {updateFieldsErrors} from "../../../../app/redux/actions/actions";
 // import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
 // import '../../node_modules/bootstrap-sass/assets/javascripts/bootstrap';
 
-const KeycardChooser = (props) => (
+/**
+ * Keycard Chooser
+ */
+const KeycardChooser = props => (
   <div>
-    <h1>{props.name}</h1>
     <KeyCardArea
       key={props.localItemInfo.get('index')}
       keycardTypes={props.keycardTypes}
@@ -29,20 +30,20 @@ const KeycardChooser = (props) => (
 );
 
 KeycardChooser.propTypes = {
-  keycardTypes: PropTypes.object.isRequired,
+  keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
   keycards: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired, // generic params
   orderitem: PropTypes.object.isRequired,
   itemFieldsDefinition: PropTypes.object.isRequired,
-  changeCardNumber: PropTypes.func.isRequired,
-  onChangeCheck: PropTypes.func.isRequired,
   popover: PropTypes.object.isRequired, // content for popover info keycard
   popoverLink: PropTypes.object.isRequired, // content for popover link keycard
-  hasSupport: PropTypes.bool.isRequired,
-  localItemInfo: PropTypes.object.isRequired,
+  localItemInfo: PropTypes.object.isRequired, // current localItem
+  changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
+  onChangeCheck: PropTypes.func.isRequired, // function to make changes when checking
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
   updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
+  hasSupport: PropTypes.bool.isRequired, // boolean indicating support element
 };
 
 export default KeycardChooser;
