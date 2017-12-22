@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import KeyCardArea from './KeyCardArea/KeyCardArea';
+import KeyCard from './KeyCard/KeyCard';
 // import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
 // import '../../node_modules/bootstrap-sass/assets/javascripts/bootstrap';
 
@@ -9,8 +9,9 @@ import KeyCardArea from './KeyCardArea/KeyCardArea';
  */
 const KeycardChooser = props => (
   <div>
-    <KeyCardArea
+    <KeyCard
       key={props.localItemInfo.get('index')}
+      id={props.localItemInfo.get('index')}
       keycardTypes={props.keycardTypes}
       keycards={props.keycards}
       params={props.params}
