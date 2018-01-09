@@ -4,6 +4,8 @@ import { Map } from 'immutable';
 import { injectIntl, intlShape } from 'react-intl';
 import CardNumberField from '../CardNumberField/CardNumberField';
 import * as tabKeycardType from '../../constants/keycardsType';
+import * as MaskHelper from '../../helpers/MaskHelper';
+
 /**
  * Double Mask
  */
@@ -70,49 +72,6 @@ class DoubleMask extends React.Component {
     }
   }
 
-  /**
-   * Function to check the length of the card number entered according to the type of card
-   * @param cardNumber
-   * @param index
-   * @param card
-   * @returns {boolean}
-   */
-  verifyLengthKeycard(cardnumber, index, card) {
-    const reg = new RegExp(/( )|(_)/g);
-    const cardNumber = cardnumber.replace(reg, '');
-    const errorKey = 'data.cardNumber';
-    const { formatMessage } = this.props.intl;
-    const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.length', defaultMessage: 'no lenght' });
-    const currentId = this.props.localItemInfo.get('id');
-
-    // verification the card type
-    switch (card) {
-      case tabKeycardType.sd: {
-        if (cardNumber.length < 25) {
-          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
-          return false;
-        }
-        break;
-      }
-      case tabKeycardType.ta:
-      case tabKeycardType.alfi: {
-        if (cardNumber.length < 16) {
-          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
-          return false;
-        }
-        break;
-      }
-      case tabKeycardType.open: {
-        if (cardNumber.length < 11) {
-          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
-          return false;
-        }
-        break;
-      }
-      default: { break; }
-    }
-    return true;
-  }
 
   /**
    * Display of the double input mask
@@ -124,11 +83,11 @@ class DoubleMask extends React.Component {
    */
   renderedSomeInputKeyCards(card, index) {
     let className = 'tab-pane fade in';
-    const lengthKeycard = false;
+    let validKeycard = false;
     const aux = `tabKeycardType[card]${index}`;
     const errorKey = 'data.cardNumber';
     const { formatMessage } = this.props.intl;
-    const errorLabel = formatMessage({ id: 'rp.checkout.message.error.input.empty', defaultMessage: 'empty' });
+    const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
     const currentId = this.props.localItemInfo.get('id');
     let cardNumber = this.props.localItemInfo.get('keycardsMask').get(card);
 
@@ -140,8 +99,11 @@ class DoubleMask extends React.Component {
       className = `${className} active`;
 
       if (cardNumber !== '') {
-        if (this.verifyLengthKeycard(cardNumber, index, tabKeycardType[card])) {
+        validKeycard = MaskHelper.verifyKeycard(cardNumber, index, tabKeycardType[card]);
+        if (validKeycard) {
           this.props.deleteKeyFieldsErrors(currentId, errorKey);
+        } else {
+          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
         }
       } else {
         this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
@@ -171,7 +133,7 @@ class DoubleMask extends React.Component {
           value={cardNumber}
           params={this.props.params}
         />
-        { cardNumber === '' || lengthKeycard === false ? DoubleMask.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
+        { cardNumber === '' || validKeycard === false ? DoubleMask.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
       </div>
     );
   }

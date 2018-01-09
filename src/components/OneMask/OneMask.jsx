@@ -4,6 +4,7 @@ import { Map } from 'immutable';
 import { injectIntl, intlShape } from 'react-intl';
 import CardNumberField from '../CardNumberField/CardNumberField';
 import * as tabKeycardType from '../../constants/keycardsType';
+import * as MaskHelper from '../../helpers/MaskHelper';
 
 /**
  * One Mask
@@ -126,19 +127,18 @@ class OneMask extends React.Component {
       updateFieldsErrors,
     } = this.props;
 
-    let lengthKeycard = false;
+    let validKeycard = false;
     const errorKey = 'data.cardNumber';
     const { formatMessage } = this.props.intl;
-    const errorLabel = formatMessage({ id: 'rp.checkout.message.error.input.empty', defaultMessage: 'empty' });
+    const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'empty' });
     const currentId = localItemInfo.get('id');
     const cardNumber = localItemInfo.get('keycardsMask').get(card);
 
     updateKeycardsMask(currentId, 'current', card);
 
     if (cardNumber !== '') {
-      lengthKeycard = this.verifyLengthKeycard(cardNumber, index, tabKeycardType[card]);
-
-      if (lengthKeycard === true) {
+      validKeycard = MaskHelper.verifyKeycard(cardNumber, index, tabKeycardType[card]);
+      if (validKeycard) {
         deleteKeyFieldsErrors(currentId, errorKey);
       }
     } else {
@@ -165,7 +165,7 @@ class OneMask extends React.Component {
           value={cardNumber}
           params={params}
         />
-        {cardNumber === '' || lengthKeycard === false ? OneMask.renderedErrorInputMessage(errorKey, localItemInfo) : ''}
+        {cardNumber === '' || validKeycard === false ? OneMask.renderedErrorInputMessage(errorKey, localItemInfo) : ''}
       </div>
     );
   }
