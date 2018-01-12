@@ -7,10 +7,7 @@ import * as tabKeycardType from '../constants/keycardsType';
  * @param card
  * @returns {boolean}
  */
-export function verifyKeycard(cardnumber, index, card) {
-  const reg = new RegExp(/( )|(_)/g);
-  const cardNumber = cardnumber.replace(reg, '');
-
+export function verifyKeycard(cardNumber, index, card) {
   const patternSD = /^[0-9]{1,2}-[0-9]{20}-[0-9]$/;
   const patternTA = /^([a-zA-Z0-9]{8})[ -]([a-zA-Z0-9]{3})[ -]([a-zA-Z0-9]{3})$/;
   const patternALFI = /^([0-9]{5})[ -]([0-9]{5})[ -]([0-9]{4})$/;
