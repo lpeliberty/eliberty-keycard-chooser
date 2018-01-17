@@ -28,6 +28,8 @@ const KeycardChooser = props => (
       updateKeycardsMask={props.updateKeycardsMask}
       validateKeycard={props.validateKeycard}
       updateValidatedKeycard={props.updateValidatedKeycard}
+      updateOverlay={props.updateOverlay}
+      updateValidField={props.updateValidField}
     />
   </div>
 );
@@ -50,6 +52,8 @@ KeycardChooser.propTypes = {
   validateKeycard: PropTypes.func.isRequired,
   // updateValidatedKeycard: function to change boolean value of keycard number
   updateValidatedKeycard: PropTypes.func.isRequired,
+  updateOverlay: PropTypes.func.isRequired, // function for display overlay
+  updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean indicating support element
 };
 

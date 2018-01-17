@@ -93,9 +93,6 @@ class KeyCard extends React.Component {
       // Remove spaces on card number
       cardnumber = cardnumber.replace(new RegExp(/( )|(_)/g), '');
 
-      console.log('suggest', suggest);
-      console.log('handleChangeAutoSuggestCardNumber', cardnumber);
-
       // Update others card types values
       this.props.localItemInfo.get('keycardsMask').forEach((item, key) => {
         if (key !== 'current' && key !== 'idCard' && key !== type) {
@@ -113,17 +110,10 @@ class KeyCard extends React.Component {
       if (cardnumber !== '' || cardnumber !== undefined) {
         validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, tabKeycardType[type]);
         this.props.updateValidatedKeycard(currentId, validKeycard);
-
-        console.log('validKeycard', MaskHelper.verifyKeycard(cardnumber, cardId, tabKeycardType[type]));
+        this.props.updateValidField(currentId, 'cardNumber', validKeycard);
 
         if (validKeycard) {
           this.props.validateKeycard(currentId, cardnumber);
-          if (this.props.localItemInfo.get('validateKeycard') === true) {
-            this.props.deleteKeyFieldsErrors(currentId, errorKey);
-          } else {
-            this.props.updateValidatedKeycard(currentId, validKeycard);
-            this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
-          }
         } else {
           this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
         }
@@ -201,6 +191,7 @@ class KeyCard extends React.Component {
       cardNumber = '';
     }
 
+    // active tab on select
     if (index === this.props.localItemInfo.get('keycardsMask').get('idCard')) {
       className = `${className} active`;
       this.props.changeCardNumber(currentId, cardNumber);
@@ -216,7 +207,7 @@ class KeyCard extends React.Component {
   }
 
   /**
-   *
+   * Display of the simple input mask
    * @param type
    * @param index
    * @returns {*}
@@ -230,17 +221,17 @@ class KeyCard extends React.Component {
     const cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
 
     this.props.updateKeycardsMask(currentId, 'current', type);
-
-    if (cardNumber !== '') {
-      validKeycard = MaskHelper.verifyKeycard(cardNumber, index, tabKeycardType[type]);
-      if (validKeycard) {
-        this.props.validateKeycard(currentId, cardNumber);
-        this.props.deleteKeyFieldsErrors(currentId, errorKey);
-      }
-    } else {
-      this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
-    }
-
+    /*
+        if (cardNumber !== '') {
+          validKeycard = MaskHelper.verifyKeycard(cardNumber, index, tabKeycardType[type]);
+          if (validKeycard) {
+            this.props.validateKeycard(currentId, cardNumber);
+            this.props.deleteKeyFieldsErrors(currentId, errorKey);
+          }
+        } else {
+          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
+        }
+    */
     return (
       <div>
         { this.renderedCardNumberField(index, type, cardNumber) }
@@ -391,6 +382,8 @@ KeyCard.propTypes = {
   validateKeycard: PropTypes.func.isRequired,
   // updateValidatedKeycard: function to change boolean value of keycard number
   updateValidatedKeycard: PropTypes.func.isRequired,
+  updateOverlay: PropTypes.func.isRequired, // function for display overlay
+  updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
   intl: intlShape.isRequired, // for the internationalization
 };
