@@ -21,10 +21,7 @@ class KeyCard extends React.Component {
    */
   static renderedErrorInputMessage(errorKey, localItemInfo) {
     const error = localItemInfo.get('errors', new Map()).get(errorKey, '');
-
-    return error.length === 0
-      ? null
-      : <span className="errorInputKeyCard">{error}</span>;
+    return <p className="errorInputKeyCard">{error}</p>;
   }
   /**
    * Constructor
@@ -184,12 +181,16 @@ class KeyCard extends React.Component {
     const currentId = this.props.localItemInfo.get('id');
     const errorKey = 'data.cardNumber';
     let cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
-    // Remove spaces on card number
-    cardNumber = cardNumber.replace(new RegExp(/( )|(_)/g), '');
+    console.log('type', type);
+    console.log('cardNumber', cardNumber);
+    console.log('keycardsMask', this.props.localItemInfo.get('keycardsMask').toJS());
 
     if (cardNumber === null) {
       cardNumber = '';
     }
+
+    // Remove spaces on card number
+    cardNumber = cardNumber.replace(new RegExp(/( )|(_)/g), '');
 
     // active tab on select
     if (index === this.props.localItemInfo.get('keycardsMask').get('idCard')) {
@@ -201,6 +202,7 @@ class KeyCard extends React.Component {
     return (
       <div className={className} id={aux} role="tabpanel" key={index}>
         { this.renderedCardNumberField(index, type, cardNumber) }
+        { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
         { cardNumber === '' || this.props.localItemInfo.get('validateKeycard') === false ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
       </div>
     );
@@ -235,6 +237,7 @@ class KeyCard extends React.Component {
     return (
       <div>
         { this.renderedCardNumberField(index, type, cardNumber) }
+        { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
         { cardNumber === '' || this.props.localItemInfo.get('validateKeycard') === false ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
       </div>
     );
@@ -352,7 +355,6 @@ class KeyCard extends React.Component {
               {this.state.checkYes
                 ? <div className="msgCheckYes">
                   { this.renderedListKeyCard(keycardTypes) }
-                  { this.renderedLabelLinkPopover() }
                 </div>
                 : ''}
 

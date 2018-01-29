@@ -27,9 +27,8 @@ class PopoverLink extends React.Component {
   }
 
   render() {
-
     return (
-      <div>
+      <div className="contentInfoKeycard">
         <a href="#" className="infoKeyCard" id="PopoverLink" onClick={this.changeStatePopoverLinkOpen}>
           <span>{this.props.popoverLink.get('labelKeycardInfo')}</span>
         </a>
