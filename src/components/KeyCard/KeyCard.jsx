@@ -34,9 +34,11 @@ class KeyCard extends React.Component {
       checkYes: !props.hasSupport,
       checkNo: props.hasSupport,
       hasSupport: props.hasSupport,
+      valid: true,
     };
     this.handleChangeCardNumber = this.handleChangeCardNumber.bind(this);
     this.handleChangeAutoSuggestCardNumber = this.handleChangeAutoSuggestCardNumber.bind(this);
+    this.changeValidationCard = this.changeValidationCard.bind(this);
   }
 
 
@@ -84,7 +86,7 @@ class KeyCard extends React.Component {
     const { formatMessage } = this.props.intl;
     const errorKey = 'data.cardNumber';
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
-    const currentId = this.props.localItemInfo.get('id');
+    const currentId = this.props.localItemInfo.get('skierIndex');
 
     if (cardnumber !== undefined) {
       // Remove spaces on card number
@@ -100,7 +102,7 @@ class KeyCard extends React.Component {
               }
             });
           }
-          this.props.updateKeycardsMask(this.props.orderitem.get('id'), key, newValue);
+          this.props.updateKeycardsMask(this.props.orderitem.get('skierIndex'), key, newValue);
         }
       });
       // verification keycard number is correct
@@ -108,6 +110,7 @@ class KeyCard extends React.Component {
         validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, tabKeycardType[type]);
         this.props.updateValidatedKeycard(currentId, validKeycard);
         this.props.updateValidField(currentId, 'cardNumber', validKeycard);
+        this.changeValidationCard(validKeycard);
 
         if (validKeycard) {
           this.props.validateKeycard(currentId, cardnumber);
@@ -119,10 +122,18 @@ class KeyCard extends React.Component {
       }
       // Update current card type value
       // if (typeof cardnumber !== 'undefined') {
-      this.props.changeCardNumber(this.props.orderitem.get('id'), cardnumber);
-      this.props.updateKeycardsMask(this.props.orderitem.get('id'), type, cardnumber);
+      this.props.changeCardNumber(this.props.orderitem.get('skierIndex'), cardnumber);
+      this.props.updateKeycardsMask(this.props.orderitem.get('skierIndex'), type, cardnumber);
       // }
     }
+  }
+
+  /**
+   *
+   * @param value
+   */
+  changeValidationCard(value) {
+    this.setState({ valid: value });
   }
 
   /**
@@ -148,6 +159,7 @@ class KeyCard extends React.Component {
       <CardNumberField
         key={index}
         id={index}
+        validInput={this.state.valid}
         mode={tabKeycardType[type]}
         keycards={this.props.keycards}
         handleChangeCardNumber={(event) => {
@@ -178,12 +190,9 @@ class KeyCard extends React.Component {
   renderedSomeInputKeyCards(type, index) {
     let className = 'tab-pane fade in';
     const aux = `tabKeycardType[type]${index}`;
-    const currentId = this.props.localItemInfo.get('id');
+    const currentId = this.props.localItemInfo.get('skierIndex');
     const errorKey = 'data.cardNumber';
     let cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
-    console.log('type', type);
-    console.log('cardNumber', cardNumber);
-    console.log('keycardsMask', this.props.localItemInfo.get('keycardsMask').toJS());
 
     if (cardNumber === null) {
       cardNumber = '';
@@ -219,8 +228,12 @@ class KeyCard extends React.Component {
     const errorKey = 'data.cardNumber';
     const { formatMessage } = this.props.intl;
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'empty' });
-    const currentId = this.props.localItemInfo.get('id');
-    const cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
+    const currentId = this.props.localItemInfo.get('skierIndex');
+    let cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
+
+    if (cardNumber === null) {
+      cardNumber = '';
+    }
 
     this.props.updateKeycardsMask(currentId, 'current', type);
     /*
@@ -265,7 +278,7 @@ class KeyCard extends React.Component {
           role="tab"
           href={aux}
           onClick={() => {
-            this.props.updateKeycardsMask(this.props.localItemInfo.get('id'), 'idCard', index);
+            this.props.updateKeycardsMask(this.props.localItemInfo.get('skierIndex'), 'idCard', index);
           }}
         >{type}</a>
       </li>
@@ -342,10 +355,10 @@ class KeyCard extends React.Component {
             <div className="form-group keyCardAreaForm">
               {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
                 <div>
-                  <input type="radio" id={`inputCheckYes${this.props.orderitem.get('id')}`} name="card" checked={checkSupportYes} value="yes" onChange={() => { this.handleClickCheckYes(); }} />
-                  <label htmlFor={`inputCheckYes${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
-                  <input type="radio" id={`inputCheckNo${this.props.orderitem.get('id')}`} name="card" value="non" checked={checkSupportNo} onChange={() => { this.handleClickCheckNo(); }} />
-                  <label htmlFor={`inputCheckNo${this.props.orderitem.get('id')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
+                  <input type="radio" id={`inputCheckYes${this.props.orderitem.get('skierIndex')}`} name="card" checked={checkSupportYes} value="yes" onChange={() => { this.handleClickCheckYes(); }} />
+                  <label htmlFor={`inputCheckYes${this.props.orderitem.get('skierIndex')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
+                  <input type="radio" id={`inputCheckNo${this.props.orderitem.get('skierIndex')}`} name="card" value="non" checked={checkSupportNo} onChange={() => { this.handleClickCheckNo(); }} />
+                  <label htmlFor={`inputCheckNo${this.props.orderitem.get('skierIndex')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
                 </div>
                 : ''
               }

@@ -131,11 +131,11 @@ class CardNumberField extends React.Component {
 
   render() {
     const { suggestions } = this.state;
-    const { mode, handleChangeCardNumber, cardNumber, params } = this.props;
+    const { mode, handleChangeCardNumber, cardNumber, params, validInput } = this.props;
     const inputProps = {
       ...configs[mode],
       id: cardNumber,
-      className: 'form-control text-left',
+      className: validInput === true ? 'form-control text-left' : 'form-control text-left inputError',
       onChange: handleChangeCardNumber,
       value: cardNumber,
     };
@@ -155,6 +155,7 @@ CardNumberField.propTypes = {
   cardNumber: PropTypes.string.isRequired,
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
+  validInput: PropTypes.bool.isRequired,
 };
 
 export default CardNumberField;

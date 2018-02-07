@@ -1,4 +1,4 @@
-import { Map, List} from 'immutable';
+import { Map, List } from 'immutable';
 
 /**
  * Check if a pane is opened
@@ -7,7 +7,7 @@ import { Map, List} from 'immutable';
  * @returns {boolean}
  */
 export function paneIsOpen(orderitem, localItems) {
-  const orderitemId = orderitem.get('id');
+  const orderitemId = orderitem.get('skierIndex');
   if (!localItems.has(orderitemId)) {
     return true;
   }
