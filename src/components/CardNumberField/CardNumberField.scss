@@ -58,6 +58,10 @@
   }
 }
 
+.inputError {
+  border-color: red !important;
+}
+
 @media (max-width: 768px) {
   .keyCardAreaContainer {
     .react-autosuggest__container {
