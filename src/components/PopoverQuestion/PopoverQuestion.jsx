@@ -53,13 +53,13 @@ class PopoverQuestion extends React.Component {
   }
 
   render() {
-    const { popover } = this.props;
+    const { popover, index } = this.props;
     return (
       <div className="contentPopover">
-        <Button type="button" id="Popover1" className="contentQuestion" onClick={this.changeStatePopoverOpen}>
+        <Button type="button" id={`Popover${index}`} className="contentQuestion" onClick={this.changeStatePopoverOpen}>
           {PopoverQuestion.questionImageSvg()}
         </Button>
-        <Popover placement="bottom" isOpen={this.state.popoverQuestionOpen} target="Popover1" toggle={this.changeStatePopoverOpen} className="ppPopover">
+        <Popover placement="bottom" isOpen={this.state.popoverQuestionOpen} target={`Popover${index}`} toggle={this.changeStatePopoverOpen} className="ppPopover">
           <PopoverHeader className="popover-title ppHeader">
             {popover.get('keycardTitle')}
           </PopoverHeader>
@@ -79,6 +79,7 @@ class PopoverQuestion extends React.Component {
 
 PopoverQuestion.propTypes = {
   popover: PropTypes.object.isRequired, // content for popover info keycard
+  index: PropTypes.number.isRequired,
 };
 
 export default PopoverQuestion;

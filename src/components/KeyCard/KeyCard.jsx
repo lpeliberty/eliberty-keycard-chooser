@@ -142,7 +142,7 @@ class KeyCard extends React.Component {
    */
   renderedLabelLinkPopover() {
     return this.props.popoverLink.get('labelKeycardInfo') !== null
-      ? <PopoverLink popoverLink={this.props.popoverLink} />
+      ? <PopoverLink popoverLink={this.props.popoverLink} index={this.props.orderitem.get('skierIndex')} />
       : '';
   }
 
@@ -349,7 +349,7 @@ class KeyCard extends React.Component {
         <div className="blockPopover">
           <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
 
-          <PopoverQuestion popover={popover} />
+          <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
 
           <form>
             <div className="form-group keyCardAreaForm">

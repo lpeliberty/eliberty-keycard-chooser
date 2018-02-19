@@ -27,12 +27,13 @@ class PopoverLink extends React.Component {
   }
 
   render() {
+    const { index } = this.props;
     return (
       <div className="contentInfoKeycard">
-        <a href="#" className="infoKeyCard" id="PopoverLink" onClick={this.changeStatePopoverLinkOpen}>
+        <a href="#" className="infoKeyCard" id={`PopoverLink${index}`} onClick={this.changeStatePopoverLinkOpen}>
           <span>{this.props.popoverLink.get('labelKeycardInfo')}</span>
         </a>
-        <Popover placement="bottom" isOpen={this.state.popoverLinkOpen} target="PopoverLink" toggle={this.changeStatePopoverLinkOpen} className="ppPopover">
+        <Popover placement="bottom" isOpen={this.state.popoverLinkOpen} target={`PopoverLink${index}`} toggle={this.changeStatePopoverLinkOpen} className="ppPopover">
           <PopoverHeader className="popover-title ppHeader">
             {this.props.popoverLink.get('popoverTitleKeycardInfo')}
           </PopoverHeader>
@@ -52,6 +53,7 @@ class PopoverLink extends React.Component {
 
 PopoverLink.propTypes = {
   popoverLink: PropTypes.object.isRequired, // content for popover info keycard
+  index: PropTypes.number.isRequired,
 };
 
 export default PopoverLink;
