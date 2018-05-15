@@ -328,37 +328,39 @@ class KeyCard extends React.Component {
     return (
       <div>
         <div className="blockPopover">
-          <p><FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" /></p>
-
-          <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
-
           <form>
-            <div className="form-group keyCardAreaForm">
+            <p>
+              <div className="keycard_area_title">
+                <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
+                <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
+              </div>
               {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
-                <div>
-                  <Switch
-                    on={!hasSupport}
-                    onClick={() => {
-                      this.handleChangeToggle(hasSupport);
-                    }}
-                  />
-                </div>
+                <Switch
+                  on={!hasSupport}
+                  onClick={() => {
+                    this.handleChangeToggle(hasSupport);
+                  }}
+                />
                 : ''
               }
+            </p>
 
-              { this.renderedContentCheckNo() }
+            <div className="col-xs-12">
+              <div className="col-xs-4 keyCardAreaImage">
+                <img src={keycardPictureSrc} alt="keycardPicture" />
+              </div>
+              <div className="col-xs-8 form-group keyCardAreaForm">
+                { this.renderedContentCheckNo() }
 
-              {this.state.checkYes
-                ? <div className="msgCheckYes">
-                  { this.renderedListKeyCard(keycardTypes) }
-                </div>
-                : ''}
-
+                {this.state.checkYes
+                  ? <div className="msgCheckYes">
+                    { this.renderedListKeyCard(keycardTypes) }
+                  </div>
+                  : ''}
+              </div>
             </div>
           </form>
-          <div className="keyCardAreaImage">
-            <img src={keycardPictureSrc} alt="keycardPicture" />
-          </div>
+
         </div>
       </div>
     );
