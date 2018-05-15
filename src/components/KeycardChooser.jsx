@@ -12,6 +12,7 @@ const KeycardChooser = props => (
     <KeyCard
       key={props.localItemInfo.get('index')}
       id={props.localItemInfo.get('index')}
+      keycardPictureSrc={props.keycardPictureSrc}
       keycardTypes={props.keycardTypes}
       keycards={props.keycards}
       params={props.params}
@@ -35,6 +36,7 @@ const KeycardChooser = props => (
 );
 
 KeycardChooser.propTypes = {
+  keycardPictureSrc: PropTypes.string.isRequired, // keycard picture src
   keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired, // generic params
