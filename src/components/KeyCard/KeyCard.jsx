@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Map } from 'immutable';
 import Switch from 'react-toggle-switch';
-import '../../../node_modules/react-toggle-switch/dist/css/switch.min.css';
+import 'react-toggle-switch/dist/css/switch.min.css';
 import PopoverQuestion from '../PopoverQuestion/PopoverQuestion';
 import PopoverLink from '../PopoverLink/PopoverLink';
 import CardNumberField from '../CardNumberField/CardNumberField';
