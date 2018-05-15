@@ -8,7 +8,7 @@ const extractSass = new ExtractTextPlugin({
 
 module.exports = {
   entry: [
-    './src/index'
+    './src/index',
   ],
   module: {
     loaders: [

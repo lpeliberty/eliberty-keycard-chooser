@@ -2,12 +2,13 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Map } from 'immutable';
+import Switch from 'react-toggle-switch';
+import '../../../node_modules/react-toggle-switch/dist/css/switch.min.css';
 import PopoverQuestion from '../PopoverQuestion/PopoverQuestion';
 import PopoverLink from '../PopoverLink/PopoverLink';
 import CardNumberField from '../CardNumberField/CardNumberField';
 import * as tabKeycardType from '../../constants/keycardsType';
 import * as MaskHelper from '../../helpers/MaskHelper';
-
 
 /**
  * Keycard
@@ -41,29 +42,17 @@ class KeyCard extends React.Component {
     this.changeValidationCard = this.changeValidationCard.bind(this);
   }
 
-
   /**
-   * Change local state when click on yes
+   * Change local state when click support change value
+   * @param checked
    */
-  handleClickCheckYes() {
+  handleChangeToggle(checked) {
     this.setState({
-      checkYes: true,
-      checkNo: false,
-      hasSupport: false,
+      checkYes: checked,
+      checkNo: !checked,
+      hasSupport: !checked,
     });
-    this.props.onChangeCheck('yes');
-  }
-
-  /**
-   * Change local state when click on no
-   */
-  handleClickCheckNo() {
-    this.setState({
-      checkYes: false,
-      checkNo: true,
-      hasSupport: true,
-    });
-    this.props.onChangeCheck('no');
+    this.props.onChangeCheck(checked ? 'yes' : 'no');
   }
 
   /**
@@ -294,25 +283,25 @@ class KeyCard extends React.Component {
    */
   renderedListKeyCard(keycardTypes) {
     return (keycardTypes.size > 1
-        ? ( // Display Double Mask KeyCard
-          <div>
-            <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
-              { keycardTypes.map((type, index) => (
-                this.renderedLabelTab(tabKeycardType[type], index)
-              )) }
-            </ul>
-            <div className="tab-content">
-              {
-                keycardTypes.map((type, index) => (
-                  this.renderedSomeInputKeyCards(type, index)
-                ))
-              }
-            </div>
+      ? ( // Display Double Mask KeyCard
+        <div>
+          <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
+            { keycardTypes.map((type, index) => (
+              this.renderedLabelTab(tabKeycardType[type], index)
+            )) }
+          </ul>
+          <div className="tab-content">
+            {
+              keycardTypes.map((type, index) => (
+                this.renderedSomeInputKeyCards(type, index)
+              ))
+            }
           </div>
-        ) :
-        keycardTypes.map((type, index) => ( // Display one Input for keyCard
-          this.renderedInputOneKeyCard(type, index)
-        ))
+        </div>
+      ) :
+      keycardTypes.map((type, index) => ( // Display one Input for keyCard
+        this.renderedInputOneKeyCard(type, index)
+      ))
     );
   }
 
@@ -322,12 +311,12 @@ class KeyCard extends React.Component {
    */
   renderedContentCheckNo() {
     return (this.state.checkNo
-        ? <div className="msgCheckNo">
-          <p>
-            <FormattedMessage id="rp.checkout.ordercustom.nokeycard" defaultMessage="no card" />
-          </p>
-        </div>
-        : ''
+      ? <div className="msgCheckNo">
+        <p>
+          <FormattedMessage id="rp.checkout.ordercustom.nokeycard" defaultMessage="no card" />
+        </p>
+      </div>
+      : ''
     );
   }
 
@@ -335,14 +324,6 @@ class KeyCard extends React.Component {
   render() {
     const { keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
-
-    let checkSupportYes = '';
-    let checkSupportNo = '';
-    if (hasSupport) {
-      checkSupportNo = 'checked';
-    } else {
-      checkSupportYes = 'checked';
-    }
 
     return (
       <div>
@@ -355,10 +336,12 @@ class KeyCard extends React.Component {
             <div className="form-group keyCardAreaForm">
               {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
                 <div>
-                  <input type="radio" id={`inputCheckYes${this.props.orderitem.get('skierIndex')}`} name="card" checked={checkSupportYes} value="yes" onChange={() => { this.handleClickCheckYes(); }} />
-                  <label htmlFor={`inputCheckYes${this.props.orderitem.get('skierIndex')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.yes" defaultMessage="yes" /></label>
-                  <input type="radio" id={`inputCheckNo${this.props.orderitem.get('skierIndex')}`} name="card" value="non" checked={checkSupportNo} onChange={() => { this.handleClickCheckNo(); }} />
-                  <label htmlFor={`inputCheckNo${this.props.orderitem.get('skierIndex')}`} className="keycardChoice"><FormattedMessage id="rp.checkout.keycard.area.reponse.no" defaultMessage="no" /></label>
+                  <Switch
+                    on={!hasSupport}
+                    onClick={() => {
+                      this.handleChangeToggle(hasSupport);
+                    }}
+                  />
                 </div>
                 : ''
               }
