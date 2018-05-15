@@ -322,7 +322,7 @@ class KeyCard extends React.Component {
 
 
   render() {
-    const { keycardTypes, itemFieldsDefinition, popover } = this.props;
+    const { keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
 
     return (
@@ -356,6 +356,9 @@ class KeyCard extends React.Component {
 
             </div>
           </form>
+          <div className="keyCardAreaImage">
+            <img src={keycardPictureSrc} alt="keycardPicture" />
+          </div>
         </div>
       </div>
     );
@@ -363,6 +366,7 @@ class KeyCard extends React.Component {
 }
 
 KeyCard.propTypes = {
+  keycardPictureSrc: PropTypes.string.isRequired, // keycard picture src
   keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired, // generic params
