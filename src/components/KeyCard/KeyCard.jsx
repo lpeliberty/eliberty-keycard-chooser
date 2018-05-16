@@ -326,42 +326,40 @@ class KeyCard extends React.Component {
     const { hasSupport } = this.state;
 
     return (
-      <div>
-        <div className="blockPopover">
-          <form>
-            <p>
-              <div className="keycard_area_title">
-                <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
-                <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
-              </div>
-              {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
-                <Switch
-                  on={!hasSupport}
-                  onClick={() => {
-                    this.handleChangeToggle(hasSupport);
-                  }}
-                />
-                : ''
-              }
-            </p>
-
-            <div className="col-xs-12">
-              <div className="col-xs-4 keyCardAreaImage">
-                <img src={keycardPictureSrc} alt="keycardPicture" />
-              </div>
-              <div className="col-xs-8 form-group keyCardAreaForm">
-                { this.renderedContentCheckNo() }
-
-                {this.state.checkYes
-                  ? <div className="msgCheckYes">
-                    { this.renderedListKeyCard(keycardTypes) }
-                  </div>
-                  : ''}
-              </div>
+      <div className="blockPopover">
+        <form>
+          <p>
+            <div className="keycard_area_title">
+              <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
+              <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
             </div>
-          </form>
+            {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
+              <Switch
+                on={!hasSupport}
+                onClick={() => {
+                  this.handleChangeToggle(hasSupport);
+                }}
+              />
+              : ''
+            }
+          </p>
 
-        </div>
+          <div className="col-xs-12">
+            <div className="col-xs-4 keyCardAreaImage">
+              <img src={keycardPictureSrc} alt="keycardPicture" />
+            </div>
+            <div className="col-xs-8 form-group keyCardAreaForm">
+              { this.renderedContentCheckNo() }
+
+              {this.state.checkYes
+                ? <div className="msgCheckYes">
+                  { this.renderedListKeyCard(keycardTypes) }
+                </div>
+                : ''}
+            </div>
+          </div>
+        </form>
+
       </div>
     );
   }
