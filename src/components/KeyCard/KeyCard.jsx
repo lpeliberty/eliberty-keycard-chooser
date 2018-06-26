@@ -346,7 +346,7 @@ class KeyCard extends React.Component {
             </div>
           </p>
 
-          <div className="col-xs-12">
+          <div>
             <div className="col-xs-4 keyCardAreaImage">
               <img src={keycardPictureSrc} alt="keycardPicture" />
             </div>
