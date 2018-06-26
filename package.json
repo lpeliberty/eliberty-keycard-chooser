@@ -1,6 +1,6 @@
 {
   "name": "keycard-chooser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "input mask keycard",
   "main": "index.js",
   "repository": "",
