@@ -330,18 +330,20 @@ class KeyCard extends React.Component {
         <form>
           <p>
             <div className="keycard_area_title">
-              <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
-              <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
+              <div className="keycardMessage">
+                <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
+                <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
+              </div>
+              {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
+                <Switch
+                  on={!hasSupport}
+                  onClick={() => {
+                    this.handleChangeToggle(hasSupport);
+                  }}
+                />
+                : ''
+              }
             </div>
-            {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
-              <Switch
-                on={!hasSupport}
-                onClick={() => {
-                  this.handleChangeToggle(hasSupport);
-                }}
-              />
-              : ''
-            }
           </p>
 
           <div className="col-xs-12">
