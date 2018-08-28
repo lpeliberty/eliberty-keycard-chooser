@@ -346,20 +346,20 @@ class KeyCard extends React.Component {
             </div>
           </p>
 
-          {/*<div>*/}
-            {/*<div className="col-xs-4 keyCardAreaImage">*/}
-              {/*<img src={keycardPictureSrc} alt="keycardPicture" />*/}
-            {/*</div>*/}
-            {/*<div className="col-xs-8 form-group keyCardAreaForm">*/}
-              {/*{ this.renderedContentCheckNo() }*/}
+          <div>
+            <div className="col-xs-4 keyCardAreaImage">
+              <img src={keycardPictureSrc} alt="keycardPicture" />
+            </div>
+            <div className="col-xs-8 form-group keyCardAreaForm">
+              { this.renderedContentCheckNo() }
 
-              {/*{this.state.checkYes*/}
-                {/*? <div className="msgCheckYes">*/}
-                  {/*{ this.renderedListKeyCard(keycardTypes) }*/}
-                {/*</div>*/}
-                {/*: ''}*/}
-            {/*</div>*/}
-          {/*</div>*/}
+              {this.state.checkYes
+                ? <div className="msgCheckYes">
+                  { this.renderedListKeyCard(keycardTypes) }
+                </div>
+                : ''}
+            </div>
+          </div>
         </form>
 
       </div>
