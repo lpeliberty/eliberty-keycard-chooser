@@ -328,38 +328,38 @@ class KeyCard extends React.Component {
     return (
       <div className="blockPopover test" key={key}>
         <form>
-          <p>
-            <div className="keycard_area_title">
-              <div className="keycardMessage">
-                <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
-                <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
-              </div>
-              {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
-                <Switch
-                  on={!hasSupport}
-                  onClick={() => {
-                    this.handleChangeToggle(hasSupport);
-                  }}
-                />
-                : ''
-              }
-            </div>
-          </p>
+          {/*<p>*/}
+            {/*<div className="keycard_area_title">*/}
+              {/*<div className="keycardMessage">*/}
+                {/*<FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />*/}
+                {/*<PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />*/}
+              {/*</div>*/}
+              {/*{itemFieldsDefinition.get('keycard').get('forceReloading') === false ?*/}
+                {/*<Switch*/}
+                  {/*on={!hasSupport}*/}
+                  {/*onClick={() => {*/}
+                    {/*this.handleChangeToggle(hasSupport);*/}
+                  {/*}}*/}
+                {/*/>*/}
+                {/*: ''*/}
+              {/*}*/}
+            {/*</div>*/}
+          {/*</p>*/}
 
-          <div>
-            <div className="col-xs-4 keyCardAreaImage">
-              <img src={keycardPictureSrc} alt="keycardPicture" />
-            </div>
-            <div className="col-xs-8 form-group keyCardAreaForm">
-              { this.renderedContentCheckNo() }
+          {/*<div>*/}
+            {/*<div className="col-xs-4 keyCardAreaImage">*/}
+              {/*<img src={keycardPictureSrc} alt="keycardPicture" />*/}
+            {/*</div>*/}
+            {/*<div className="col-xs-8 form-group keyCardAreaForm">*/}
+              {/*{ this.renderedContentCheckNo() }*/}
 
-              {this.state.checkYes
-                ? <div className="msgCheckYes">
-                  { this.renderedListKeyCard(keycardTypes) }
-                </div>
-                : ''}
-            </div>
-          </div>
+              {/*{this.state.checkYes*/}
+                {/*? <div className="msgCheckYes">*/}
+                  {/*{ this.renderedListKeyCard(keycardTypes) }*/}
+                {/*</div>*/}
+                {/*: ''}*/}
+            {/*</div>*/}
+          {/*</div>*/}
         </form>
 
       </div>
