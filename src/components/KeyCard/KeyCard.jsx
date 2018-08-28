@@ -300,7 +300,7 @@ class KeyCard extends React.Component {
         </div>
       ) :
       keycardTypes.map((type, index) => ( // Display one Input for keyCard
-        this.renderedInputOneKeyCard(type, index)
+        this.renderedInputOneKeyCard(type, 'none')
       ))
     );
   }
