@@ -11,7 +11,7 @@ const KeycardChooser = props => (
   <div key={`${props.localItemInfo.get('index')}`}>
     <KeyCard
       // key={props.localItemInfo.get('index')}
-      id={props.localItemInfo.get('index')}
+      id={`${props.localItemInfo.get('index')}`}
       keycardPictureSrc={props.keycardPictureSrc}
       keycardTypes={props.keycardTypes}
       keycards={props.keycards}
