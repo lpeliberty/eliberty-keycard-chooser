@@ -8,7 +8,7 @@ import KeyCard from './KeyCard/KeyCard';
  * Keycard Chooser
  */
 const KeycardChooser = props => (
-  <div key={props.localItemInfo.get('index')}>
+  <div key={`${props.localItemInfo.get('index')}`}>
     <KeyCard
       // key={props.localItemInfo.get('index')}
       id={props.localItemInfo.get('index')}
