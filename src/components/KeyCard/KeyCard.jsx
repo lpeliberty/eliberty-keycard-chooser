@@ -322,11 +322,11 @@ class KeyCard extends React.Component {
 
 
   render() {
-    const { keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
+    const { key, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
 
     return (
-      <div className="blockPopover">
+      <div className="blockPopover test" key={key}>
         <form>
           <p>
             <div className="keycard_area_title">
@@ -368,6 +368,7 @@ class KeyCard extends React.Component {
 }
 
 KeyCard.propTypes = {
+  key: PropTypes.string.isRequired, // index
   keycardPictureSrc: PropTypes.string.isRequired, // keycard picture src
   keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
   keycards: PropTypes.object.isRequired,
