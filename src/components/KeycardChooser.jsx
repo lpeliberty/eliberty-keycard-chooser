@@ -9,29 +9,29 @@ import KeyCard from './KeyCard/KeyCard';
  */
 const KeycardChooser = props => (
   <div>
-    <KeyCard
-      key={props.localItemInfo.get('index')}
-      id={props.localItemInfo.get('index')}
-      keycardPictureSrc={props.keycardPictureSrc}
-      keycardTypes={props.keycardTypes}
-      keycards={props.keycards}
-      params={props.params}
-      orderitem={props.orderitem}
-      changeCardNumber={props.changeCardNumber}
-      onChangeCheck={props.onChangeCheck}
-      itemFieldsDefinition={props.itemFieldsDefinition}
-      popover={props.popover}
-      popoverLink={props.popoverLink}
-      hasSupport={props.hasSupport}
-      localItemInfo={props.localItemInfo}
-      updateFieldsErrors={props.updateFieldsErrors}
-      deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
-      updateKeycardsMask={props.updateKeycardsMask}
-      validateKeycard={props.validateKeycard}
-      updateValidatedKeycard={props.updateValidatedKeycard}
-      updateOverlay={props.updateOverlay}
-      updateValidField={props.updateValidField}
-    />
+    {/*<KeyCard*/}
+      {/*key={props.localItemInfo.get('index')}*/}
+      {/*id={props.localItemInfo.get('index')}*/}
+      {/*keycardPictureSrc={props.keycardPictureSrc}*/}
+      {/*keycardTypes={props.keycardTypes}*/}
+      {/*keycards={props.keycards}*/}
+      {/*params={props.params}*/}
+      {/*orderitem={props.orderitem}*/}
+      {/*changeCardNumber={props.changeCardNumber}*/}
+      {/*onChangeCheck={props.onChangeCheck}*/}
+      {/*itemFieldsDefinition={props.itemFieldsDefinition}*/}
+      {/*popover={props.popover}*/}
+      {/*popoverLink={props.popoverLink}*/}
+      {/*hasSupport={props.hasSupport}*/}
+      {/*localItemInfo={props.localItemInfo}*/}
+      {/*updateFieldsErrors={props.updateFieldsErrors}*/}
+      {/*deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}*/}
+      {/*updateKeycardsMask={props.updateKeycardsMask}*/}
+      {/*validateKeycard={props.validateKeycard}*/}
+      {/*updateValidatedKeycard={props.updateValidatedKeycard}*/}
+      {/*updateOverlay={props.updateOverlay}*/}
+      {/*updateValidField={props.updateValidField}*/}
+    {/*/>*/}
   </div>
 );
 
