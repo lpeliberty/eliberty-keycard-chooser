@@ -322,9 +322,9 @@ class KeyCard extends React.Component {
 
 
   render() {
-    const { key, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
+    const { id, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
-    console.log('key', key);
+    console.log('id', id);
 
     return (
       <div className="blockPopover test" key="none">
@@ -369,7 +369,7 @@ class KeyCard extends React.Component {
 }
 
 KeyCard.propTypes = {
-  key: PropTypes.string.isRequired, // index
+  id: PropTypes.string.isRequired, // index
   keycardPictureSrc: PropTypes.string.isRequired, // keycard picture src
   keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
   keycards: PropTypes.object.isRequired,

@@ -10,7 +10,7 @@ import KeyCard from './KeyCard/KeyCard';
 const KeycardChooser = props => (
   <div key="none">
     <KeyCard
-      key={props.localItemInfo.get('index')}
+      // key={props.localItemInfo.get('index')}
       id={props.localItemInfo.get('index')}
       keycardPictureSrc={props.keycardPictureSrc}
       keycardTypes={props.keycardTypes}
