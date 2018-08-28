@@ -324,6 +324,7 @@ class KeyCard extends React.Component {
   render() {
     const { key, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
+    console.log('key', key);
 
     return (
       <div className="blockPopover test" key="none">
