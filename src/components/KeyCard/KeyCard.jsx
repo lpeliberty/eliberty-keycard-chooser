@@ -327,7 +327,7 @@ class KeyCard extends React.Component {
     console.log('id', id);
 
     return (
-      <div className="blockPopover test" key="none">
+      <div className="blockPopover test" key={id}>
         {/*<form>*/}
           {/*<p>*/}
             {/*<div className="keycard_area_title">*/}
