@@ -326,8 +326,8 @@ class KeyCard extends React.Component {
     const { hasSupport } = this.state;
 
     return (
-      <div className="blockPopover test" key={key}>
-        <form>
+      <div className="blockPopover test" key="none">
+        {/*<form>*/}
           {/*<p>*/}
             {/*<div className="keycard_area_title">*/}
               {/*<div className="keycardMessage">*/}
@@ -360,7 +360,7 @@ class KeyCard extends React.Component {
                 {/*: ''}*/}
             {/*</div>*/}
           {/*</div>*/}
-        </form>
+        {/*</form>*/}
 
       </div>
     );
