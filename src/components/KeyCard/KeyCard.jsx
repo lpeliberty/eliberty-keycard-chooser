@@ -324,28 +324,27 @@ class KeyCard extends React.Component {
   render() {
     const { id, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
-    console.log('id', id);
 
     return (
       <div className="blockPopover test" key={id}>
-        {/*<form>*/}
-          {/*<p>*/}
-            {/*<div className="keycard_area_title">*/}
-              {/*<div className="keycardMessage">*/}
-                {/*<FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />*/}
-                {/*<PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />*/}
-              {/*</div>*/}
-              {/*{itemFieldsDefinition.get('keycard').get('forceReloading') === false ?*/}
-                {/*<Switch*/}
-                  {/*on={!hasSupport}*/}
-                  {/*onClick={() => {*/}
-                    {/*this.handleChangeToggle(hasSupport);*/}
-                  {/*}}*/}
-                {/*/>*/}
-                {/*: ''*/}
-              {/*}*/}
-            {/*</div>*/}
-          {/*</p>*/}
+        <form>
+          <p>
+            <div className="keycard_area_title">
+              <div className="keycardMessage">
+                <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
+                <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
+              </div>
+              {itemFieldsDefinition.get('keycard').get('forceReloading') === false ?
+                <Switch
+                  on={!hasSupport}
+                  onClick={() => {
+                    this.handleChangeToggle(hasSupport);
+                  }}
+                />
+                : ''
+              }
+            </div>
+          </p>
 
           {/*<div>*/}
             {/*<div className="col-xs-4 keyCardAreaImage">*/}
@@ -361,7 +360,7 @@ class KeyCard extends React.Component {
                 {/*: ''}*/}
             {/*</div>*/}
           {/*</div>*/}
-        {/*</form>*/}
+        </form>
 
       </div>
     );
