@@ -237,7 +237,7 @@ class KeyCard extends React.Component {
         }
     */
     return (
-      <div>
+      <div key={index}>
         { this.renderedCardNumberField(index, type, cardNumber) }
         { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
         { cardNumber === '' || this.props.localItemInfo.get('validateKeycard') === false ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
