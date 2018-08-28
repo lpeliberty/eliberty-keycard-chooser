@@ -286,9 +286,9 @@ class KeyCard extends React.Component {
       ? ( // Display Double Mask KeyCard
         <div>
           <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
-            { keycardTypes.map((type, index) => (
-              this.renderedLabelTab(tabKeycardType[type], index)
-            )) }
+            {/*{ keycardTypes.map((type, index) => (*/}
+              {/*this.renderedLabelTab(tabKeycardType[type], index)*/}
+            {/*)) }*/}
           </ul>
           <div className="tab-content">
             {/*{*/}
