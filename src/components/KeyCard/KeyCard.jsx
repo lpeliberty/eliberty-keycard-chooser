@@ -328,7 +328,7 @@ class KeyCard extends React.Component {
     return (
       <div className="blockPopover test" key={id}>
         <form>
-          <p>
+          <div>
             <div className="keycard_area_title">
               <div className="keycardMessage">
                 <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
@@ -344,7 +344,7 @@ class KeyCard extends React.Component {
                 : ''
               }
             </div>
-          </p>
+          </div>
 
           <div>
             <div className="col-xs-4 keyCardAreaImage">
