@@ -319,8 +319,7 @@ class KeyCard extends React.Component {
       : ''
     );
   }
-
-
+  
   render() {
     const { id, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
