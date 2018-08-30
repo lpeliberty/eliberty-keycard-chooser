@@ -334,7 +334,7 @@ class KeyCard extends React.Component {
                 <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
                 <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
               </div>
-              {!itemFieldsDefinition.get('keycard').get('hasSupport', false) === false ?
+              {itemFieldsDefinition.get('keycard').get('hasSupport', false) === true ?
                 <Switch
                   on={!hasSupport}
                   onClick={() => {
