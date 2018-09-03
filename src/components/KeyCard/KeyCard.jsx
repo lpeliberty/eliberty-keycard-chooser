@@ -327,6 +327,10 @@ class KeyCard extends React.Component {
 
     return (
       <div className="blockPopover test" key={id}>
+
+        <div className="col-xs-4 keyCardAreaImage">
+          <img src={keycardPictureSrc} alt="keycardPicture" />
+        </div>
         <form>
           <div>
             <div className="keycard_area_title">
@@ -347,9 +351,6 @@ class KeyCard extends React.Component {
           </div>
 
           <div>
-            <div className="col-xs-4 keyCardAreaImage">
-              <img src={keycardPictureSrc} alt="keycardPicture" />
-            </div>
             <div className="col-xs-8 form-group keyCardAreaForm">
               { this.renderedContentCheckNo() }
 
