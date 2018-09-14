@@ -184,7 +184,7 @@ class KeyCard extends React.Component {
     let cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
     console.log('renderedSomeInputKeyCards', cardNumber);
 
-    if (cardNumber === null) {
+    if (cardNumber === null || typeof cardNumber === 'undefined') {
       cardNumber = '';
     }
 
