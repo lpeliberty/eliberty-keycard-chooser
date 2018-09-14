@@ -23,7 +23,9 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
   // Filter according to mode
   keycards = keycards.filter((keycard) => {
     console.log('keycard', keycard, keycard.shortnumber);
-    return isShortnumberMode ? keycard.shortnumber !== 'undefined' && keycard.shortnumber !== null : keycard.cardnumber !== null
+    return isShortnumberMode
+      ? typeof keycard.shortnumber !== 'undefined' && keycard.shortnumber !== null
+      : keycard.cardnumber !== null;
   });
   console.log('filtered keycards', keycards);
 
