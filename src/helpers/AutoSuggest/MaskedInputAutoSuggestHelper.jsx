@@ -42,11 +42,9 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
   const regex = new RegExp(escapedValue, 'i');
 
   // Filter the keycards in shortnumbers or cardnumbers
-  const filtered = keycards.filter(
+  return keycards.filter(
     keycard => regex.test(isShortnumberMode ? keycard.shortnumber : keycard.cardnumber),
   );
-
-  return filtered;
 }
 
 /**
@@ -55,6 +53,7 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
  * @returns {*}
  */
 export function getSuggestionValue(keycard) {
+  console.log('keycard', keycard);
   return keycard.cardnumber;
 }
 
