@@ -19,6 +19,7 @@ export function escapeRegexCharacters(str) {
  * @returns {*}
  */
 export function getSuggestions(value, keycards, params, isShortnumberMode = false) {
+  console.log('keycards', keycards.toJS());
   // Filter according to mode
   keycards = keycards.filter(keycard => isShortnumberMode ? keycard.shortnumber !== null : keycard.cardnumber !== null);
 
