@@ -22,7 +22,7 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
   console.log('keycards', keycards, isShortnumberMode);
   // Filter according to mode
   keycards = keycards.filter((keycard) => {
-    console.log('keycard', keycard);
+    console.log('keycard', keycard, keycard.shortnumber);
     return isShortnumberMode ? keycard.get('shortnumber', null) !== null && keycard.shortnumber !== null : keycard.cardnumber !== null
   });
   console.log('filtered keycards', keycards);
