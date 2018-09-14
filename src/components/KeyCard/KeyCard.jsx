@@ -326,8 +326,8 @@ class KeyCard extends React.Component {
     const { hasSupport } = this.state;
 
     return (
-      <div className="blockPopover test yeimi" key={id}>
-        <span>Johnny 2</span>
+      <div className="blockPopover test" key={id}>
+
         <div className="col-xs-4 keyCardAreaImage">
           <img src={keycardPictureSrc} alt="keycardPicture" />
         </div>
