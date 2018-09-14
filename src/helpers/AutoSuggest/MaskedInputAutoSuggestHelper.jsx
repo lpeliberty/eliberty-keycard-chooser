@@ -19,15 +19,12 @@ export function escapeRegexCharacters(str) {
  * @returns {*}
  */
 export function getSuggestions(value, keycards, params, isShortnumberMode = false) {
-  console.log('keycards', keycards, isShortnumberMode);
   // Filter according to mode
-  keycards = keycards.filter((keycard) => {
-    console.log('keycard', keycard, keycard.shortnumber);
-    return isShortnumberMode
+  keycards = keycards.filter(keycard => (
+    isShortnumberMode
       ? typeof keycard.shortnumber !== 'undefined' && keycard.shortnumber !== null
-      : keycard.cardnumber !== null;
-  });
-  console.log('filtered keycards', keycards);
+      : keycard.cardnumber !== null
+));
 
   const escapedValue = escapeRegexCharacters(value.trim());
   const minLength = params.get('minKeycardLengthAutoComplete', 0);

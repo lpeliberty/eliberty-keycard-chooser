@@ -66,7 +66,6 @@ class CardNumberField extends React.Component {
    * @param value
    */
   onSuggestionsFetchRequested({ value }) {
-    console.log('onSuggestionsFetchRequested');
     const cardType = 'open';
     const listKeycards = AutoSuggestionHelper.getSuggestions(
       value,
