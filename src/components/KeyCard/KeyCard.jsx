@@ -182,7 +182,6 @@ class KeyCard extends React.Component {
     const currentId = this.props.localItemInfo.get('skierIndex');
     const errorKey = 'data.cardNumber';
     let cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
-    console.log('renderedSomeInputKeyCards', cardNumber);
 
     if (cardNumber === null || typeof cardNumber === 'undefined') {
       cardNumber = '';
