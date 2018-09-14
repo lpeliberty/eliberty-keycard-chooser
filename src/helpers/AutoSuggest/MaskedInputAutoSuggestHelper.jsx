@@ -53,7 +53,6 @@ export function getSuggestions(value, keycards, params, isShortnumberMode = fals
  * @returns {*}
  */
 export function getSuggestionValue(keycard) {
-  console.log('keycard', keycard);
   return keycard.cardnumber;
 }
 
