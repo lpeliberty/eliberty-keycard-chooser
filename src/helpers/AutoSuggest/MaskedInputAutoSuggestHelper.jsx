@@ -21,7 +21,9 @@ export function escapeRegexCharacters(str) {
 export function getSuggestions(value, keycards, params, isShortnumberMode = false) {
   console.log('keycards', keycards, isShortnumberMode);
   // Filter according to mode
-  keycards = keycards.filter(keycard => isShortnumberMode ? keycard.has('shortnumber') && keycard.shortnumber !== null : keycard.cardnumber !== null);
+  keycards = keycards.filter(keycard => (
+    isShortnumberMode ? keycard.get('shortnumber', null) !== null && keycard.shortnumber !== null : keycard.cardnumber !== null)
+  );
   console.log('filtered keycards', keycards);
 
   const escapedValue = escapeRegexCharacters(value.trim());
