@@ -77,7 +77,6 @@ class KeyCard extends React.Component {
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
     const currentId = this.props.localItemInfo.get('skierIndex');
 
-    console.log('cardnumber', cardnumber);
     if (cardnumber !== undefined && typeof cardnumber !== 'undefined') {
       // Remove spaces on card number
       cardnumber = cardnumber.replace(new RegExp(/( )|(_)/g), '');
