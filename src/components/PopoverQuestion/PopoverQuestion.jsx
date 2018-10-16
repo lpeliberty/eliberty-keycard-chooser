@@ -65,10 +65,7 @@ class PopoverQuestion extends React.Component {
           </PopoverHeader>
           <PopoverBody className="popover-content ppBody">
             <div className="row">
-              <div className="col-xs-4">
-                <img className="img-responsive" src={popover.get('keycardPicture')} alt="keycardinfo" />
-              </div>
-              <div className="col-xs-8" dangerouslySetInnerHTML={{ __html: popover.get('keycardContent') }} />
+              <div className="col-xs-12" dangerouslySetInnerHTML={{ __html: popover.get('keycardContent') }} />
             </div>
           </PopoverBody>
         </Popover>
