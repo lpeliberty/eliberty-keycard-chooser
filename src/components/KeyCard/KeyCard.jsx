@@ -97,6 +97,10 @@ class KeyCard extends React.Component {
           this.props.updateKeycardsMask(this.props.orderitem.get('skierIndex'), key, newValue);
         }
       });
+
+      // Delete errors
+      this.deleteKeyFieldsErrors(currentId, errorKey);
+
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
         validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, tabKeycardType[type]);
