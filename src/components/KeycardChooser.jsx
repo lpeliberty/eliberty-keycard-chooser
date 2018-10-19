@@ -27,9 +27,9 @@ const KeycardChooser = props => (
       updateFieldsErrors={props.updateFieldsErrors}
       deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
       updateKeycardsMask={props.updateKeycardsMask}
-      validateKeycard={props.validateKeycard}
+      // validateKeycard={props.validateKeycard}
       updateValidatedKeycard={props.updateValidatedKeycard}
-      updateOverlay={props.updateOverlay}
+      // updateOverlay={props.updateOverlay}
       updateValidField={props.updateValidField}
     />
   </div>
@@ -51,10 +51,10 @@ KeycardChooser.propTypes = {
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
   updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
   // validateKeycard: function call api for verification of keycard number
-  validateKeycard: PropTypes.func.isRequired,
+  // validateKeycard: PropTypes.func.isRequired,
   // updateValidatedKeycard: function to change boolean value of keycard number
   updateValidatedKeycard: PropTypes.func.isRequired,
-  updateOverlay: PropTypes.func.isRequired, // function for display overlay
+  // updateOverlay: PropTypes.func.isRequired, // function for display overlay
   updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean indicating support element
 };
