@@ -74,6 +74,7 @@ class KeyCard extends React.Component {
    */
   handleChangeAutoSuggestCardNumber(cardnumber, cardId, type, suggest = true) {
     let newValue = '';
+    let validKeycard = this.props.localItemInfo.get('validateKeycard');
     const { formatMessage } = this.props.intl;
     const errorKey = 'data.cardNumber';
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
@@ -98,8 +99,8 @@ class KeyCard extends React.Component {
       });
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
-        const validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, tabKeycardType[type]);
-        // this.props.updateValidatedKeycard(currentId, validKeycard);
+        validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, tabKeycardType[type]);
+        this.props.updateValidatedKeycard(currentId, validKeycard);
         this.props.updateValidField(currentId, 'cardNumber', validKeycard);
         this.changeValidationCard(validKeycard);
 
@@ -390,8 +391,7 @@ KeyCard.propTypes = {
   // validateKeycard: function call api for verification of keycard number
   validateKeycard: PropTypes.func.isRequired,
   // updateValidatedKeycard: function to change boolean value of keycard number
-  // updateValidatedKeycard: PropTypes.func.isRequired,
-  // updateOverlay: PropTypes.func.isRequired, // function for display overlay
+  updateValidatedKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
   intl: intlShape.isRequired, // for the internationalization
