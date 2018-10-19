@@ -99,7 +99,7 @@ class KeyCard extends React.Component {
       });
 
       // Delete errors
-      this.deleteKeyFieldsErrors(currentId, errorKey);
+      this.props.deleteKeyFieldsErrors(currentId, errorKey);
 
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
