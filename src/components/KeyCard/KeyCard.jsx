@@ -326,7 +326,20 @@ class KeyCard extends React.Component {
       : ''
     );
   }
-  
+
+  /**
+   *
+   * @returns {string}
+   */
+  renderedContentForSwisspass() {
+    return (this.props.localItemInfo.get('keycardsMask').get('current') === tabKeycardType.swisspass
+        ? <div className="contentSwisspass">
+          <p>Content for swisspass</p>
+        </div>
+        : null
+    );
+  }
+
   render() {
     const { id, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
     const { hasSupport } = this.state;
@@ -364,6 +377,7 @@ class KeyCard extends React.Component {
                 {this.state.checkYes
                   ? <div className="msgCheckYes">
                     { this.renderedListKeyCard(keycardTypes) }
+                    { this.renderedContentForSwisspass() }
                   </div>
                   : ''}
               </div>
