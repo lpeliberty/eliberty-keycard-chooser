@@ -42,7 +42,7 @@ export function verifyKeycard(cardNumber, index, card) {
       break;
     }
     case tabKeycardType.swisspass: {
-      if (cardNumber.length < 11 || !patternSWISSPASS.test(cardNumber)) {
+      if (cardNumber.length < 15 || !patternSWISSPASS.test(cardNumber)) {
         return false;
       }
       break;

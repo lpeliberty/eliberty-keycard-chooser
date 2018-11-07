@@ -331,7 +331,7 @@ class KeyCard extends React.Component {
    *
    * @returns {string}
    */
-  renderedContentForSwisspass() {
+  renderedContentForSwisspass() { console.log(this.props.localItemInfo.get('keycardsMask').get('current'));
     return (this.props.localItemInfo.get('keycardsMask').get('current') === tabKeycardType.swisspass
         ? <div className="contentSwisspass">
           <p>Content for swisspass</p>
