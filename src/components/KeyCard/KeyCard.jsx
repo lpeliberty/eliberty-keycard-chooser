@@ -332,10 +332,13 @@ class KeyCard extends React.Component {
    * @returns {string}
    */
   renderedContentForSwisspass() { console.log(this.props.localItemInfo.get('keycardsMask').get('current'));
-    return (this.props.localItemInfo.get('keycardsMask').get('current') === tabKeycardType.swisspass
+    return ((this.props.localItemInfo.get('keycardsMask').get('current')).toUpperCase() === tabKeycardType.swisspass
         ? <div className="contentSwisspass">
-          <p>Content for swisspass</p>
-        </div>
+            <input type="text" name="zipcodeSwiss" id="zipcodeSwiss" className="form-control" placeholder="Code Postal" style="" data-control="true" onKeyUp="$(this).attr('value', $(this).val())" value="" />
+            <label htmlFor="zipcode">Je suis d'accord avec les conditions du SwissPass</label>
+            <input type="checkbox" value="1" name="checkSwisspass" id="checkSwisspass" />
+            <label htmlFor="checkSwisspass">Je suis d'accord avec les conditions du SwissPass</label>
+          </div>
         : null
     );
   }
