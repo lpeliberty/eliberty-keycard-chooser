@@ -76,7 +76,7 @@ class KeyCard extends React.Component {
     const currentItem = this.props.localItemInfo.get(currentId);
     const newValue = !currentItem.get('swissPassElem').get('checked');
 
-    this.updateSwissPassElem(currentId, 'validNumber', newValue);
+    this.props.updateSwissPassElem(currentId, 'validNumber', newValue);
   }
 
   /**
@@ -85,7 +85,7 @@ class KeyCard extends React.Component {
    */
   handleChangeZipcode(event) {
     const validZipcode = this.verifyZipcode(event.target.value);
-    this.updateSwissPassElem(orderitem.get('skierIndex'), 'validZipcode', validZipcode);
+    this.props.updateSwissPassElem(orderitem.get('skierIndex'), 'validZipcode', validZipcode);
   }
 
   /**
