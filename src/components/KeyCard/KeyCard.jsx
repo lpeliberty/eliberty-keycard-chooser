@@ -74,6 +74,7 @@ class KeyCard extends React.Component {
    * @param suggest
    */
   handleChangeAutoSuggestCardNumber(cardnumber, cardId, type, suggest = true) {
+    console.log('handleChangeAutoSuggestCardNumber', cardnumber, type);
     let newValue = '';
     let validKeycard = this.props.localItemInfo.get('validateKeycard');
     const { formatMessage } = this.props.intl;
@@ -105,6 +106,7 @@ class KeyCard extends React.Component {
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
         const cardType = tabKeycardType[type];
+        console.log('cardNumber', cardnumber, cardType);
         validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, cardType);
         this.props.updateValidatedKeycard(currentId, validKeycard);
         this.props.updateValidField(currentId, 'cardNumber', validKeycard);
@@ -112,6 +114,7 @@ class KeyCard extends React.Component {
 
         // Keycard mask is valid
         if (validKeycard) {
+          console.log('mask is valid', cardType, tabKeycardType.swisspass);
           // If no swisspass, we can validate keycard
           if (cardType !== tabKeycardType.swisspass) {
             this.props.validateKeycard(currentId, cardnumber);
