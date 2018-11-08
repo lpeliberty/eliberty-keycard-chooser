@@ -73,10 +73,10 @@ class KeyCard extends React.Component {
    */
   handleChangeCheckSwisspass() {
     const currentId = this.props.localItemInfo.get('skierIndex');
-    const currentItem = this.props.localItemInfo.get(currentId).get('keycardsMask');
-    const newValue = currentItem.get('swisspassElem', new Map()).get('checked');
+    const currentItem = this.props.localItemInfo.get(currentId).get('keycardsMask', new Map());
+    const newValue = !currentItem.get('swisspassElem', new Map()).get('checked');
 
-    this.props.updateSwissPassElem(currentId, 'checked', !newValue);
+    this.props.updateSwissPassElem(currentId, 'checked', newValue);
   }
 
   /**
@@ -85,7 +85,8 @@ class KeyCard extends React.Component {
    */
   handleChangeZipcode(event) {
     const currentId = this.props.localItemInfo.get('skierIndex');
-    const newValue = !KeyCard.verifyZipcode();
+    const value = !this.props.localItemInfo.get(currentId).get('keycardsMask').get('swisspassElem').get('zipcode');
+    const newValue = !KeyCard.verifyZipcode(value);
     this.props.updateSwissPassElem(currentId, 'zipcode', event.target.value);
     this.props.updateSwissPassElem(currentId, 'validZipcode', newValue);
   }
@@ -393,8 +394,9 @@ class KeyCard extends React.Component {
                    name="check-swisspass"
                    id="check-swisspass"
                    onChange={() => this.handleChangeCheckSwisspass()}
+                   onClick={() => this.handleChangeCheckSwisspass()}
             />
-            <label htmlFor="check-swisspass">
+            <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
               <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
             </label>
           </div>
