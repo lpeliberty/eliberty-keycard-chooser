@@ -9,6 +9,7 @@ import PopoverLink from '../PopoverLink/PopoverLink';
 import CardNumberField from '../CardNumberField/CardNumberField';
 import * as tabKeycardType from '../../constants/keycardsType';
 import * as MaskHelper from '../../helpers/MaskHelper';
+import * as CardTypeHelper from '../../helpers/CardTypeHelper';
 
 /**
  * Keycard
@@ -103,13 +104,21 @@ class KeyCard extends React.Component {
 
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
-        validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, tabKeycardType[type]);
+        const cardType = tabKeycardType[type];
+        validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, cardType);
         this.props.updateValidatedKeycard(currentId, validKeycard);
         this.props.updateValidField(currentId, 'cardNumber', validKeycard);
         this.changeValidationCard(validKeycard);
 
+        // Keycard mask is valid
         if (validKeycard) {
-          this.props.validateKeycard(currentId, cardnumber);
+          // If no swisspass, we can validate keycard
+          if (cardType !== tabKeycardType.swisspass) {
+            this.props.validateKeycard(currentId, cardnumber);
+          } else if (CardTypeHelper.canCheckSwissPass(this.props.localItemInfo)) {
+            const zipCode = CardTypeHelper.getSwissPassProperty('zipcode');
+            this.props.validateKeycard(currentId, cardnumber, zipCode);
+          }
         } else {
           this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
         }
