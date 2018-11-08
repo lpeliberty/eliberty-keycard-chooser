@@ -329,14 +329,29 @@ class KeyCard extends React.Component {
 
   /**
    *
+   * @param zipcode
+   * @returns {boolean}
+   */
+  static verifyZipcode(zipcode) {
+    const patternZipcode = /^[0-9]{4}$/;
+    return !patternZipcode.test(zipcode);
+  }
+
+  /**
+   *
    * @returns {string}
    */
-  renderedContentForSwisspass() { console.log(this.props.localItemInfo.get('keycardsMask').get('current'));
+  renderedContentForSwisspass() {
     return (this.props.localItemInfo.get('keycardsMask').get('current') === "swisspass"
         ? <div className="contentSwisspass">
             <input type="text" name="zipcode-swiss" id="zipcode-swiss" className="form-control" maxLength="4" data-control="true" />
+            <label htmlFor="zipcode-swiss">
+              <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
+            </label>
             <input type="checkbox" value="1" name="check-swisspass" id="check-swisspass" />
-            <label htmlFor="check-swisspass">Je suis d'accord avec les conditions du SwissPass</label>
+            <label htmlFor="check-swisspass">
+              <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
+            </label>
           </div>
         : null
     );
