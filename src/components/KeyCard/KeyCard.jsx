@@ -41,6 +41,8 @@ class KeyCard extends React.Component {
     this.handleChangeCardNumber = this.handleChangeCardNumber.bind(this);
     this.handleChangeAutoSuggestCardNumber = this.handleChangeAutoSuggestCardNumber.bind(this);
     this.changeValidationCard = this.changeValidationCard.bind(this);
+    this.handleChangeCheckSwisspass = this.handleChangeCheckSwisspass.bind(this);
+    this.handleChangeZipcode = this.handleChangeZipcode.bind(this);
   }
 
   /**
@@ -64,6 +66,26 @@ class KeyCard extends React.Component {
    */
   handleChangeCardNumber(event, cardId, type) {
     this.handleChangeAutoSuggestCardNumber(event.target.value, cardId, type, false);
+  }
+
+  /**
+   * handle Change Check Swisspass
+   */
+  handleChangeCheckSwisspass() {
+    const currentId = this.props.localItemInfo.get('skierIndex');
+    const currentItem = this.props.localItemInfo.get(currentId);
+    const newValue = !currentItem.get('swissPassElem').get('checked');
+
+    this.updateSwissPassElem(currentId, 'validNumber', newValue);
+  }
+
+  /**
+   * handle Change Zipcode
+   * @param event
+   */
+  handleChangeZipcode(event) {
+    const validZipcode = this.verifyZipcode(event.target.value);
+    this.updateSwissPassElem(orderitem.get('skierIndex'), 'validZipcode', validZipcode);
   }
 
   /**
@@ -348,16 +370,28 @@ class KeyCard extends React.Component {
 
   /**
    *
-   * @returns {string}
+   * @returns {null}
    */
   renderedContentForSwisspass() {
     return (this.props.localItemInfo.get('keycardsMask').get('current') === "swisspass"
         ? <div className="contentSwisspass">
-            <input type="text" name="zipcode-swiss" id="zipcode-swiss" className="form-control" maxLength="4" data-control="true" />
+            <input type="text"
+                   name="zipcode-swiss"
+                   id="zipcode-swiss"
+                   className="form-control"
+                   maxLength="4"
+                   data-control="true"
+                   onChange={(event) => this.handleChangeZipcode(event)}
+            />
             <label htmlFor="zipcode-swiss">
               <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
             </label>
-            <input type="checkbox" value="1" name="check-swisspass" id="check-swisspass" />
+            <input type="checkbox"
+                   value="1"
+                   name="check-swisspass"
+                   id="check-swisspass"
+                   onChange={() => this.handleChangeCheckSwisspass()}
+            />
             <label htmlFor="check-swisspass">
               <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
             </label>
@@ -437,6 +471,7 @@ KeyCard.propTypes = {
   // updateValidatedKeycard: function to change boolean value of keycard number
   updateValidatedKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
+  updateSwissPassElem: PropTypes.func.isRequired,
   hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
   intl: intlShape.isRequired, // for the internationalization
 };
