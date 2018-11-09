@@ -86,11 +86,9 @@ class KeyCard extends React.Component {
    */
   handleChangeZipcode(event) {
     const zipcode = event.target.value;
-    console.log('handleChangeZipcode', zipcode);
 
     const pattern = /^[0-9]{4}$/;
     const isValid = pattern.test(zipcode);
-    console.log('zipcode format valid', isValid);
 
     const currentId = this.props.localItemInfo.get('skierIndex');
     this.props.updateSwissPassElem(currentId, 'zipcode', zipcode);
@@ -111,6 +109,7 @@ class KeyCard extends React.Component {
     const errorKey = 'data.cardNumber';
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
     const currentId = this.props.localItemInfo.get('skierIndex');
+    const skierIndex = this.props.orderitem.get('skierIndex');
 
     if (cardnumber !== undefined && typeof cardnumber !== 'undefined') {
       // Remove spaces on card number
@@ -118,7 +117,7 @@ class KeyCard extends React.Component {
 
       // Update others card types values
       this.props.localItemInfo.get('keycardsMask').forEach((item, key) => {
-        if (key !== 'current' && key !== 'idCard' && key !== type) {
+        if (key !== 'current' && key !== 'idCard' && key !== type && key !== 'swisspassElem') {
           if (suggest) {
             this.props.keycards.forEach((element) => {
               if (element.get('shortnumber') === cardnumber || element.get('cardnumber') === cardnumber) {
@@ -126,25 +125,33 @@ class KeyCard extends React.Component {
               }
             });
           }
-          this.props.updateKeycardsMask(this.props.orderitem.get('skierIndex'), key, newValue);
+          this.props.updateKeycardsMask(skierIndex, key, newValue);
         }
       });
 
       // Delete errors
       this.props.deleteKeyFieldsErrors(currentId, errorKey);
 
+      const cardType = tabKeycardType[type];
+      const isSwissPass = cardType === tabKeycardType.swisspass;
+
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
-        const cardType = tabKeycardType[type];
         validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, cardType);
+        // localitemInfo.validateKeycard
         this.props.updateValidatedKeycard(currentId, validKeycard);
+        // localItemInfo.itemsDefinition.fields.cardNumber.valid
         this.props.updateValidField(currentId, 'cardNumber', validKeycard);
+        // Change localItemInfo.keycardMasks.swisspassElem.numberFormatValid
+        if (cardType === tabKeycardType.swisspass) {
+          this.props.updateSwissPassElem(currentId, 'numberFormatValid', validKeycard);
+        }
         this.changeValidationCard(validKeycard);
 
         // Keycard mask is valid
         if (validKeycard) {
           // If no swisspass, we can validate keycard
-          if (cardType !== tabKeycardType.swisspass) {
+          if (!isSwissPass) {
             this.props.validateKeycard(currentId, cardnumber);
           } else if (CardTypeHelper.canCheckSwissPass(this.props.localItemInfo)) {
             const zipCode = CardTypeHelper.getSwissPassProperty('zipcode');
@@ -158,8 +165,13 @@ class KeyCard extends React.Component {
       }
       // Update current card type value
       // if (typeof cardnumber !== 'undefined') {
-      this.props.changeCardNumber(this.props.orderitem.get('skierIndex'), cardnumber);
-      this.props.updateKeycardsMask(this.props.orderitem.get('skierIndex'), type, cardnumber);
+      // Change localItemInfo.values.cardNumber
+      this.props.changeCardNumber(skierIndex, cardnumber);
+      // Change localItemInfo.keycardMask.xxxxx
+      this.props.updateKeycardsMask(skierIndex, type, cardnumber);
+      if (isSwissPass) {
+        this.props.updateSwissPassElem(skierIndex, 'number', cardnumber);
+      }
       // }
     }
   }
@@ -372,34 +384,36 @@ class KeyCard extends React.Component {
    * @returns {null}
    */
   renderedContentForSwisspass() {
-    return (this.props.localItemInfo.get('keycardsMask').get('current') === "swisspass"
-        ? <div className="contentSwisspass">
-            <input type="text"
-                   name="zipcode-swiss"
-                   id="zipcode-swiss"
-                   className="form-control"
-                   maxLength="4"
-                   data-control="true"
-                   onChange={(event) => this.handleChangeZipcode(event)}
-            />
-            <label htmlFor="zipcode-swiss">
-              <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
-            </label>
-            <input type="checkbox"
-                   value="1"
-                   name="check-swisspass"
-                   id="check-swisspass"
-                   onChange={() => this.handleChangeCheckSwisspass()}
-                   onClick={() => this.handleChangeCheckSwisspass()}
-            />
-            <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
-              <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
-            </label>
-            <button className="btn-swisspass">
-              <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
-            </button>
-          </div>
-        : null
+    return (this.props.localItemInfo.get('keycardsMask').get('current') === 'swisspass'
+      ? <div className="contentSwisspass">
+        <input
+          type="text"
+          name="zipcode-swiss"
+          id="zipcode-swiss"
+          className="form-control"
+          maxLength="4"
+          data-control="true"
+          onChange={(event) => this.handleChangeZipcode(event)}
+        />
+        <label htmlFor="zipcode-swiss">
+          <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
+        </label>
+        <input
+          type="checkbox"
+          value="1"
+          name="check-swisspass"
+          id="check-swisspass"
+          onChange={() => this.handleChangeCheckSwisspass()}
+          onClick={() => this.handleChangeCheckSwisspass()}
+        />
+        <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
+          <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
+        </label>
+        <button className="btn-swisspass">
+          <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
+        </button>
+      </div>
+      : null
     );
   }
 
@@ -408,7 +422,7 @@ class KeyCard extends React.Component {
     const { hasSupport } = this.state;
 
     return (
-      <div className="blockPopover test" key={id}>
+      <div className="blockPopover" key={id}>
 
         <div className="col-xs-4 keyCardAreaImage">
           <img src={keycardPictureSrc} alt="keycardPicture" />
