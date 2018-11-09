@@ -401,10 +401,11 @@ class KeyCard extends React.Component {
         </label>
         <input
           type="checkbox"
-          value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked')}
+          // value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked') === true ? '1' : '0'}
+          checked={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked')}
           name="check-swisspass"
           id="check-swisspass"
-          //onChange={() => this.handleChangeCheckSwisspass()}
+          // onChange={() => this.handleChangeCheckSwisspass()}
           onClick={() => this.handleChangeCheckSwisspass()}
         />
         <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
