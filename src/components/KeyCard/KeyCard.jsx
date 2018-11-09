@@ -27,16 +27,6 @@ class KeyCard extends React.Component {
   }
 
   /**
-   * validation for zipcode
-   * @param zipcode
-   * @returns {boolean}
-   */
-  static verifyZipcode(zipcode) {
-    const patternZipcode = /^[0-9]{4}$/;
-    return patternZipcode.test(zipcode);
-  }
-
-  /**
    * Constructor
    * @param props
    */
@@ -95,14 +85,15 @@ class KeyCard extends React.Component {
    * @param event
    */
   handleChangeZipcode(event) {
-    const currentId = this.props.localItemInfo.get('skierIndex');
-    const value = this.props.localItemInfo.get('keycardsMask').get('swisspassElem').get('zipcode');
-    console.log('handleChangeZipcode', value);
-    const zipcodeFormatValid = KeyCard.verifyZipcode(value);
-    console.log('zipcode format valid', zipcodeFormatValid);
+    const zipcode = event.target.value;
+    console.log('handleChangeZipcode', zipcode);
 
-    this.props.updateSwissPassElem(currentId, 'zipcode', event.target.value);
-    this.props.updateSwissPassElem(currentId, 'zipcodeFormatValid', zipcodeFormatValid);
+    const isValid = '/^[0-9]{4}$/'.test(zipcode);
+    console.log('zipcode format valid', isValid);
+
+    const currentId = this.props.localItemInfo.get('skierIndex');
+    this.props.updateSwissPassElem(currentId, 'zipcode', zipcode);
+    this.props.updateSwissPassElem(currentId, 'zipcodeFormatValid', isValid);
   }
 
   /**
