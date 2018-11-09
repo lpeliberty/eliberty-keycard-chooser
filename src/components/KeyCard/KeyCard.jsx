@@ -88,7 +88,8 @@ class KeyCard extends React.Component {
     const zipcode = event.target.value;
     console.log('handleChangeZipcode', zipcode);
 
-    const isValid = '/^[0-9]{4}$/'.test(zipcode);
+    const pattern = /^[0-9]{4}$/;
+    const isValid = pattern.test(zipcode);
     console.log('zipcode format valid', isValid);
 
     const currentId = this.props.localItemInfo.get('skierIndex');
