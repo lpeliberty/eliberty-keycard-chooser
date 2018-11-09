@@ -393,17 +393,18 @@ class KeyCard extends React.Component {
           className="form-control"
           maxLength="4"
           data-control="true"
-          onChange={(event) => this.handleChangeZipcode(event)}
+          onChange={event => this.handleChangeZipcode(event)}
+          value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'zipcode')}
         />
         <label htmlFor="zipcode-swiss">
           <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
         </label>
         <input
           type="checkbox"
-          value="1"
+          value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked')}
           name="check-swisspass"
           id="check-swisspass"
-          onChange={() => this.handleChangeCheckSwisspass()}
+          //onChange={() => this.handleChangeCheckSwisspass()}
           onClick={() => this.handleChangeCheckSwisspass()}
         />
         <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
