@@ -25,6 +25,17 @@ class KeyCard extends React.Component {
     const error = localItemInfo.get('errors', new Map()).get(errorKey, '');
     return <p className="errorInputKeyCard">{error}</p>;
   }
+
+  /**
+   * validation for zipcode
+   * @param zipcode
+   * @returns {boolean}
+   */
+  static verifyZipcode(zipcode) {
+    const patternZipcode = /^[0-9]{4}$/;
+    return !patternZipcode.test(zipcode);
+  }
+
   /**
    * Constructor
    * @param props
@@ -364,16 +375,6 @@ class KeyCard extends React.Component {
 
   /**
    *
-   * @param zipcode
-   * @returns {boolean}
-   */
-  static verifyZipcode(zipcode) {
-    const patternZipcode = /^[0-9]{4}$/;
-    return !patternZipcode.test(zipcode);
-  }
-
-  /**
-   *
    * @returns {null}
    */
   renderedContentForSwisspass() {
@@ -400,6 +401,9 @@ class KeyCard extends React.Component {
             <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
               <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
             </label>
+            <button className="btn-swisspass">
+              <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
+            </button>
           </div>
         : null
     );
