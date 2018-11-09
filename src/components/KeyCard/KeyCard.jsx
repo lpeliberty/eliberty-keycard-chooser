@@ -97,10 +97,12 @@ class KeyCard extends React.Component {
   handleChangeZipcode(event) {
     const currentId = this.props.localItemInfo.get('skierIndex');
     const value = this.props.localItemInfo.get('keycardsMask').get('swisspassElem').get('zipcode');
-    const newValue = KeyCard.verifyZipcode(value);
+    console.log('handleChangeZipcode', value);
+    const zipcodeFormatValid = KeyCard.verifyZipcode(value);
+    console.log('zipcode format valid', zipcodeFormatValid);
 
     this.props.updateSwissPassElem(currentId, 'zipcode', event.target.value);
-    this.props.updateSwissPassElem(currentId, 'validZipcode', newValue);
+    this.props.updateSwissPassElem(currentId, 'zipcodeFormatValid', zipcodeFormatValid);
   }
 
   /**
