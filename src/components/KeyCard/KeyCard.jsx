@@ -140,11 +140,13 @@ class KeyCard extends React.Component {
         validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, cardType);
         // localitemInfo.validateKeycard
         this.props.updateValidatedKeycard(currentId, validKeycard);
-        // localItemInfo.itemsDefinition.fields.cardNumber.valid
-        this.props.updateValidField(currentId, 'cardNumber', validKeycard);
+
         // Change localItemInfo.keycardMasks.swisspassElem.numberFormatValid
-        if (cardType === tabKeycardType.swisspass) {
+        if (isSwissPass) {
           this.props.updateSwissPassElem(currentId, 'numberFormatValid', validKeycard);
+        } else {
+          // localItemInfo.itemsDefinition.fields.cardNumber.valid
+          this.props.updateValidField(currentId, 'cardNumber', validKeycard);
         }
         this.changeValidationCard(validKeycard);
 
@@ -420,7 +422,7 @@ class KeyCard extends React.Component {
   }
 
   render() {
-    const { id, keycardPictureSrc, keycardTypes, itemFieldsDefinition, popover } = this.props;
+    const { id, keycardPictureSrc, keycardTypes, fields, popover } = this.props;
     const { hasSupport } = this.state;
 
     return (
@@ -437,7 +439,7 @@ class KeyCard extends React.Component {
                   <FormattedMessage id="rp.checkout.keycard.area.question" defaultMessage="I have a card" />
                   <PopoverQuestion popover={popover} index={this.props.orderitem.get('skierIndex')} />
                 </div>
-                {itemFieldsDefinition.get('keycard').get('hasSupport', false) === true ?
+                {fields.get('keycard').get('hasSupport', false) === true ?
                   <Switch
                     on={!hasSupport}
                     onClick={() => {
@@ -476,7 +478,7 @@ KeyCard.propTypes = {
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired, // generic params
   orderitem: PropTypes.object.isRequired,
-  itemFieldsDefinition: PropTypes.object.isRequired,
+  fields: PropTypes.object.isRequired,
   popover: PropTypes.object.isRequired, // content for popover info keycard
   popoverLink: PropTypes.object.isRequired, // content for popover link keycard
   localItemInfo: PropTypes.object.isRequired, // current local Item

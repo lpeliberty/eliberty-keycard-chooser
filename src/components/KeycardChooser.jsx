@@ -19,7 +19,7 @@ const KeycardChooser = props => (
       orderitem={props.orderitem}
       changeCardNumber={props.changeCardNumber}
       onChangeCheck={props.onChangeCheck}
-      itemFieldsDefinition={props.itemFieldsDefinition}
+      fields={props.fields}
       popover={props.popover}
       popoverLink={props.popoverLink}
       hasSupport={props.hasSupport}
@@ -41,7 +41,7 @@ KeycardChooser.propTypes = {
   keycards: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired, // generic params
   orderitem: PropTypes.object.isRequired,
-  itemFieldsDefinition: PropTypes.object.isRequired,
+  fields: PropTypes.object.isRequired, // Fields mapping
   popover: PropTypes.object.isRequired, // content for popover info keycard
   popoverLink: PropTypes.object.isRequired, // content for popover link keycard
   localItemInfo: PropTypes.object.isRequired, // current localItem
