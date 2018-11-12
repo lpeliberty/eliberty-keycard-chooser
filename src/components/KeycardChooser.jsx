@@ -28,7 +28,6 @@ const KeycardChooser = props => (
       deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
       updateKeycardsMask={props.updateKeycardsMask}
       validateKeycard={props.validateKeycard}
-      updateValidatedKeycard={props.updateValidatedKeycard}
       updateValidField={props.updateValidField}
       updateSwissPassElem={props.updateSwissPassElem}
     />
@@ -52,8 +51,6 @@ KeycardChooser.propTypes = {
   updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
   // validateKeycard: function call api for verification of keycard number
   validateKeycard: PropTypes.func.isRequired,
-  // updateValidatedKeycard: function to change boolean value of keycard number
-  updateValidatedKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
   updateSwissPassElem: PropTypes.func.isRequired,
   hasSupport: PropTypes.bool.isRequired, // boolean indicating support element

@@ -138,8 +138,6 @@ class KeyCard extends React.Component {
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
         validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, cardType);
-        // localitemInfo.validateKeycard
-        this.props.updateValidatedKeycard(currentId, validKeycard);
 
         // Change localItemInfo.keycardMasks.swisspassElem.numberFormatValid
         if (isSwissPass) {
@@ -489,8 +487,6 @@ KeyCard.propTypes = {
   updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
   // validateKeycard: function call api for verification of keycard number
   validateKeycard: PropTypes.func.isRequired,
-  // updateValidatedKeycard: function to change boolean value of keycard number
-  updateValidatedKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
   updateSwissPassElem: PropTypes.func.isRequired,
   hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
