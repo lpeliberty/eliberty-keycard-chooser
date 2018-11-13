@@ -103,6 +103,12 @@ class KeyCard extends React.Component {
     const pattern = /^[0-9]{4}$/;
     const isValid = pattern.test(zipCode);
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, 'zipcodeFormatValid', isValid);
+    if (!isValid) {
+      const { formatMessage } = this.props.intl;
+      const errorKey = 'data.swisspass.zipcode';
+      const errorLabel = formatMessage({ id: 'rp.checkout.customize.swisspass.zipcode.invalid', defaultMessage: 'invalid' });
+      this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
+    }
   }
 
   /**

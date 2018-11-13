@@ -11,7 +11,7 @@ export function verifyKeycard(cardNumber, card) {
   const patternTA = /^([a-zA-Z0-9]{8})[ -]([a-zA-Z0-9]{3})[ -]([a-zA-Z0-9]{3})$/;
   const patternALFI = /^([0-9]{5})[ -]([0-9]{5})[ -]([0-9]{4})$/;
   const patternOPEN = /^([0-9]{9})[ -]([0-9]{1})$/;
-  const patternSWISSPASS = /^([S-s]{1})([0-9]{2})[ -]([0-9]{3})[ -]([0-9]{3})[ -]([0-9]{3})$/;
+  const patternSWISSPASS = /^([S|s]{1})([0-9]{2})[ -]([0-9]{3})[ -]([0-9]{3})[ -]([0-9]{3})$/;
 
   // verification the card type
   switch (card) {
