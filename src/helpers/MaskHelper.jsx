@@ -3,11 +3,10 @@ import * as tabKeycardType from '../constants/keycardsType';
 /**
  * Function to check the validation of the card number entered according to the type of card
  * @param cardNumber
- * @param index
  * @param card
  * @returns {boolean}
  */
-export function verifyKeycard(cardNumber, index, card) {
+export function verifyKeycard(cardNumber, card) {
   const patternSD = /^[0-9]{1,2}-[0-9]{20}-[0-9]$/;
   const patternTA = /^([a-zA-Z0-9]{8})[ -]([a-zA-Z0-9]{3})[ -]([a-zA-Z0-9]{3})$/;
   const patternALFI = /^([0-9]{5})[ -]([0-9]{5})[ -]([0-9]{4})$/;

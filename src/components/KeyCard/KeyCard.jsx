@@ -9,7 +9,14 @@ import PopoverLink from '../PopoverLink/PopoverLink';
 import CardNumberField from '../CardNumberField/CardNumberField';
 import * as tabKeycardType from '../../constants/keycardsType';
 import * as MaskHelper from '../../helpers/MaskHelper';
-import * as CardTypeHelper from '../../helpers/CardTypeHelper';
+import {
+  isCurrentCardNumberType,
+  getCurrentCardNumberValue,
+  isCurrentCardNumberValid,
+  getCardNumberTypes,
+  getCardNumberTypeElementProperty,
+  canCheckSwissPass,
+} from '../../helpers/CardTypeHelper';
 
 /**
  * Keycard
@@ -61,23 +68,24 @@ class KeyCard extends React.Component {
 
   /**
    * Change card number
+   *
    * @param event
-   * @param cardId
    * @param type
    */
-  handleChangeCardNumber(event, cardId, type) {
-    this.handleChangeAutoSuggestCardNumber(event.target.value, cardId, type, false);
+  handleChangeCardNumber(event, type) {
+    this.handleChangeAutoSuggestCardNumber(event.target.value, type, false);
   }
 
   /**
    * handle Change Check Swisspass
    */
   handleChangeCheckSwisspass() {
+    const type = 'swisspass';
+    const property = 'checked';
     const currentId = this.props.localItemInfo.get('skierIndex');
-    const currentItem = this.props.localItemInfo.get('keycardsMask', new Map());
-    const newValue = !currentItem.get('swisspassElem', new Map()).get('checked');
+    const newValue = !getCardNumberTypeElementProperty(this.props.localItemInfo, type, property);
 
-    this.props.updateSwissPassElem(currentId, 'checked', newValue);
+    this.props.stateUpdateCardNumberTypeProperty(currentId, type, property, newValue);
   }
 
   /**
@@ -85,39 +93,40 @@ class KeyCard extends React.Component {
    * @param event
    */
   handleChangeZipcode(event) {
-    const zipcode = event.target.value;
-
-    const pattern = /^[0-9]{4}$/;
-    const isValid = pattern.test(zipcode);
+    const type = 'swisspass';
+    const zipCode = event.target.value;
 
     const currentId = this.props.localItemInfo.get('skierIndex');
-    this.props.updateSwissPassElem(currentId, 'zipcode', zipcode);
-    this.props.updateSwissPassElem(currentId, 'zipcodeFormatValid', isValid);
+    this.props.stateUpdateCardNumberTypeProperty(currentId, type, 'zipcode', zipCode);
+
+    const pattern = /^[0-9]{4}$/;
+    const isValid = pattern.test(zipCode);
+    this.props.stateUpdateCardNumberTypeProperty(currentId, type, 'zipcodeFormatValid', isValid);
   }
 
   /**
    *
    * @param cardnumber
-   * @param cardId
    * @param type
    * @param suggest
    */
-  handleChangeAutoSuggestCardNumber(cardnumber, cardId, type, suggest = true) {
+  handleChangeAutoSuggestCardNumber(cardnumber, type, suggest = true) {
     let newValue = '';
-    let validKeycard = this.props.localItemInfo.get('validateKeycard');
     const { formatMessage } = this.props.intl;
     const errorKey = 'data.cardNumber';
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
     const currentId = this.props.localItemInfo.get('skierIndex');
     const skierIndex = this.props.orderitem.get('skierIndex');
 
+    let validKeycard = getCardNumberTypeElementProperty(this.props.localItemInfo, type, 'formatValid');
+
     if (cardnumber !== undefined && typeof cardnumber !== 'undefined') {
       // Remove spaces on card number
       cardnumber = cardnumber.replace(new RegExp(/( )|(_)/g), '');
 
       // Update others card types values
-      this.props.localItemInfo.get('keycardsMask').forEach((item, key) => {
-        if (key !== 'current' && key !== 'idCard' && key !== type && key !== 'swisspassElem') {
+      getCardNumberTypes(this.props.localItemInfo).forEach((item, key) => {
+        if (![type, 'swisspass'].includes(key)) {
           if (suggest) {
             this.props.keycards.forEach((element) => {
               if (element.get('shortnumber') === cardnumber || element.get('cardnumber') === cardnumber) {
@@ -125,7 +134,7 @@ class KeyCard extends React.Component {
               }
             });
           }
-          this.props.updateKeycardsMask(skierIndex, key, newValue);
+          this.props.stateUpdateCardNumberTypeProperty(skierIndex, key, 'number', newValue);
         }
       });
 
@@ -133,19 +142,13 @@ class KeyCard extends React.Component {
       this.props.deleteKeyFieldsErrors(currentId, errorKey);
 
       const cardType = tabKeycardType[type];
-      const isSwissPass = cardType === tabKeycardType.swisspass;
+      const isSwissPass = isCurrentCardNumberType(this.props.localItemInfo, 'swisspass');
 
       // verification keycard number is correct
       if (cardnumber !== '' || cardnumber !== undefined) {
-        validKeycard = MaskHelper.verifyKeycard(cardnumber, cardId, cardType);
+        validKeycard = MaskHelper.verifyKeycard(cardnumber, cardType);
 
-        // Change localItemInfo.keycardMasks.swisspassElem.numberFormatValid
-        if (isSwissPass) {
-          this.props.updateSwissPassElem(currentId, 'numberFormatValid', validKeycard);
-        } else {
-          // localItemInfo.itemsDefinition.fields.cardNumber.valid
-          this.props.updateValidField(currentId, 'cardNumber', validKeycard);
-        }
+        this.props.stateUpdateCardNumberTypeProperty(skierIndex, type, 'formatValid', validKeycard);
         this.changeValidationCard(validKeycard);
 
         // Keycard mask is valid
@@ -153,8 +156,8 @@ class KeyCard extends React.Component {
           // If no swisspass, we can validate keycard
           if (!isSwissPass) {
             this.props.validateKeycard(currentId, cardnumber);
-          } else if (CardTypeHelper.canCheckSwissPass(this.props.localItemInfo)) {
-            const zipCode = CardTypeHelper.getSwissPassProperty('zipcode');
+          } else if (canCheckSwissPass(this.props.localItemInfo)) {
+            const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
             this.props.validateKeycard(currentId, cardnumber, zipCode);
           }
         } else {
@@ -163,16 +166,6 @@ class KeyCard extends React.Component {
       } else {
         this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
       }
-      // Update current card type value
-      // if (typeof cardnumber !== 'undefined') {
-      // Change localItemInfo.values.cardNumber
-      this.props.changeCardNumber(skierIndex, cardnumber);
-      // Change localItemInfo.keycardMask.xxxxx
-      this.props.updateKeycardsMask(skierIndex, type, cardnumber);
-      if (isSwissPass) {
-        this.props.updateSwissPassElem(skierIndex, 'number', cardnumber);
-      }
-      // }
     }
   }
 
@@ -195,95 +188,57 @@ class KeyCard extends React.Component {
   }
 
   /**
+   * Render keycard types content (choice or not)
    *
-   * @param index
-   * @param type
-   * @param cardNumber
-   * @param errorKey
-   * @param className
-   */
-  renderedCardNumberField(index, type, cardNumber) {
-    return (
-      <CardNumberField
-        key={index}
-        id={index}
-        validInput={this.state.valid}
-        mode={tabKeycardType[type]}
-        keycards={this.props.keycards}
-        handleChangeCardNumber={(event) => {
-          this.handleChangeCardNumber(event, index, type);
-        }}
-        onChange={(event) => {
-          this.handleChangeCardNumber(event, index, type);
-        }}
-        onAutoSuggestSelected={(cardnumber) => {
-          this.handleChangeAutoSuggestCardNumber(cardnumber, index, type);
-        }}
-        cardNumber={cardNumber}
-        value={cardNumber}
-        params={this.props.params}
-      />
-    );
-  }
-
-
-  /**
-   * Display of the double input mask
-   * @param card
-   * @param index
-   * @param keycards
-   * @param params
+   * @param keycardTypes
    * @returns {XML}
    */
-  renderedSomeInputKeyCards(type, index) {
-    let className = 'tab-pane fade in';
-    const aux = `tabKeycardType[type]${index}`;
-    const currentId = this.props.localItemInfo.get('skierIndex');
-    const errorKey = 'data.cardNumber';
-    let cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
-
-    if (cardNumber === null || typeof cardNumber === 'undefined') {
-      cardNumber = '';
-    }
-
-    // Remove spaces on card number
-    cardNumber = cardNumber.replace(new RegExp(/( )|(_)/g), '');
-
-    // active tab on select
-    if (index === this.props.localItemInfo.get('keycardsMask').get('idCard')) {
-      className = `${className} active`;
-      this.props.changeCardNumber(currentId, cardNumber);
-      this.props.updateKeycardsMask(currentId, 'current', type);
-    }
-
-    return (
-      <div className={className} id={aux} role="tabpanel" key={index}>
-        { this.renderedCardNumberField(index, type, cardNumber) }
-        { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
-        { cardNumber === '' || this.props.localItemInfo.get('validateKeycard') === false ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
-      </div>
+  renderedKeyCardTypesContent(keycardTypes) {
+    return (keycardTypes.size > 1
+      ? ( // Display Double Mask KeyCard
+        <div>
+          <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
+            { keycardTypes.map(type => (
+              this.renderedLabelTab(tabKeycardType[type], type)
+            )) }
+          </ul>
+          <div className="tab-content">
+            {
+              keycardTypes.map(type => (
+                this.renderedSomeInputKeyCards(type)
+              ))
+            }
+          </div>
+        </div>
+      )
+      :
+      (
+        // Display one Input for keyCard
+        this.renderedInputOneKeyCard(keycardTypes.first())
+      )
     );
   }
 
   /**
    * Display of the simple input mask
+   *
    * @param type
-   * @param index
    * @returns {*}
    */
-  renderedInputOneKeyCard(type, index) {
+  renderedInputOneKeyCard(type) {
     let validKeycard = false;
     const errorKey = 'data.cardNumber';
     const { formatMessage } = this.props.intl;
     const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'empty' });
     const currentId = this.props.localItemInfo.get('skierIndex');
-    let cardNumber = this.props.localItemInfo.get('keycardsMask').get(type);
+    let cardNumber = getCurrentCardNumberValue(this.props.localItemInfo);
 
-    if (cardNumber === null) {
+    if (cardNumber === null || typeof cardNumber === 'undefined') {
       cardNumber = '';
     }
 
-    this.props.updateKeycardsMask(currentId, 'current', type);
+    // Change current cardNumber type
+    this.props.updateCurrentCardNumberType(currentId, type);
     /*
         if (cardNumber !== '') {
           validKeycard = MaskHelper.verifyKeycard(cardNumber, index, tabKeycardType[type]);
@@ -296,71 +251,118 @@ class KeyCard extends React.Component {
         }
     */
     return (
-      <div key={index}>
-        { this.renderedCardNumberField(index, type, cardNumber) }
+      <div key={type}>
+        { this.renderedCardNumberField(type, cardNumber) }
         { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
-        { cardNumber === '' || this.props.localItemInfo.get('validateKeycard') === false ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo) : '' }
+        {
+          cardNumber === '' || isCurrentCardNumberValid(this.props.localItemInfo) === false
+            ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo)
+            : '' }
       </div>
     );
   }
 
   /**
    * Display labels for inputs - select active input
-   * @param card
-   * @param index
    * @returns {XML}
+   * @param textType
+   * @param type
    */
-  renderedLabelTab(type, index) {
-    const aux = `type${index}`;
+  renderedLabelTab(textType, type) {
     let className = 'nav-item';
-
-    if (index === this.props.localItemInfo.get('keycardsMask').get('idCard')) {
+    if (isCurrentCardNumberType(this.props.localItemInfo, type)) {
       className = `${className} active`;
     }
 
     return (
-      <li className={className} key={index}>
+      <li className={className} key={type}>
         <a
           className="nav-link text-center"
           data-toggle="tab"
           role="tab"
-          href={aux}
+          href={`type${type}`}
           onClick={() => {
-            this.props.updateKeycardsMask(this.props.localItemInfo.get('skierIndex'), 'idCard', index);
+            // Change current cardNumber type
+            this.props.updateCurrentCardNumberType(this.props.localItemInfo.get('skierIndex'), type);
           }}
-        >{type}</a>
+        >{textType}</a>
       </li>
     );
   }
 
   /**
+   * Display of the double input mask
    *
-   * @param keycardTypes
-   * @param keycards
-   * @param params
+   * @param type
    * @returns {XML}
    */
-  renderedListKeyCard(keycardTypes) {
-    return (keycardTypes.size > 1
-      ? ( // Display Double Mask KeyCard
-        <div>
-          <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
-            { keycardTypes.map((type, index) => (
-              this.renderedLabelTab(tabKeycardType[type], index)
-            )) }
-          </ul>
-          <div className="tab-content">
-            {
-              keycardTypes.map((type, index) => (
-                this.renderedSomeInputKeyCards(type, index)
-              ))
-            }
-          </div>
-        </div>
-      ) :
-      keycardTypes.map((type, index) => ( // Display one Input for keyCard
-        this.renderedInputOneKeyCard(type, index)
-      ))
+  renderedSomeInputKeyCards(type) {
+    let className = 'tab-pane fade in';
+    const aux = `tabKeycardType[type]${type}`;
+    const currentId = this.props.localItemInfo.get('skierIndex');
+    const errorKey = 'data.cardNumber';
+    let cardNumber = getCurrentCardNumberValue(this.props.localItemInfo);
+
+    if (cardNumber === null || typeof cardNumber === 'undefined') {
+      cardNumber = '';
+    }
+
+    // Remove spaces on card number
+    cardNumber = cardNumber.replace(new RegExp(/( )|(_)/g), '');
+
+    const isCurrentType = isCurrentCardNumberType(this.props.localItemInfo, type);
+
+    // active tab on select
+    if (isCurrentType) {
+      className = `${className} active`;
+      this.props.changeCardNumber(currentId, cardNumber);
+    }
+
+    return (
+      <div className={className} id={aux} role="tabpanel" key={type}>
+        { this.renderedCardNumberField(type, cardNumber) }
+        { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
+        {
+          cardNumber === '' || isCurrentType === false
+            ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo)
+            : ''
+        }
+        {
+          isCurrentCardNumberType(this.props.localItemInfo, 'swisspass')
+            ? this.renderedContentForSwisspass()
+            : null
+        }
+      </div>
+    );
+  }
+
+  /**
+   * Render a cardNumber field
+   *
+   * @param type
+   * @param cardNumber
+   */
+  renderedCardNumberField(type, cardNumber) {
+    return (
+      <CardNumberField
+        key={type}
+        id={type}
+        validInput={this.state.valid}
+        mode={tabKeycardType[type]}
+        keycards={this.props.keycards}
+        handleChangeCardNumber={(event) => {
+          this.handleChangeCardNumber(event, type);
+        }}
+        onChange={(event) => {
+          this.handleChangeCardNumber(event, type);
+        }}
+        onAutoSuggestSelected={(number) => {
+          this.handleChangeAutoSuggestCardNumber(number, type);
+        }}
+        cardNumber={cardNumber}
+        value={cardNumber}
+        params={this.props.params}
+      />
     );
   }
 
@@ -384,38 +386,36 @@ class KeyCard extends React.Component {
    * @returns {null}
    */
   renderedContentForSwisspass() {
-    return (this.props.localItemInfo.get('keycardsMask').get('current') === 'swisspass'
-      ? <div className="contentSwisspass">
-        <input
-          type="text"
-          name="zipcode-swiss"
-          id="zipcode-swiss"
-          className="form-control"
-          maxLength="4"
-          data-control="true"
-          onChange={event => this.handleChangeZipcode(event)}
-          value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'zipcode')}
-        />
-        <label htmlFor="zipcode-swiss">
-          <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
-        </label>
-        <input
-          type="checkbox"
-          // value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked') === true ? '1' : '0'}
-          checked={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked')}
-          name="check-swisspass"
-          id="check-swisspass"
-          // onChange={() => this.handleChangeCheckSwisspass()}
-          onClick={() => this.handleChangeCheckSwisspass()}
-        />
-        <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
-          <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
-        </label>
-        <button className="btn-swisspass">
-          <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
-        </button>
-      </div>
-      : null
+    return (<div className="contentSwisspass">
+      <input
+        type="text"
+        name="zipcode-swiss"
+        id="zipcode-swiss"
+        className="form-control"
+        maxLength="4"
+        data-control="true"
+        onChange={event => this.handleChangeZipcode(event)}
+        value={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode')}
+      />
+      <label htmlFor="zipcode-swiss">
+        <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
+      </label>
+      <input
+        type="checkbox"
+        // value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked') === true ? '1' : '0'}
+        checked={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'checked')}
+        name="check-swisspass"
+        id="check-swisspass"
+        // onChange={() => this.handleChangeCheckSwisspass()}
+        onClick={() => this.handleChangeCheckSwisspass()}
+      />
+      <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
+        <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
+      </label>
+      <button className="btn-swisspass">
+        <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
+      </button>
+    </div>
     );
   }
 
@@ -455,8 +455,7 @@ class KeyCard extends React.Component {
 
                 {this.state.checkYes
                   ? <div className="msgCheckYes">
-                    { this.renderedListKeyCard(keycardTypes) }
-                    { this.renderedContentForSwisspass() }
+                    { this.renderedKeyCardTypesContent(keycardTypes) }
                   </div>
                   : ''}
               </div>
@@ -484,13 +483,13 @@ KeyCard.propTypes = {
   onChangeCheck: PropTypes.func.isRequired, // function to make changes when checking
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
-  updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
+  updateCurrentCardNumberType: PropTypes.func.isRequired, // function to update current cardNumber type
   // validateKeycard: function call api for verification of keycard number
   validateKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
-  updateSwissPassElem: PropTypes.func.isRequired,
   hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
   intl: intlShape.isRequired, // for the internationalization
+  stateUpdateCardNumberTypeProperty: PropTypes.func.isRequired, // function to update cardNumber property value
 };
 
 export default injectIntl(KeyCard);

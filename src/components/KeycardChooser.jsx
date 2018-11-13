@@ -26,10 +26,10 @@ const KeycardChooser = props => (
       localItemInfo={props.localItemInfo}
       updateFieldsErrors={props.updateFieldsErrors}
       deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
-      updateKeycardsMask={props.updateKeycardsMask}
+      updateCurrentCardNumberType={props.updateCurrentCardNumberType}
       validateKeycard={props.validateKeycard}
       updateValidField={props.updateValidField}
-      updateSwissPassElem={props.updateSwissPassElem}
+      stateUpdateCardNumberTypeProperty={props.stateUpdateCardNumberTypeProperty}
     />
   </div>
 );
@@ -48,12 +48,12 @@ KeycardChooser.propTypes = {
   onChangeCheck: PropTypes.func.isRequired, // function to make changes when checking
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
-  updateKeycardsMask: PropTypes.func.isRequired, // function to update elements on a keycardsMask
+  updateCurrentCardNumberType: PropTypes.func.isRequired, // function to update current cardNumber type
   // validateKeycard: function call api for verification of keycard number
   validateKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
-  updateSwissPassElem: PropTypes.func.isRequired,
   hasSupport: PropTypes.bool.isRequired, // boolean indicating support element
+  stateUpdateCardNumberTypeProperty: PropTypes.func.isRequired, // function to update cardNumber property value
 };
 
 export default KeycardChooser;
