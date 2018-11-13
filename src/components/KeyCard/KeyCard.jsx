@@ -16,7 +16,7 @@ import {
   getCardNumberTypes,
   getCardNumberTypeElementProperty,
   canCheckSwissPass,
-  isSwissPassZipCodeValid,
+  isSwissPassPropertyValid,
 } from '../../helpers/CardTypeHelper';
 
 /**
@@ -88,7 +88,13 @@ class KeyCard extends React.Component {
 
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, property, newValue);
 
-    this.validateSwissPass(this.props.localItemInfo);
+    if (isSwissPassPropertyValid(this.props.localItemInfo, 'formatValid')
+      && isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
+      && newValue) {
+      const cardNumber = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'number');
+      const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
+      this.props.validateKeycard(currentId, cardNumber, zipCode);
+    }
   }
 
   /**
@@ -114,18 +120,9 @@ class KeyCard extends React.Component {
       const { formatMessage } = this.props.intl;
       const errorLabel = formatMessage({ id: 'rp.checkout.customize.swisspass.zipcode.invalid', defaultMessage: 'invalid' });
       this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
-    } else {
-      this.validateSwissPass(this.props.localItemInfo);
-    }
-  }
-
-  validateSwissPass(localItemInfo) {
-    console.log('validateSwissPass', localItemInfo.toJS());
-    if (canCheckSwissPass(this.props.localItemInfo)) {
-      console.log('check validate swisspass ...');
+    } else if (isSwissPassPropertyValid(this.props.localItemInfo, 'formatValid')
+        && isSwissPassPropertyValid(this.props.localItemInfo, 'checked')) {
       const cardNumber = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'number');
-      const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
-      const currentId = this.props.localItemInfo.get('skierIndex');
       this.props.validateKeycard(currentId, cardNumber, zipCode);
     }
   }
@@ -182,8 +179,10 @@ class KeyCard extends React.Component {
           // If no swisspass, we can validate keycard
           if (!isSwissPass) {
             this.props.validateKeycard(currentId, cardnumber);
-          } else {
-            this.validateSwissPass(this.props.localItemInfo);
+          } else if (isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
+              && isSwissPassPropertyValid(this.props.localItemInfo, 'checked')) {
+              const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
+              this.props.validateKeycard(currentId, cardnumber, zipCode);
           }
         } else {
           this.props.updateFieldsErrors(currentId, errorKey, errorLabel);

@@ -28,10 +28,11 @@ export function canCheckSwissPass(localItemInfo) {
  * Return if swissPass zipCode is valid
  *
  * @param localItemInfo
+ * @param property
  */
-export function isSwissPassZipCodeValid(localItemInfo) {
+export function isSwissPassPropertyValid(localItemInfo, property) {
   return getCardNumberTypeElement(localItemInfo, 'swisspass')
-    .get('zipcodeFormatValid', false);
+    .get(property, false);
 }
 
 /**
