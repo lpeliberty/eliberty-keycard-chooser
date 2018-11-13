@@ -18,6 +18,7 @@ export function getCardNumberField(localItemInfo) {
  */
 export function canCheckSwissPass(localItemInfo) {
   const swissPassElem = getCardNumberTypeElement(localItemInfo, 'swisspass');
+  console.log('swissPassElem', swissPassElem.toJS());
   return (swissPassElem.get('formatValid', false)
     && swissPassElem.get('zipcodeFormatValid', false)
     && swissPassElem.get('checked', false)) === true;
