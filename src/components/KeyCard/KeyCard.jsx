@@ -123,9 +123,12 @@ class KeyCard extends React.Component {
     if (cardnumber !== undefined && typeof cardnumber !== 'undefined') {
       // Remove spaces on card number
       cardnumber = cardnumber.replace(new RegExp(/( )|(_)/g), '');
+      console.log('cardNumber', cardnumber);
 
       // Update others card types values
       getCardNumberTypes(this.props.localItemInfo).forEach((item, key) => {
+        console.log('key', key);
+        console.log('type', type);
         if (![type, 'swisspass'].includes(key)) {
           if (suggest) {
             this.props.keycards.forEach((element) => {
@@ -166,6 +169,9 @@ class KeyCard extends React.Component {
       } else {
         this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
       }
+
+      // Save cardNumber value
+      this.props.stateUpdateCardNumberTypeProperty(skierIndex, type, 'number', cardnumber);
     }
   }
 
