@@ -181,8 +181,8 @@ class KeyCard extends React.Component {
             this.props.validateKeycard(currentId, cardnumber);
           } else if (isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
               && isSwissPassPropertyValid(this.props.localItemInfo, 'checked')) {
-              const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
-              this.props.validateKeycard(currentId, cardnumber, zipCode);
+            const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
+            this.props.validateKeycard(currentId, cardnumber, zipCode);
           }
         } else {
           this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
@@ -426,7 +426,7 @@ class KeyCard extends React.Component {
         <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
       </label>
       {
-        !isSwissPassZipCodeValid(this.props.localItemInfo)
+        !isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
           ? KeyCard.renderedErrorInputMessage('data.swisspass.zipcode', this.props.localItemInfo)
           : ''
       }
