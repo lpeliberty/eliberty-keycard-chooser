@@ -194,6 +194,7 @@ class KeyCard extends React.Component {
    * @returns {XML}
    */
   renderedKeyCardTypesContent(keycardTypes) {
+    console.log('keycardTypes', keycardTypes.toJS());
     return (keycardTypes.size > 1
       ? ( // Display Double Mask KeyCard
         <div>
@@ -317,6 +318,7 @@ class KeyCard extends React.Component {
       className = `${className} active`;
       this.props.changeCardNumber(currentId, cardNumber);
     }
+    console.log('type', type);
 
     return (
       <div className={className} id={aux} role="tabpanel" key={type}>
