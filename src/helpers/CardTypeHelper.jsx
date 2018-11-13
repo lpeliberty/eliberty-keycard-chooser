@@ -71,15 +71,6 @@ export function getCurrentCardNumberValue(localItemInfo, property = 'number') {
 }
 
 /**
- * Return if current cardNumber valid status
- *
- * @param localItemInfo
- */
-export function isCurrentCardNumberValid(localItemInfo) {
-  return getCurrentCardNumberType(localItemInfo).get('valid', false);
-}
-
-/**
  * Return the cardNumber types available
  *
  * @param localItemInfo
@@ -109,4 +100,15 @@ export function getCardNumberTypeElement(localItemInfo, type) {
  */
 export function getCardNumberTypeElementProperty(localItemInfo, type, property) {
   return getCardNumberTypeElement(localItemInfo, type).get(property);
+}
+
+/**
+ * Return if cardNumber is valid
+ *
+ * @param localItemInfo
+ * @returns {*}
+ */
+export function isCurrentCardNumberValid(localItemInfo) {
+  return getCurrentCardTypeElement(localItemInfo).get('formatValid', false)
+    && getCardNumberField(localItemInfo).get('valid', false);
 }

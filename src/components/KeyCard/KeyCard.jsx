@@ -16,6 +16,7 @@ import {
   getCardNumberTypes,
   getCardNumberTypeElementProperty,
   canCheckSwissPass,
+  isCardNumberValid,
 } from '../../helpers/CardTypeHelper';
 
 /**
@@ -123,12 +124,9 @@ class KeyCard extends React.Component {
     if (cardnumber !== undefined && typeof cardnumber !== 'undefined') {
       // Remove spaces on card number
       cardnumber = cardnumber.replace(new RegExp(/( )|(_)/g), '');
-      console.log('cardNumber', cardnumber);
 
       // Update others card types values
       getCardNumberTypes(this.props.localItemInfo).forEach((item, key) => {
-        console.log('key', key);
-        console.log('type', type);
         if (![type, 'swisspass'].includes(key)) {
           if (suggest) {
             this.props.keycards.forEach((element) => {
@@ -200,7 +198,6 @@ class KeyCard extends React.Component {
    * @returns {XML}
    */
   renderedKeyCardTypesContent(keycardTypes) {
-    console.log('keycardTypes', keycardTypes.toJS());
     return (keycardTypes.size > 1
       ? ( // Display Double Mask KeyCard
         <div>
@@ -262,7 +259,7 @@ class KeyCard extends React.Component {
         { this.renderedCardNumberField(type, cardNumber) }
         { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
         {
-          cardNumber === '' || isCurrentCardNumberValid(this.props.localItemInfo) === false
+          cardNumber === '' || !isCurrentCardNumberValid(this.props.localItemInfo)
             ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo)
             : '' }
       </div>
@@ -322,14 +319,13 @@ class KeyCard extends React.Component {
     if (isCurrentType) {
       className = `${className} active`;
     }
-    console.log('type', type);
 
     return (
       <div className={className} id={aux} role="tabpanel" key={type}>
         { this.renderedCardNumberField(type, cardNumber) }
         { this.state.checkYes ? this.renderedLabelLinkPopover() : '' }
         {
-          cardNumber === '' || isCurrentType === false
+          cardNumber === '' || !isCurrentCardNumberValid(this.props.localItemInfo)
             ? KeyCard.renderedErrorInputMessage(errorKey, this.props.localItemInfo)
             : ''
         }
