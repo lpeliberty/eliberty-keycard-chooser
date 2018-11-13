@@ -88,7 +88,7 @@ class KeyCard extends React.Component {
 
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, property, newValue);
 
-    this.validateSwissPass();
+    this.validateSwissPass(this.props.localItemInfo);
   }
 
   /**
@@ -115,12 +115,12 @@ class KeyCard extends React.Component {
       const errorLabel = formatMessage({ id: 'rp.checkout.customize.swisspass.zipcode.invalid', defaultMessage: 'invalid' });
       this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
     } else {
-      this.validateSwissPass();
+      this.validateSwissPass(this.props.localItemInfo);
     }
   }
 
-  validateSwissPass() {
-    console.log('validateSwissPass');
+  validateSwissPass(localItemInfo) {
+    console.log('validateSwissPass', localItemInfo.toJS());
     if (canCheckSwissPass(this.props.localItemInfo)) {
       console.log('check validate swisspass ...');
       const cardNumber = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'number');
@@ -183,7 +183,7 @@ class KeyCard extends React.Component {
           if (!isSwissPass) {
             this.props.validateKeycard(currentId, cardnumber);
           } else {
-            this.validateSwissPass();
+            this.validateSwissPass(this.props.localItemInfo);
           }
         } else {
           this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
