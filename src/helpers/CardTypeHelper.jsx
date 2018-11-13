@@ -1,5 +1,4 @@
 import { Map, List } from 'immutable';
-import * as KeycardsType from '../constants/keycardsType';
 
 /**
  * Return the cardNumber field (properties)
@@ -7,7 +6,9 @@ import * as KeycardsType from '../constants/keycardsType';
  * @param localItemInfo
  */
 export function getCardNumberField(localItemInfo) {
-  return localItemInfo.get('cardNumber', new Map());
+  return localItemInfo
+    .get('fields', new Map())
+    .get('cardNumber', new Map());
 }
 
 /**
