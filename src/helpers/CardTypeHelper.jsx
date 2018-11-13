@@ -23,11 +23,14 @@ export function canCheckSwissPass(localItemInfo) {
     && swissPassElem.get('checked', false)) === true;
 }
 
-export function getSwissPassProperty(localItemInfo, property) {
-  return localItemInfo
-    .get('keycardsMask', new Map())
-    .get('swisspassElem', new Map())
-    .get(property, '');
+/**
+ * Return if swissPass zipCode is valid
+ *
+ * @param localItemInfo
+ */
+export function isSwissPassZipCodeValid(localItemInfo) {
+  return getCardNumberTypeElement(localItemInfo, 'swisspass')
+    .get('zipcodeFormatValid', false);
 }
 
 /**

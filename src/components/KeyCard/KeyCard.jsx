@@ -16,7 +16,7 @@ import {
   getCardNumberTypes,
   getCardNumberTypeElementProperty,
   canCheckSwissPass,
-  isCardNumberValid,
+  isSwissPassZipCodeValid,
 } from '../../helpers/CardTypeHelper';
 
 /**
@@ -408,6 +408,11 @@ class KeyCard extends React.Component {
       <label htmlFor="zipcode-swiss">
         <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
       </label>
+      {
+        !isSwissPassZipCodeValid(this.props.localItemInfo)
+          ? KeyCard.renderedErrorInputMessage('data.swisspass.zipcode', this.props.localItemInfo)
+          : ''
+      }
       <input
         type="checkbox"
         // value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked') === true ? '1' : '0'}
