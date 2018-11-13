@@ -306,7 +306,6 @@ class KeyCard extends React.Component {
   renderedSomeInputKeyCards(type) {
     let className = 'tab-pane fade in';
     const aux = `tabKeycardType[type]${type}`;
-    const currentId = this.props.localItemInfo.get('skierIndex');
     const errorKey = 'data.cardNumber';
     let cardNumber = getCurrentCardNumberValue(this.props.localItemInfo);
 
@@ -322,7 +321,6 @@ class KeyCard extends React.Component {
     // active tab on select
     if (isCurrentType) {
       className = `${className} active`;
-      this.props.changeCardNumber(currentId, cardNumber);
     }
     console.log('type', type);
 
@@ -487,7 +485,6 @@ KeyCard.propTypes = {
   popover: PropTypes.object.isRequired, // content for popover info keycard
   popoverLink: PropTypes.object.isRequired, // content for popover link keycard
   localItemInfo: PropTypes.object.isRequired, // current local Item
-  changeCardNumber: PropTypes.func.isRequired, // function to change cardnumber of item
   onChangeCheck: PropTypes.func.isRequired, // function to make changes when checking
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
