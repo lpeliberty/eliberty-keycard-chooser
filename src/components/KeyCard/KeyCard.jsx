@@ -412,40 +412,41 @@ class KeyCard extends React.Component {
    */
   renderedContentForSwisspass() {
     return (<div className="contentSwisspass">
-      <input
-        type="text"
-        name="zipcode-swiss"
-        id="zipcode-swiss"
-        className="form-control"
-        maxLength="4"
-        data-control="true"
-        onChange={event => this.handleChangeZipcode(event)}
-        value={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode')}
-      />
-      <label htmlFor="zipcode-swiss">
-        <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
-      </label>
-      {
-        !isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
-          ? KeyCard.renderedErrorInputMessage('data.swisspass.zipcode', this.props.localItemInfo)
-          : ''
-      }
-      <input
-        type="checkbox"
-        // value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked') === true ? '1' : '0'}
-        checked={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'checked')}
-        name="check-swisspass"
-        id="check-swisspass"
-        // onChange={() => this.handleChangeCheckSwisspass()}
-        onClick={() => this.handleChangeCheckSwisspass()}
-      />
-      <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
-        <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
-      </label>
-      <a className="btn-swisspass">
-        <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
-      </a>
-    </div>
+      <div className="wrapperForm">
+        <input
+          type="text"
+          name="zipcode-swiss"
+          id="zipcode-swiss"
+          maxLength="4"
+          data-control="true"
+          onChange={event => this.handleChangeZipcode(event)}
+          value={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode')}
+        />
+        <label htmlFor="zipcode-swiss" className="control-label">
+          <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
+        </label>
+      </div>
+        {
+          !isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
+            ? KeyCard.renderedErrorInputMessage('data.swisspass.zipcode', this.props.localItemInfo)
+            : ''
+        }
+        <input
+          type="checkbox"
+          // value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked') === true ? '1' : '0'}
+          checked={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'checked')}
+          name="check-swisspass"
+          id="check-swisspass"
+          // onChange={() => this.handleChangeCheckSwisspass()}
+          onClick={() => this.handleChangeCheckSwisspass()}
+        />
+        <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
+          <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
+        </label>
+        <a className="btn-swisspass">
+          <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
+        </a>
+      </div>
     );
   }
 
