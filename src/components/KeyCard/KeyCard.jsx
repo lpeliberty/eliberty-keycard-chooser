@@ -296,7 +296,7 @@ class KeyCard extends React.Component {
    * @param type
    */
   renderedLabelTab(textType, type) {
-    let className = 'nav-item disabled';
+    let className = 'nav-item';
     if (isCurrentCardNumberType(this.props.localItemInfo, type)) {
       className = `${className} active`;
     }
