@@ -424,7 +424,6 @@ class KeyCard extends React.Component {
     const zipcodeValue = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
     const inputProps = {
       ...configs['ZIPCODE'],
-      type: text,
       name: "zipcode-swiss",
       id: "zipcode-swiss",
     };
