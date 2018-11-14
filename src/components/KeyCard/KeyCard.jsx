@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Map } from 'immutable';
+import MaskedInput from 'react-text-mask';
 import Switch from 'react-toggle-switch';
 import 'react-toggle-switch/dist/css/switch.min.css';
 import PopoverQuestion from '../PopoverQuestion/PopoverQuestion';
@@ -18,6 +19,15 @@ import {
   canCheckSwissPass,
   isSwissPassPropertyValid,
 } from '../../helpers/CardTypeHelper';
+
+const configs = {
+  ZIPCODE: {
+    placeholder: '0000',
+    mask: [
+      /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,
+    ],
+  },
+};
 
 /**
  * Keycard
@@ -412,17 +422,29 @@ class KeyCard extends React.Component {
    */
   renderedContentForSwisspass() {
     const zipcodeValue = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
+    const inputProps = {
+      ...configs['ZIPCODE'],
+      type: text,
+      name: "zipcode-swiss",
+      id: "zipcode-swiss",
+    };
     return (<div className="contentSwisspass">
       <div className="wrapperForm">
-        <input
-          type="text"
-          name="zipcode-swiss"
-          id="zipcode-swiss"
-          maxLength="4"
+        <MaskedInput
+          {...inputProps}
           data-control="true"
           onChange={event => this.handleChangeZipcode(event)}
           value={ typeof zipcodeValue !== "undefined" ? zipcodeValue : '' }
         />
+        {/*<input*/}
+          {/*type="text"*/}
+          {/*name="zipcode-swiss"*/}
+          {/*id="zipcode-swiss"*/}
+          {/*maxLength="4"*/}
+          {/*data-control="true"*/}
+          {/*onChange={event => this.handleChangeZipcode(event)}*/}
+          {/*value={ typeof zipcodeValue !== "undefined" ? zipcodeValue : '' }*/}
+        {/*/>*/}
         <label htmlFor="zipcode-swiss" className="control-label">
           <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
         </label>
