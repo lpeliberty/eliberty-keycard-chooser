@@ -306,7 +306,7 @@ class KeyCard extends React.Component {
    */
   renderedLabelTab(type, index) {
     const aux = `type${index}`;
-    let className = 'nav-item';
+    let className = 'nav-item disabled';
 
     if (index === this.props.localItemInfo.get('keycardsMask').get('idCard')) {
       className = `${className} active`;
@@ -401,9 +401,9 @@ class KeyCard extends React.Component {
             <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
               <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
             </label>
-            <button className="btn-swisspass">
+            <a href="#" className="btn-swisspass">
               <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
-            </button>
+            </a>
           </div>
         : null
     );
