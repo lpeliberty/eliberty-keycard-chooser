@@ -411,6 +411,7 @@ class KeyCard extends React.Component {
    * @returns {null}
    */
   renderedContentForSwisspass() {
+    const zipcodeValue = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
     return (<div className="contentSwisspass">
       <div className="wrapperForm">
         <input
@@ -420,7 +421,7 @@ class KeyCard extends React.Component {
           maxLength="4"
           data-control="true"
           onChange={event => this.handleChangeZipcode(event)}
-          value={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode')}
+          value={ typeof zipcodeValue !== "undefined" ? zipcodeValue : '' }
         />
         <label htmlFor="zipcode-swiss" className="control-label">
           <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
