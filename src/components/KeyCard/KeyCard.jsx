@@ -19,6 +19,7 @@ import {
   canCheckSwissPass,
   isSwissPassPropertyValid,
 } from '../../helpers/CardTypeHelper';
+import {cardNumberFormatIsValid} from "../../helpers/CardNumberHelper";
 
 const configs = {
   ZIPCODE: {
@@ -187,6 +188,8 @@ class KeyCard extends React.Component {
         // Keycard mask is valid
         if (validKeycard) {
           // If no swisspass, we can validate keycard
+          const formatIsValid = cardNumberFormatIsValid(this.props.localItemInfo);
+          console.log('formatIsValid', formatIsValid);
           if (!isSwissPass) {
             this.props.validateKeycard(currentId, cardnumber);
           } else if (isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
