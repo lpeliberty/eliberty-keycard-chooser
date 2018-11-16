@@ -250,8 +250,8 @@ class KeyCard extends React.Component {
       )
       :
       (
-        // Display one Input for keyCard
-        this.renderedInputOneKeyCard(keycardTypes.first())
+        // Display one Input for keyCard : get the first cardNumber type (first key of map)
+        this.renderedInputOneKeyCard(keycardTypes.keySeq().first())
       )
     );
   }
