@@ -19,7 +19,8 @@ import {
   canCheckSwissPass,
   isSwissPassPropertyValid,
 } from '../../helpers/CardTypeHelper';
-import {cardNumberFormatIsValid} from "../../helpers/CardNumberHelper";
+import { cardNumberFormatIsValid } from '../../helpers/CardNumberHelper';
+import store from '../../redux/stores/store';
 
 const configs = {
   ZIPCODE: {
@@ -188,8 +189,12 @@ class KeyCard extends React.Component {
         // Keycard mask is valid
         if (validKeycard) {
           // If no swisspass, we can validate keycard
+          const state = store.getState();
+          console.log('state', state);
+
           const formatIsValid = cardNumberFormatIsValid(this.props.localItemInfo);
           console.log('formatIsValid', formatIsValid);
+
           if (!isSwissPass) {
             this.props.validateKeycard(currentId, cardnumber);
           } else if (isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
