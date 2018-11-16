@@ -11,6 +11,8 @@ import {
  */
 export function cardNumberFormatIsValid(localItemInfo) {
   const currentCardNumberType = getCurrentCardNumberType(localItemInfo);
+  console.log('currentCardNumberType', currentCardNumberType);
+  console.log('localItemInfo', localItemInfo.toJS());
   switch (currentCardNumberType) {
     case 'sd':
     case 'ta':
