@@ -16,11 +16,8 @@ import {
   isCurrentCardNumberValid,
   getCardNumberTypes,
   getCardNumberTypeElementProperty,
-  canCheckSwissPass,
   isSwissPassPropertyValid,
 } from '../../helpers/CardTypeHelper';
-import { cardNumberFormatIsValid } from '../../helpers/CardNumberHelper';
-import store from '../../redux/stores/store';
 
 const configs = {
   ZIPCODE: {
@@ -101,14 +98,6 @@ class KeyCard extends React.Component {
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, property, newValue);
 
     this.props.checkValidKeycard(currentId);
-
-    if (isSwissPassPropertyValid(this.props.localItemInfo, 'formatValid')
-      && isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
-      && newValue) {
-      const cardNumber = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'number');
-      const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
-      //this.props.validateKeycard(currentId, cardNumber, zipCode);
-    }
   }
 
   /**
@@ -177,7 +166,6 @@ class KeyCard extends React.Component {
       this.props.deleteKeyFieldsErrors(currentId, errorKey);
 
       const cardType = tabKeycardType[type];
-      const isSwissPass = isCurrentCardNumberType(this.props.localItemInfo, 'swisspass');
 
       // Save cardNumber value
       this.props.stateUpdateCardNumberTypeProperty(skierIndex, type, 'number', cardnumber);
@@ -258,10 +246,7 @@ class KeyCard extends React.Component {
    * @returns {*}
    */
   renderedInputOneKeyCard(type) {
-    let validKeycard = false;
     const errorKey = 'data.cardNumber';
-    const { formatMessage } = this.props.intl;
-    const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'empty' });
     const currentId = this.props.localItemInfo.get('skierIndex');
     let cardNumber = getCurrentCardNumberValue(this.props.localItemInfo);
 
@@ -271,17 +256,7 @@ class KeyCard extends React.Component {
 
     // Change current cardNumber type
     this.props.updateCurrentCardNumberType(currentId, type);
-    /*
-        if (cardNumber !== '') {
-          validKeycard = MaskHelper.verifyKeycard(cardNumber, index, tabKeycardType[type]);
-          if (validKeycard) {
-            this.props.validateKeycard(currentId, cardNumber);
-            this.props.deleteKeyFieldsErrors(currentId, errorKey);
-          }
-        } else {
-          this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
-        }
-    */
+
     return (
       <div key={type}>
         { this.renderedCardNumberField(type, cardNumber) }
@@ -422,11 +397,11 @@ class KeyCard extends React.Component {
       <div className="wrapperForm">
         <MaskedInput
           {...mask}
-          name= "zipcode-swiss"
-          id= "zipcode-swiss"
+          name="zipcode-swiss"
+          id="zipcode-swiss"
           data-control="true"
           onChange={event => this.handleChangeZipcode(event)}
-          value={ typeof zipcodeValue !== "undefined" ? zipcodeValue : '' }
+          value={typeof zipcodeValue !== 'undefined' ? zipcodeValue : ''}
         />
         <label htmlFor="zipcode-swiss" className="control-label">
           <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
@@ -439,7 +414,6 @@ class KeyCard extends React.Component {
       }
       <input
         type="checkbox"
-        // value={CardTypeHelper.getSwissPassProperty(this.props.localItemInfo, 'checked') === true ? '1' : '0'}
         checked={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'checked')}
         name="check-swisspass"
         id="check-swisspass"
