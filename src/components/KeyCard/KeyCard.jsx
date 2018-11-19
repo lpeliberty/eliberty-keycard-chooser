@@ -494,8 +494,6 @@ KeyCard.propTypes = {
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
   updateCurrentCardNumberType: PropTypes.func.isRequired, // function to update current cardNumber type
-  // validateKeycard: function call api for verification of keycard number
-  validateKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
   intl: intlShape.isRequired, // for the internationalization

@@ -26,7 +26,6 @@ const KeycardChooser = props => (
       updateFieldsErrors={props.updateFieldsErrors}
       deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
       updateCurrentCardNumberType={props.updateCurrentCardNumberType}
-      validateKeycard={props.validateKeycard}
       updateValidField={props.updateValidField}
       stateUpdateCardNumberTypeProperty={props.stateUpdateCardNumberTypeProperty}
       checkValidKeycard={props.checkValidKeycard}
@@ -48,8 +47,6 @@ KeycardChooser.propTypes = {
   updateFieldsErrors: PropTypes.func.isRequired, // function to update fields errors
   deleteKeyFieldsErrors: PropTypes.func.isRequired, // function to delete key on fields errors
   updateCurrentCardNumberType: PropTypes.func.isRequired, // function to update current cardNumber type
-  // validateKeycard: function call api for verification of keycard number
-  validateKeycard: PropTypes.func.isRequired,
   updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean indicating support element
   stateUpdateCardNumberTypeProperty: PropTypes.func.isRequired, // function to update cardNumber property value
