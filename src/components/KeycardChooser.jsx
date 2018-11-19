@@ -29,6 +29,7 @@ const KeycardChooser = props => (
       validateKeycard={props.validateKeycard}
       updateValidField={props.updateValidField}
       stateUpdateCardNumberTypeProperty={props.stateUpdateCardNumberTypeProperty}
+      checkValidKeycard={props.checkValidKeycard}
     />
   </div>
 );
@@ -52,6 +53,7 @@ KeycardChooser.propTypes = {
   updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean indicating support element
   stateUpdateCardNumberTypeProperty: PropTypes.func.isRequired, // function to update cardNumber property value
+  checkValidKeycard: PropTypes.func.isRequired, // function to check complete valid cardNumber
 };
 
 export default KeycardChooser;
