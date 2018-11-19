@@ -189,24 +189,10 @@ class KeyCard extends React.Component {
         this.props.stateUpdateCardNumberTypeProperty(skierIndex, type, 'formatValid', validKeycard);
         this.changeValidationCard(validKeycard);
 
+        this.props.checkValidKeycard(skierIndex);
+
         // Keycard mask is valid
-        if (validKeycard) {
-          this.props.checkValidKeycard(skierIndex);
-          /* // If no swisspass, we can validate keycard
-          const state = store.getState();
-          console.log('state', state);
-
-          const formatIsValid = cardNumberFormatIsValid(this.props.localItemInfo);
-          console.log('formatIsValid', formatIsValid);
-
-          if (!isSwissPass) {
-            this.props.validateKeycard(currentId, cardnumber);
-          } else if (isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
-              && isSwissPassPropertyValid(this.props.localItemInfo, 'checked')) {
-            const zipCode = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
-            this.props.validateKeycard(currentId, cardnumber, zipCode);
-          } */
-        } else {
+        if (!validKeycard) {
           this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
         }
       } else {
