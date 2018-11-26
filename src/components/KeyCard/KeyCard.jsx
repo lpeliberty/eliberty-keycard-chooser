@@ -277,6 +277,7 @@ class KeyCard extends React.Component {
    */
   renderedLabelTab(textType, type) {
     let className = 'nav-item';
+    const { formatMessage } = this.props.intl;
     const labelKeycard = `rp.checkout.keycard.label.${type}`;
 
     if (isCurrentCardNumberType(this.props.localItemInfo, type)) {
