@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape, FormattedHTMLMessage } from 'react-intl';
 import { Map } from 'immutable';
 import MaskedInput from 'react-text-mask';
 import Switch from 'react-toggle-switch';
@@ -428,9 +428,7 @@ class KeyCard extends React.Component {
       <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
-      <a className="btn-swisspass">
-        <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
-      </a>
+      <FormattedHTMLMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
     </div>
     );
   }
