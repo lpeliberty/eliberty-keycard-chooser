@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape, FormattedHTMLMessage } from 'react-intl';
 import { Map } from 'immutable';
 import MaskedInput from 'react-text-mask';
 import Switch from 'react-toggle-switch';
@@ -281,6 +281,9 @@ class KeyCard extends React.Component {
    */
   renderedLabelTab(textType, type) {
     let className = 'nav-item';
+    const { formatMessage } = this.props.intl;
+    const labelKeycard = `rp.checkout.keycard.label.${type}`;
+
     if (isCurrentCardNumberType(this.props.localItemInfo, type)) {
       className = `${className} active`;
     }
@@ -296,7 +299,9 @@ class KeyCard extends React.Component {
             // Change current cardNumber type
             this.props.updateCurrentCardNumberType(this.props.localItemInfo.get('skierIndex'), type);
           }}
-        >{textType}</a>
+        >
+          {formatMessage({ id: labelKeycard, defaultMessage: 'Keycard' })}
+        </a>
       </li>
     );
   }
@@ -397,6 +402,8 @@ class KeyCard extends React.Component {
   renderedContentForSwisspass() {
     const zipcodeValue = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
     const mask = { ...configs['ZIPCODE']};
+    const { formatMessage } = this.props.intl;
+
     return (<div className="contentSwisspass">
       <div className="wrapperForm">
         <MaskedInput
@@ -427,9 +434,7 @@ class KeyCard extends React.Component {
       <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
-      <a className="btn-swisspass">
-        <FormattedMessage id="rp.checkout.keycard.swisspass.link" defaultMessage="Disclaimer" />
-      </a>
+      <div dangerouslySetInnerHTML={{__html: formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
     </div>
     );
   }
