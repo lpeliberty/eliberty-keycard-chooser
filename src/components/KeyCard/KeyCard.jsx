@@ -147,6 +147,10 @@ class KeyCard extends React.Component {
     if (cardnumber !== undefined && typeof cardnumber !== 'undefined') {
       // Remove spaces on card number
       cardnumber = cardnumber.replace(new RegExp(/( )|(_)/g), '');
+      // Force SwissPass number to uppercase
+      if (type === 'swisspass') {
+        cardnumber = cardnumber.toUpperCase();
+      }
 
       // Update others card types values
       getCardNumberTypes(this.props.localItemInfo).forEach((item, key) => {
