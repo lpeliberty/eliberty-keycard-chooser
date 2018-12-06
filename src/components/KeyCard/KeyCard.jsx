@@ -411,6 +411,8 @@ class KeyCard extends React.Component {
     const zipcodeValue = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
     const mask = { ...configs['ZIPCODE']};
     const { formatMessage } = this.props.intl;
+    console.log('render content swisspass localItemInfo', this.props.localItemInfo.toJS());
+    const skierIndex = this.props.localItemInfo.get('skierIndex');
 
     return (<div className="contentSwisspass">
       <div className="wrapperForm">
@@ -437,9 +439,9 @@ class KeyCard extends React.Component {
         name="check-swisspass"
         id="check-swisspass"
         // onChange={() => this.handleChangeCheckSwisspass()}
-        onClick={() => this.handleChangeCheckSwisspass(this.props.localItemInfo.get('skierIndex'))}
-      /> {this.props.localItemInfo.get('skierIndex')}
-      <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass(this.props.localItemInfo.get('skierIndex'))}>
+        onClick={() => this.handleChangeCheckSwisspass(skierIndex)}
+      /> {skierIndex}
+      <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass(skierIndex)}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
       <div dangerouslySetInnerHTML={{__html: formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
