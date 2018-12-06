@@ -405,7 +405,7 @@ class KeyCard extends React.Component {
     const { formatMessage } = this.props.intl;
     const skierIndex = this.props.localItemInfo.get('skierIndex');
 
-    return (<div className="`contentSwisspass`" key={`contentSwisspass_${skierIndex}`}>
+    return (<div className="contentSwisspass" key={`contentSwisspass_${skierIndex}`}>
       <div className="wrapperForm">
         <MaskedInput
           {...mask}
