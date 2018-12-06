@@ -94,6 +94,7 @@ class KeyCard extends React.Component {
     const type = 'swisspass';
     const property = 'checked';
     const currentId = this.props.localItemInfo.get('skierIndex');
+    console.log('localItemInfo', this.props.localItemInfo.toJS());
     const newValue = !getCardNumberTypeElementProperty(this.props.localItemInfo, type, property);
     console.log('newValue', newValue);
 
