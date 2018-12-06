@@ -90,10 +90,12 @@ class KeyCard extends React.Component {
    * handle Change Check Swisspass
    */
   handleChangeCheckSwisspass() {
+    console.log('handleChangeCheckSwisspass');
     const type = 'swisspass';
     const property = 'checked';
     const currentId = this.props.localItemInfo.get('skierIndex');
     const newValue = !getCardNumberTypeElementProperty(this.props.localItemInfo, type, property);
+    console.log('newValue', newValue);
 
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, property, newValue);
 
