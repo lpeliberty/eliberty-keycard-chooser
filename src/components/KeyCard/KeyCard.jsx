@@ -89,8 +89,8 @@ class KeyCard extends React.Component {
   /**
    * handle Change Check Swisspass
    */
-  handleChangeCheckSwisspass() {
-    console.log('handleChangeCheckSwisspass');
+  handleChangeCheckSwisspass(skierIndex) {
+    console.log('handleChangeCheckSwisspass param ?', skierIndex);
     const type = 'swisspass';
     const property = 'checked';
     const currentId = this.props.localItemInfo.get('skierIndex');
@@ -437,9 +437,9 @@ class KeyCard extends React.Component {
         name="check-swisspass"
         id="check-swisspass"
         // onChange={() => this.handleChangeCheckSwisspass()}
-        onClick={() => this.handleChangeCheckSwisspass()}
+        onClick={() => this.handleChangeCheckSwisspass(this.props.localItemInfo.get('skierIndex'))}
       /> {this.props.localItemInfo.get('skierIndex')}
-      <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
+      <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass(this.props.localItemInfo.get('skierIndex'))}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
       <div dangerouslySetInnerHTML={{__html: formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
