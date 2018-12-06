@@ -436,12 +436,12 @@ class KeyCard extends React.Component {
       <input
         type="checkbox"
         checked={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'checked')}
-        name="check-swisspass"
-        id="check-swisspass"
+        name={`check-swisspass${skierIndex}`}
+        id={`check-swisspass${skierIndex}`}
         // onChange={() => this.handleChangeCheckSwisspass()}
         onClick={() => this.handleChangeCheckSwisspass(skierIndex)}
       /> {skierIndex}
-      <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass(skierIndex)}>
+      <label htmlFor={`check-swisspass${skierIndex}`} onChange={() => this.handleChangeCheckSwisspass(skierIndex)}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
       <div dangerouslySetInnerHTML={{__html: formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
