@@ -438,7 +438,7 @@ class KeyCard extends React.Component {
         id="check-swisspass"
         // onChange={() => this.handleChangeCheckSwisspass()}
         onClick={() => this.handleChangeCheckSwisspass()}
-      />
+      /> {this.props.localItemInfo.get('skierIndex')}
       <label htmlFor="check-swisspass" onChange={() => this.handleChangeCheckSwisspass()}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
