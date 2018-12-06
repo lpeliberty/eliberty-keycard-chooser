@@ -95,6 +95,7 @@ class KeyCard extends React.Component {
     const property = 'checked';
     const currentId = this.props.localItemInfo.get('skierIndex');
     console.log('currentId', currentId);
+    console.log('orderitem.SkierIndex', this.props.orderitem.get('skierIndex'));
     console.log('localItemInfo', this.props.localItemInfo.toJS());
     const newValue = !getCardNumberTypeElementProperty(this.props.localItemInfo, type, property);
     console.log('newValue', newValue);
@@ -118,6 +119,8 @@ class KeyCard extends React.Component {
 
     const pattern = /^[0-9]{4}$/;
     const isValid = pattern.test(zipCode);
+    console.log('changeZipCode', currentId);
+    console.log('orderitem.SkierIndex', this.props.orderitem.get('skierIndex'));
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, 'zipcodeFormatValid', isValid);
 
     // Delete errors
@@ -176,6 +179,7 @@ class KeyCard extends React.Component {
       const cardType = tabKeycardType[type];
 
       // Save cardNumber value
+      console.log('handleChangeAutoSuggestCardNumber', skierIndex);
       this.props.stateUpdateCardNumberTypeProperty(skierIndex, type, 'number', cardnumber);
 
       // verification keycard number is correct
