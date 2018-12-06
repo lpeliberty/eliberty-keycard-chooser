@@ -89,16 +89,11 @@ class KeyCard extends React.Component {
   /**
    * handle Change Check Swisspass
    */
-  handleChangeCheckSwisspass(skierIndex) {
-    console.log('handleChangeCheckSwisspass param ?', skierIndex);
+  handleChangeCheckSwisspass() {
     const type = 'swisspass';
     const property = 'checked';
     const currentId = this.props.localItemInfo.get('skierIndex');
-    console.log('currentId', currentId);
-    console.log('orderitem.SkierIndex', this.props.orderitem.get('skierIndex'));
-    console.log('localItemInfo', this.props.localItemInfo.toJS());
     const newValue = !getCardNumberTypeElementProperty(this.props.localItemInfo, type, property);
-    console.log('newValue', newValue);
 
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, property, newValue);
 
@@ -119,8 +114,6 @@ class KeyCard extends React.Component {
 
     const pattern = /^[0-9]{4}$/;
     const isValid = pattern.test(zipCode);
-    console.log('changeZipCode', currentId);
-    console.log('orderitem.SkierIndex', this.props.orderitem.get('skierIndex'));
     this.props.stateUpdateCardNumberTypeProperty(currentId, type, 'zipcodeFormatValid', isValid);
 
     // Delete errors
@@ -179,7 +172,6 @@ class KeyCard extends React.Component {
       const cardType = tabKeycardType[type];
 
       // Save cardNumber value
-      console.log('handleChangeAutoSuggestCardNumber', skierIndex);
       this.props.stateUpdateCardNumberTypeProperty(skierIndex, type, 'number', cardnumber);
 
       // verification keycard number is correct
@@ -411,7 +403,6 @@ class KeyCard extends React.Component {
     const zipcodeValue = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
     const mask = { ...configs['ZIPCODE']};
     const { formatMessage } = this.props.intl;
-    console.log('render content swisspass localItemInfo', this.props.localItemInfo.toJS());
     const skierIndex = this.props.localItemInfo.get('skierIndex');
 
     return (<div className="contentSwisspass">
@@ -439,9 +430,9 @@ class KeyCard extends React.Component {
         name={`check-swisspass${skierIndex}`}
         id={`check-swisspass${skierIndex}`}
         // onChange={() => this.handleChangeCheckSwisspass()}
-        onClick={() => this.handleChangeCheckSwisspass(skierIndex)}
-      /> {skierIndex}
-      <label htmlFor={`check-swisspass${skierIndex}`} onChange={() => this.handleChangeCheckSwisspass(skierIndex)}>
+        onClick={() => this.handleChangeCheckSwisspass()}
+      />
+      <label htmlFor={`check-swisspass${skierIndex}`} onChange={() => this.handleChangeCheckSwisspass()}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
       <div dangerouslySetInnerHTML={{__html: formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
