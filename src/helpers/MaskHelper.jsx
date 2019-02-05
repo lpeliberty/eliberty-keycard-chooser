@@ -10,7 +10,7 @@ export function verifyKeycard(cardNumber, card) {
   const patternSD = /^[0-9]{1,2}-[0-9]{20}-[0-9]$/;
   const patternTA = /^([a-zA-Z0-9]{8})[ -]([a-zA-Z0-9]{3})[ -]([a-zA-Z0-9]{3})$/;
   const patternALFI = /^([0-9]{5})[ -]([0-9]{5})[ -]([0-9]{4})$/;
-  const patternOPEN = /^([0-9]{9})[ -]([0-9]{1})$/;
+  const patternOPEN = /^([0-9]{10})[ -]([0-9]{1})$/;
   const patternSWISSPASS = /^([S|s]{1})([0-9]{2})[ -]([0-9]{3})[ -]([0-9]{3})[ -]([0-9]{3})$/;
 
   // verification the card type
@@ -35,7 +35,7 @@ export function verifyKeycard(cardNumber, card) {
       break;
     }
     case tabKeycardType.open: {
-      if (cardNumber.length < 11 || !patternOPEN.test(cardNumber)) {
+      if (!patternOPEN.test(cardNumber)) {
         return false;
       }
       break;
