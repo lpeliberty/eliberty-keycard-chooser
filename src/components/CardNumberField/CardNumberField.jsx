@@ -26,7 +26,6 @@ const configs = {
       /[a-zA-Z0-9]/, /[a-zA-Z0-9]/, /[a-zA-Z0-9]/, '-',
       /[a-zA-Z0-9]/, /[a-zA-Z0-9]/, /[a-zA-Z0-9]/,
     ],
-    pipe: value => (value[0] === '1' ? { value: `01${value.slice(2)}`, indexesOfPipedChars: [0] } : value),
   },
   ALFI: {
     placeholder: '_____-_____-____',
