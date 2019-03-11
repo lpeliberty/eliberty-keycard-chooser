@@ -12,6 +12,7 @@ export function verifyKeycard(cardNumber, card) {
   const patternALFI = /^([0-9]{5})[ -]([0-9]{5})[ -]([0-9]{4})$/;
   const patternOPEN = /^([0-9]{9})[ -]([0-9]{1})$/;
   const patternSWISSPASS = /^([S|s]{1})([0-9]{2})[ -]([0-9]{3})[ -]([0-9]{3})[ -]([0-9]{3})$/;
+  const patternVERBIER = /^[A-B]{1}[0-9]{6}$/;
 
   // verification the card type
   switch (card) {
@@ -45,6 +46,9 @@ export function verifyKeycard(cardNumber, card) {
         return false;
       }
       break;
+    }
+    case tabKeycardType.verbier: {
+      return patternVERBIER.test(cardNumber);
     }
     default: { break; }
   }
