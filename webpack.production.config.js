@@ -1,8 +1,7 @@
 const webpack = require('webpack');
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const extractSass = new ExtractTextPlugin({
+const extractSass = new MiniCssExtractPlugin({
   filename: 'main.css',
 });
 
@@ -11,7 +10,7 @@ module.exports = {
     './src/index',
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(jpg|svg|png)$/,
         use: 'file-loader',
@@ -22,14 +21,11 @@ module.exports = {
       },
       {
         test: /\.s[ca]ss$/,
-        use: extractSass.extract({
-          use: [{
-            loader: 'css-loader',
-          }, {
-            loader: 'sass-loader',
-          }],
-          fallback: 'style-loader',
-        }),
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.jsx?$/,
@@ -40,39 +36,30 @@ module.exports = {
         test: /\.*.svg$/,
         loader: 'svg-inline-loader',
       },
-      { test: /\.(woff|woff2|eot|ttf|otf)$/, loader: 'file-loader?limit=100000' }
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/, loader: 'file-loader?limit=100000',
+      },
     ],
-
   },
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [__dirname, 'app', 'node_modules'],
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: `${__dirname}/dist`,
     filename: 'keycardChooser.js',
-    library: "keycardChooser",
-    libraryTarget: "var"
+    library: 'keycardChooser',
+    libraryTarget: 'var',
   },
   devtool: 'cheap-eval-source-map',
   devServer: {
     contentBase: './dist',
-    hot: true
+    hot: true,
   },
   plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        "NODE_ENV": JSON.stringify("production")
-      }
-    }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    extractSass
-  ]
+    extractSass,
+  ],
 };
