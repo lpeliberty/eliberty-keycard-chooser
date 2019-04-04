@@ -144,6 +144,9 @@ class CardNumberField extends React.Component {
   render() {
     const { suggestions } = this.state;
     const { mode, handleChangeCardNumber, cardNumber, params, validInput } = this.props;
+    
+    console.log('CardNumberField::mode -> ', mode);
+    
     const inputProps = {
       ...configs[mode],
       id: cardNumber,
