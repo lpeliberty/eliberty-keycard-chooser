@@ -4,6 +4,7 @@ import { FormattedMessage, injectIntl, intlShape, FormattedHTMLMessage } from 'r
 import { Map } from 'immutable';
 import MaskedInput from 'react-text-mask';
 import Switch from 'react-toggle-switch';
+import 'react-toggle-switch/dist/css/switch.min.css';
 import PopoverQuestion from '../PopoverQuestion/PopoverQuestion';
 import PopoverLink from '../PopoverLink/PopoverLink';
 import CardNumberField from '../CardNumberField/CardNumberField';
@@ -448,7 +449,7 @@ class KeyCard extends React.Component {
 
     return (
       <div className="blockPopover" key={id}>
-        <div>TOTO TEST</div>
+
         <div className="col-xs-4 keyCardAreaImage">
           <img src={keycardPictureSrc} alt="keycardPicture" />
         </div>
