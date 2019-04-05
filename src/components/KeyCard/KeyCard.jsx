@@ -313,6 +313,8 @@ class KeyCard extends React.Component {
    * @returns {XML}
    */
   renderedSomeInputKeyCards(type) {
+    console.log('KeyCard::type -> ', type);
+
     let className = 'tab-pane fade in';
     const aux = `tabKeycardType[type]${type}`;
     const errorKey = 'data.cardNumber';
@@ -443,6 +445,8 @@ class KeyCard extends React.Component {
   render() {
     const { id, keycardPictureSrc, keycardTypes, fields, popover } = this.props;
     const { hasSupport } = this.state;
+
+    console.log('KeyCard::keycardTypes -> ', keycardTypes);
 
     return (
       <div className="blockPopover" key={id}>
