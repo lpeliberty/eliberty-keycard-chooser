@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot",
     "deploy": "npm run dev",
-    "build": "webpack --progress -p --config webpack.production.config.js",
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development",
     "build:watch": "babel lib -w -d build",
     "build:all": "npm run build && npm run build:lib"
   },
