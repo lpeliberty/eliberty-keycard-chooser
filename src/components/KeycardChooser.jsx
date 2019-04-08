@@ -7,31 +7,35 @@ import KeyCard from './KeyCard/KeyCard';
 /**
  * Keycard Chooser
  */
-const KeycardChooser = props => (
-  <div key={`${props.localItemInfo.get('index')}`}>
-    <KeyCard
-      // key={props.localItemInfo.get('index')}
-      id={`${props.localItemInfo.get('index')}`}
-      keycardPictureSrc={props.keycardPictureSrc}
-      keycardTypes={props.keycardTypes}
-      keycards={props.keycards}
-      params={props.params}
-      orderitem={props.orderitem}
-      onChangeCheck={props.onChangeCheck}
-      fields={props.fields}
-      popover={props.popover}
-      popoverLink={props.popoverLink}
-      hasSupport={props.hasSupport}
-      localItemInfo={props.localItemInfo}
-      updateFieldsErrors={props.updateFieldsErrors}
-      deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
-      updateCurrentCardNumberType={props.updateCurrentCardNumberType}
-      updateValidField={props.updateValidField}
-      stateUpdateCardNumberTypeProperty={props.stateUpdateCardNumberTypeProperty}
-      checkValidKeycard={props.checkValidKeycard}
-    />
-  </div>
-);
+const KeycardChooser = props => {
+  console.log('KeycardChooser::props -> ', props);
+
+  return (
+    <div key={`${props.localItemInfo.get('index')}`}>
+      <KeyCard
+        // key={props.localItemInfo.get('index')}
+        id={`${props.localItemInfo.get('index')}`}
+        keycardPictureSrc={props.keycardPictureSrc}
+        keycardTypes={props.keycardTypes}
+        keycards={props.keycards}
+        params={props.params}
+        orderitem={props.orderitem}
+        onChangeCheck={props.onChangeCheck}
+        fields={props.fields}
+        popover={props.popover}
+        popoverLink={props.popoverLink}
+        hasSupport={props.hasSupport}
+        localItemInfo={props.localItemInfo}
+        updateFieldsErrors={props.updateFieldsErrors}
+        deleteKeyFieldsErrors={props.deleteKeyFieldsErrors}
+        updateCurrentCardNumberType={props.updateCurrentCardNumberType}
+        updateValidField={props.updateValidField}
+        stateUpdateCardNumberTypeProperty={props.stateUpdateCardNumberTypeProperty}
+        checkValidKeycard={props.checkValidKeycard}
+      />
+    </div>
+  );
+};
 
 KeycardChooser.propTypes = {
   keycardPictureSrc: PropTypes.string.isRequired, // keycard picture src
