@@ -1,4 +1,5 @@
 import React from 'react';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl-redux';
 import { addLocaleData } from 'react-intl';
@@ -9,12 +10,9 @@ import KeycardChooser from './components/KeycardChooser';
 
 addLocaleData([...en, ...fr]);
 
-export const KeycardChooserRoot = props => (
+render(
   <Provider store={store}>
     <IntlProvider>
-      <KeycardChooser {...props} />
+      <KeycardChooser />
     </IntlProvider>
-  </Provider>
-);
-
-export default KeycardChooserRoot;
+  </Provider>, document.getElementById('root'));
