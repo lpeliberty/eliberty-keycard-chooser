@@ -1,5 +1,4 @@
 const messages = {
-
   'rp.checkout.keycard.area.title': 'Cartes mains libres',
   'rp.checkout.keycard.area.question': "J'ai une carte mains libres*",
   'rp.checkout.keycard.area.reponse.yes': 'oui',
@@ -9,7 +8,6 @@ const messages = {
   'rp.checkout.keycard.area.modal.title': 'Modal title',
   'rp.checkout.keycard.area.modal.content': 'Modal content',
   'rp.checkout.keycard.area.modal.close': 'Fermer',
-
 };
 
 export default messages;
