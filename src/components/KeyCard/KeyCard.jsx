@@ -4,7 +4,6 @@ import { FormattedMessage, injectIntl, intlShape, FormattedHTMLMessage } from 'r
 import { Map } from 'immutable';
 import MaskedInput from 'react-text-mask';
 import Switch from 'react-toggle-switch';
-import 'react-toggle-switch/dist/css/switch.min.css';
 import PopoverQuestion from '../PopoverQuestion/PopoverQuestion';
 import PopoverLink from '../PopoverLink/PopoverLink';
 import CardNumberField from '../CardNumberField/CardNumberField';
@@ -222,21 +221,17 @@ class KeyCard extends React.Component {
       ? ( // Display Double Mask KeyCard
         <div>
           <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
-            { keycardTypes.map((data, type) => (
-              this.renderedLabelTab(tabKeycardType[type], type)
-            )) }
+            { keycardTypes.keySeq().toJS().map(type => this.renderedLabelTab(type)) }
           </ul>
           <div className="tab-content">
             {
-              keycardTypes.map((data, type) => (
+              keycardTypes.keySeq().toJS().map(type => (
                 this.renderedSomeInputKeyCards(type)
               ))
             }
           </div>
         </div>
-      )
-      :
-      (
+      ) : (
         // Display one Input for keyCard : get the first cardNumber type (first key of map)
         this.renderedInputOneKeyCard(keycardTypes.keySeq().first())
       )
@@ -279,7 +274,7 @@ class KeyCard extends React.Component {
    * @param textType
    * @param type
    */
-  renderedLabelTab(textType, type) {
+  renderedLabelTab(type) {
     let className = 'nav-item';
     const { formatMessage } = this.props.intl;
     const labelKeycard = `rp.checkout.keycard.label.${type}`;
@@ -446,7 +441,6 @@ class KeyCard extends React.Component {
 
     return (
       <div className="blockPopover" key={id}>
-
         <div className="col-xs-4 keyCardAreaImage">
           <img src={keycardPictureSrc} alt="keycardPicture" />
         </div>
