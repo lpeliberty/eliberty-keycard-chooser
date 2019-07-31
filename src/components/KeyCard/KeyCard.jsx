@@ -221,9 +221,7 @@ class KeyCard extends React.Component {
       ? ( // Display Double Mask KeyCard
         <div>
           <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
-            { keycardTypes.keySeq().toJS().map(type => (
-              this.renderedLabelTab(tabKeycardType[type], type)
-            )) }
+            { keycardTypes.keySeq().toJS().map(type => this.renderedLabelTab(type)) }
           </ul>
           <div className="tab-content">
             {
@@ -276,8 +274,10 @@ class KeyCard extends React.Component {
    * @param textType
    * @param type
    */
-  renderedLabelTab(textType, type) {
+  renderedLabelTab(type) {
     let className = 'nav-item';
+    const { formatMessage } = this.props.intl;
+    const labelKeycard = `rp.checkout.keycard.label.${type}`;
 
     if (isCurrentCardNumberType(this.props.localItemInfo, type)) {
       className = `${className} active`;
@@ -295,7 +295,7 @@ class KeyCard extends React.Component {
             this.props.updateCurrentCardNumberType(this.props.localItemInfo.get('skierIndex'), type);
           }}
         >
-          {textType}
+          {formatMessage({ id: labelKeycard, defaultMessage: 'Keycard' })}
         </a>
       </li>
     );
