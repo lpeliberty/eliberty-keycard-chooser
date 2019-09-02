@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl/dist/react-intl';
 import { Map } from 'immutable';
 import MaskedInput from 'react-text-mask';
 import Switch from 'react-toggle-switch';
@@ -119,8 +119,8 @@ class KeyCard extends React.Component {
     this.props.deleteKeyFieldsErrors(currentId, errorKey);
 
     if (!isValid) {
-      const { formatMessage } = this.props.intl;
-      const errorLabel = formatMessage({ id: 'rp.checkout.customize.swisspass.zipcode.invalid', defaultMessage: 'invalid' });
+      const { intl } = this.props;
+      const errorLabel = intl.formatMessage({ id: 'rp.checkout.customize.swisspass.zipcode.invalid', defaultMessage: 'invalid' });
       this.props.updateFieldsErrors(currentId, errorKey, errorLabel);
     } else {
       this.props.checkValidKeycard(currentId);
@@ -135,9 +135,9 @@ class KeyCard extends React.Component {
    */
   handleChangeAutoSuggestCardNumber(cardnumber, type, suggest = true) {
     let newValue = '';
-    const { formatMessage } = this.props.intl;
+    const { intl } = this.props;
     const errorKey = 'data.cardNumber';
-    const errorLabel = formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
+    const errorLabel = intl.formatMessage({ id: 'rp.checkout.customize.cardnumber.invalid', defaultMessage: 'invalid' });
     const currentId = this.props.localItemInfo.get('skierIndex');
     const skierIndex = this.props.orderitem.get('skierIndex');
 
@@ -276,7 +276,7 @@ class KeyCard extends React.Component {
    */
   renderedLabelTab(type) {
     let className = 'nav-item';
-    const { formatMessage } = this.props.intl;
+    const { intl } = this.props;
     const labelKeycard = `rp.checkout.keycard.label.${type}`;
 
     if (isCurrentCardNumberType(this.props.localItemInfo, type)) {
@@ -295,7 +295,7 @@ class KeyCard extends React.Component {
             this.props.updateCurrentCardNumberType(this.props.localItemInfo.get('skierIndex'), type);
           }}
         >
-          {formatMessage({ id: labelKeycard, defaultMessage: 'Keycard' })}
+          {intl.formatMessage({ id: labelKeycard, defaultMessage: 'Keycard' })}
         </a>
       </li>
     );
@@ -397,7 +397,7 @@ class KeyCard extends React.Component {
   renderedContentForSwisspass() {
     const zipcodeValue = getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'zipcode');
     const mask = { ...configs['ZIPCODE']};
-    const { formatMessage } = this.props.intl;
+    const { intl } = this.props;
     const skierIndex = this.props.localItemInfo.get('skierIndex');
 
     return (<div className="contentSwisspass">
@@ -430,7 +430,7 @@ class KeyCard extends React.Component {
       <label htmlFor={`check-swisspass${skierIndex}`} onChange={() => this.handleChangeCheckSwisspass(skierIndex)}>
         <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
       </label>
-      <div dangerouslySetInnerHTML={{__html: formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
+      <div dangerouslySetInnerHTML={{__html: intl.formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
     </div>
     );
   }
@@ -484,6 +484,7 @@ class KeyCard extends React.Component {
 }
 
 KeyCard.propTypes = {
+  intl: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired, // index
   keycardPictureSrc: PropTypes.string.isRequired, // keycard picture src
   keycardTypes: PropTypes.object.isRequired, // keycards to display the tabs
@@ -500,7 +501,6 @@ KeyCard.propTypes = {
   updateCurrentCardNumberType: PropTypes.func.isRequired, // function to update current cardNumber type
   updateValidField: PropTypes.func.isRequired, //
   hasSupport: PropTypes.bool.isRequired, // boolean to know if support exists
-  intl: intlShape.isRequired, // for the internationalization
   stateUpdateCardNumberTypeProperty: PropTypes.func.isRequired, // function to update cardNumber property value
   checkValidKeycard: PropTypes.func.isRequired, // function to check complete cardCardNumber valid
 };
