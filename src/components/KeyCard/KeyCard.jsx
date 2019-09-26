@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl/dist/react-intl';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import MaskedInput from 'react-text-mask';
 import Switch from 'react-toggle-switch';
 import PopoverQuestion from '../PopoverQuestion/PopoverQuestion';
@@ -28,6 +28,32 @@ const configs = {
 };
 
 /**
+ * Get errors according to specific key ([property], global)
+ *
+ * @param localItemInfo
+ * @param keys
+ */
+function getErrors(localItemInfo, keys) {
+  let errors = localItemInfo.get('errors', new Map());
+  if (typeof errors === 'undefined') {
+    errors = new Map();
+  }
+  // If no errors, return empty list
+  if (errors.isEmpty()) {
+    return errors;
+  }
+
+  // Build a list if is not it
+  if (!List.isList(keys)) {
+    keys = new List([keys]);
+  }
+
+  return errors.filter((value, errorField) => (
+    keys.includes(errorField)
+  ));
+}
+
+/**
  * Keycard
  */
 class KeyCard extends React.Component {
@@ -37,9 +63,26 @@ class KeyCard extends React.Component {
    * @param localItemInfo
    * @returns {*}
    */
+
   static renderedErrorInputMessage(errorKey, localItemInfo) {
-    const error = localItemInfo.get('errors', new Map()).get(errorKey, '');
-    return <p className="errorInputKeyCard">{error}</p>;
+    const errors = getErrors(localItemInfo, errorKey);
+    if (errors) {
+      return errors.valueSeq().map(suberrors => {
+        if (Map.isMap(suberrors) || List.isList(suberrors)) {
+          return suberrors
+            .valueSeq()
+            .map(error => (
+              <span
+                key={error}
+                className="errorInputKeyCard"
+                dangerouslySetInnerHTML={{ __html: error }}
+              />
+            ));
+        }
+        return <p className="errorInputKeyCard">{suberrors}</p>;
+      });
+    }
+    return '';
   }
 
   /**
@@ -218,23 +261,23 @@ class KeyCard extends React.Component {
    */
   renderedKeyCardTypesContent(keycardTypes) {
     return (keycardTypes.size > 1
-      ? ( // Display Double Mask KeyCard
-        <div>
-          <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
-            { keycardTypes.keySeq().toJS().map(type => this.renderedLabelTab(type)) }
-          </ul>
-          <div className="tab-content">
-            {
-              keycardTypes.keySeq().toJS().map(type => (
-                this.renderedSomeInputKeyCards(type)
-              ))
-            }
+        ? ( // Display Double Mask KeyCard
+          <div>
+            <ul className="nav nav-tabs nav-justified responsive-tabs" role="tablist">
+              { keycardTypes.keySeq().toJS().map(type => this.renderedLabelTab(type)) }
+            </ul>
+            <div className="tab-content">
+              {
+                keycardTypes.keySeq().toJS().map(type => (
+                  this.renderedSomeInputKeyCards(type)
+                ))
+              }
+            </div>
           </div>
-        </div>
-      ) : (
-        // Display one Input for keyCard : get the first cardNumber type (first key of map)
-        this.renderedInputOneKeyCard(keycardTypes.keySeq().first())
-      )
+        ) : (
+          // Display one Input for keyCard : get the first cardNumber type (first key of map)
+          this.renderedInputOneKeyCard(keycardTypes.keySeq().first())
+        )
     );
   }
 
@@ -245,7 +288,7 @@ class KeyCard extends React.Component {
    * @returns {*}
    */
   renderedInputOneKeyCard(type) {
-    const errorKey = 'data.cardNumber';
+    const errorKey = new List(['cardNumber', 'data.cardNumber']);
     const currentId = this.props.localItemInfo.get('skierIndex');
     let cardNumber = getCurrentCardNumberValue(this.props.localItemInfo);
 
@@ -381,12 +424,12 @@ class KeyCard extends React.Component {
    */
   renderedContentCheckNo() {
     return (this.state.checkNo
-      ? <div className="msgCheckNo">
-        <p>
-          <FormattedMessage id="rp.checkout.ordercustom.nokeycard" defaultMessage="no card" />
-        </p>
-      </div>
-      : ''
+        ? <div className="msgCheckNo">
+          <p>
+            <FormattedMessage id="rp.checkout.ordercustom.nokeycard" defaultMessage="no card" />
+          </p>
+        </div>
+        : ''
     );
   }
 
@@ -401,37 +444,37 @@ class KeyCard extends React.Component {
     const skierIndex = this.props.localItemInfo.get('skierIndex');
 
     return (<div className="contentSwisspass">
-      <div className="wrapperForm">
-        <MaskedInput
-          {...mask}
-          name="zipcode-swiss"
-          id="zipcode-swiss"
-          data-control="true"
-          onChange={event => this.handleChangeZipcode(event)}
-          value={typeof zipcodeValue !== 'undefined' ? zipcodeValue : ''}
+        <div className="wrapperForm">
+          <MaskedInput
+            {...mask}
+            name="zipcode-swiss"
+            id="zipcode-swiss"
+            data-control="true"
+            onChange={event => this.handleChangeZipcode(event)}
+            value={typeof zipcodeValue !== 'undefined' ? zipcodeValue : ''}
+          />
+          <label htmlFor="zipcode-swiss" className="control-label">
+            <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
+          </label>
+        </div>
+        {
+          !isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
+            ? KeyCard.renderedErrorInputMessage('data.swisspass.zipcode', this.props.localItemInfo)
+            : ''
+        }
+        <input
+          type="checkbox"
+          checked={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'checked')}
+          name={`check-swisspass${skierIndex}`}
+          id={`check-swisspass${skierIndex}`}
+          // onChange={() => this.handleChangeCheckSwisspass()}
+          onClick={() => this.handleChangeCheckSwisspass()}
         />
-        <label htmlFor="zipcode-swiss" className="control-label">
-          <FormattedMessage id="rp.checkout.shippingaddress.zipcode" defaultMessage="Zipcode" />
+        <label htmlFor={`check-swisspass${skierIndex}`} onChange={() => this.handleChangeCheckSwisspass(skierIndex)}>
+          <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
         </label>
+        <div dangerouslySetInnerHTML={{__html: intl.formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
       </div>
-      {
-        !isSwissPassPropertyValid(this.props.localItemInfo, 'zipcodeFormatValid')
-          ? KeyCard.renderedErrorInputMessage('data.swisspass.zipcode', this.props.localItemInfo)
-          : ''
-      }
-      <input
-        type="checkbox"
-        checked={getCardNumberTypeElementProperty(this.props.localItemInfo, 'swisspass', 'checked')}
-        name={`check-swisspass${skierIndex}`}
-        id={`check-swisspass${skierIndex}`}
-        // onChange={() => this.handleChangeCheckSwisspass()}
-        onClick={() => this.handleChangeCheckSwisspass()}
-      />
-      <label htmlFor={`check-swisspass${skierIndex}`} onChange={() => this.handleChangeCheckSwisspass(skierIndex)}>
-        <FormattedMessage id="rp.checkout.keycard.swisspass.check.text" defaultMessage="I agree with the conditions of SwissPass" />
-      </label>
-      <div dangerouslySetInnerHTML={{__html: intl.formatMessage({ id:'rp.checkout.keycard.swisspass.link', defaultMessage: 'Disclaimer' })}} />
-    </div>
     );
   }
 
